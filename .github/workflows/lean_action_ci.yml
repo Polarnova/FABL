@@ -1,0 +1,25 @@
+name: Lean Action CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+      - name: Enforce kernel-checked production sources
+        run: |
+          if rg -n --glob '*.lean' '\b(sorry|admit|axiom|unsafe|native_decide)\b' FABL FABL.lean; then
+            exit 1
+          fi
+      - uses: leanprover/lean-action@v1
+      - name: Build and validate Verso Blueprint
+        working-directory: blueprint-verso
+        run: ./scripts/site.sh build
