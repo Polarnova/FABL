@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Asher Yan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Asher Yan with Codex
+-/
 import Verso
 import VersoManual
 import VersoBlueprint
@@ -7,9 +12,7 @@ open Verso.Genre
 open Verso.Genre.Manual
 open Informal
 
-#doc (Manual) "Section 1.3" =>
-
-# 1.3. The orthonormal basis of parity functions
+#doc (Manual) "The orthonormal basis of parity functions" =>
 
 :::definition "definition-1.3" (lean := "FABL.uniformInner, FABL.uniformLpNorm, FABL.uniformLpNorm_two_eq_sqrt_uniformInner") (tags := "section-1-3, fidelity-exact-with-lp-definition-represented-by-Real-rpow")
 *Definition 1.3.* For functions $`f,g : \{-1,1\}^n \to \mathbb R`, define
@@ -47,7 +50,7 @@ $$`\langle\chi_S,\chi_T\rangle=
 
 :::lemma_ "fact-1.6" (lean := "FABL.monomial_mul_monomial") (uses := "support-sign-monomial") (tags := "section-1-3, fidelity-exact")
 *Fact 1.6.* For $`x\in\{-1,1\}^n` and $`S,T\subseteq[n]`, one has
-$$`\chi_S(x)\chi_T(x)=\chi_{S\mathbin{\triangle}T}(x),`
+$`\chi_S(x)\chi_T(x)=\chi_{S\mathbin{\triangle}T}(x),`
 where $`S\mathbin{\triangle}T` denotes symmetric difference.
 :::
 

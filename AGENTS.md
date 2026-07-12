@@ -3,7 +3,8 @@
 ## Mission and sources of truth
 
 FABL formalizes the May 2021 arXiv edition of Ryan O'Donnell's *Analysis of Boolean Functions* in
-Lean 4 and Mathlib. The first release target is complete coverage of Chapters 1 and 2.
+Lean 4 and Mathlib. Chapters 1--3 are proof-complete; the project objective is complete coverage of
+every chapter.
 
 1. The book determines mathematical scope and complete human-readable statements.
 2. Production declarations under `FABL/**/*.lean` determine formal statements and proofs.
@@ -23,14 +24,39 @@ part of the public formal API, in the production declaration's docstring.
 
 - Keep physical modules and statement coverage aligned with the book's chapters and sections.
 - Let the Blueprint DAG determine proof order. Book order and proof order are deliberately distinct.
+- Give a theorem's canonical public declaration to the earliest chapter in which the book formally
+  states it, even when its proof is deferred. A later proof chapter must reuse that declaration, not
+  create a second API. Keep proof-only helpers adjacent until real cross-chapter reuse justifies a
+  narrow extraction.
 - Do not introduce one global Boolean-cube representation. Use the domain stated by each theorem and
   add an explicit bridge only when a production theorem crosses representations.
 - Keep mathematical definitions and proofs pure. Extraction, rendering, validation, PDF generation,
   and CI belong at the repository edge.
+- Match algorithmic statements to the computation model used by the book. For Chapter 3, use a
+  finite randomized random-example/membership-query program with constructor-derived oracle counts,
+  explicit local-work charges, `PMF` semantics, and finite hypothesis output. Do not translate an
+  oracle theorem into an ordinary Turing-machine theorem.
+- Add an external complexity dependency only when an in-scope statement genuinely requires a
+  machine model, complexity class, or reduction framework. At that boundary, audit the pinned
+  Mathlib first, then a toolchain-matched CSLib release and specialized complexity libraries. The
+  absence of such a dependency in Chapter 3 is deliberate.
 - Do not add `Core`, `Common`, `Utils`, or `ToMathlib` dumping grounds. Extract a shared declaration
   only when a real downstream theorem needs it; prefer the narrowest mathematically meaningful home.
 - `lean-booleanfun` is cited prior art and a search aid, not an upstream dependency. Do not import,
   vendor, or copy it. Validate every reuse idea against Mathlib and FABL.
+
+### Module-size discipline
+
+- Keep proof-bearing modules comparable to ordinary Mathlib and CSLib source files. Aim for
+  150--900 lines of substantive Lean; review every file above 900 lines and split it before it
+  exceeds 1200 lines unless a documented mathematical reason makes the split worse.
+- Split only at a real mathematical or API boundary. Do not create arbitrary numbered fragments,
+  and do not move declarations merely to satisfy a line count.
+- Preserve the book-section module as a stable public-import aggregate when its implementation is
+  divided into submodules. Downstream code and Blueprint associations must continue to use canonical
+  declaration names, never duplicate restatements.
+- A small aggregate, bridge, or root-import file is legitimate. The lower target applies to
+  substantive proof modules, not to deliberately thin composition points.
 
 ## Existing-theorem reuse gate
 
@@ -118,6 +144,10 @@ of them sequentially.
 - Use Mathlib naming, documentation, formatting, imports, and canonical normal forms.
 - Keep foundational proofs readable; use automation where it shortens a stable, well-scoped step.
 - Proofs live only in production Lean declarations. Do not add prose proof blocks to the Blueprint.
+- Every production module document states the exact original-book items implemented in that file.
+  Use a range only when the associated items are genuinely consecutive; otherwise list them. A
+  stable aggregate names its book section, and infrastructure with no book-facing declaration says
+  so explicitly. Derive this metadata from Blueprint declaration associations rather than guessing.
 
 ## Blueprint contract
 
@@ -129,8 +159,28 @@ panel into one visual card, but must not replace or duplicate official tags, dec
 
 Never edit `blueprint-verso/_out/`. When adding a chapter, update its Verso aggregate imports and the
 strict manifest expectations in `blueprint-verso/scripts/site.sh` in the same change. The current
-Chapter 1 baseline is 41 nodes (34 primary and 7 support), 103 associated Lean declarations, and 59
+Chapter 1 baseline is 43 nodes (34 primary and 9 support), 111 associated Lean declarations, and 62
 reviewed dependency edges.
+
+The completed Chapter 2 baseline is 78 nodes (64 primary and 14 support), 240 associated Lean
+declarations, and 183 reviewed dependency edges across Sections 2.1--2.5. The aggregate Chapters
+1--2 baseline is 121 nodes, 351 unique declaration associations, and 245 edges.
+
+The completed Chapter 3 baseline is 62 nodes (43 primary and 19 support), 399 associated Lean
+declarations, and 164 reviewed dependency edges across Sections 3.1--3.5. The aggregate Chapters
+1--3 baseline is 183 nodes, 750 declaration associations, and 409 edges.
+
+Include every inventoried chapter in `Blueprint.lean` and `Book.lean` throughout its active proof
+phase so the official diagram exposes unfinished nodes and their formalization status. Keep the
+section and aggregate sources buildable, and update the manifest expectations to cover the complete
+inventory. A missing `lean :=` association is the honest representation of an unfinished node;
+never attach a placeholder declaration or weaken a statement to manufacture a completed status.
+Chapter completion still requires every node to have honest compiled declaration associations and
+the complete dependency closure to be proof-complete.
+
+Verso owns chapter and section numbering. Document titles must contain only their prose title: do
+not prefix them with `Chapter N`, `Section N.M`, or a handwritten number, and do not repeat a
+document title as an immediately nested heading.
 
 ## Build and verification flow
 
@@ -149,6 +199,20 @@ During proof development, build the narrowest affected production module:
 ```bash
 lake build FABL.Chapter01.BasicFourierFormulas
 ```
+
+When parallel agents share one checkout and Lake build tree, preserve the last green `.olean` of
+every upstream module. Compile an experimental edit to temporary outputs first, for example:
+
+```bash
+lake env lean FABL/Chapter03/LearningTheory.lean \
+  -o /tmp/fabl-learning.olean -i /tmp/fabl-learning.ilean
+```
+
+Only after that command succeeds may the owning agent run the narrow `lake build` to promote the
+artifact. Never launch a downstream or Blueprint Lake build while an upstream production source is
+between green checkpoints: Lake correctly invalidates the dependency, and a failed rebuild removes
+the shared last `.olean`, blocking every other agent. Prefer isolated worktrees/build directories
+when parallel tasks cannot respect this checkpoint discipline.
 
 During Blueprint development, build the affected section before rendering the complete site:
 

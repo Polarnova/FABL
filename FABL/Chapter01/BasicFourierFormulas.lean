@@ -1,7 +1,7 @@
 /-
-Copyright (c) 2026 FABL contributors. All rights reserved.
+Copyright (c) 2026 Asher Yan. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: FABL contributors
+Authors: Asher Yan with Codex
 -/
 module
 
@@ -9,6 +9,10 @@ public import FABL.Chapter01.ParityBasis
 
 /-!
 # Basic Fourier formulas
+
+Book items: Definition 1.3, Definition 1.10, Definition 1.11, Definition 1.17, Definition 1.18,
+Definition 1.19, Fact 1.12, Fact 1.14, Proposition 1.8, Proposition 1.9, Proposition 1.13,
+Proposition 1.15, Proposition 1.16, Parseval's Theorem, Plancherel's Theorem, Exercise 1.16.
 
 Formalization of Section 1.4 of O'Donnell's *Analysis of Boolean Functions*.
 -/
@@ -108,11 +112,10 @@ theorem sum_sq_fourierCoeff_eq_one (f : BooleanFunction n) :
       rcases Int.units_eq_one_or (f x) with h | h <;> simp [h]
     _ = 1 := Fintype.expect_const 1
 
-/-- The square of the normalized `L²` quantity is the normalized self-inner product. -/
-theorem uniformLpNorm_two_sq_eq_uniformInner (f : {−1,1}^[n] → ℝ) :
-    uniformLpNorm 2 f ^ 2 = ⟪f, f⟫ᵤ := by
-  rw [uniformLpNorm, uniformInner, RCLike.wInner_cWeight_eq_expect]
-  simp only [RCLike.inner_apply, starRingEnd_apply, star_trivial]
+/-- The square of the normalized `L²` quantity is the uniform second moment. -/
+theorem uniformLpNorm_two_sq_eq_expect_sq {Ω : Type*} [Fintype Ω] (f : Ω → ℝ) :
+    uniformLpNorm 2 f ^ 2 = 𝔼 x, f x ^ 2 := by
+  rw [uniformLpNorm]
   have hmoment : (𝔼 x, |f x|.rpow 2) = 𝔼 x, f x ^ 2 := by
     apply Finset.expect_congr rfl
     intro x _
@@ -120,11 +123,28 @@ theorem uniformLpNorm_two_sq_eq_uniformInner (f : {−1,1}^[n] → ℝ) :
     rw [Real.rpow_two, sq_abs]
   rw [hmoment]
   have hnonneg : 0 ≤ (𝔼 x, f x ^ 2) := by
-    rw [Fintype.expect_eq_sum_div_card]
-    positivity
+    exact Finset.expect_nonneg fun x _ ↦ sq_nonneg (f x)
   have hsquare : ((𝔼 x, f x ^ 2).rpow ((2 : ℝ)⁻¹)) ^ 2 = 𝔼 x, f x ^ 2 := by
     simpa using Real.rpow_inv_natCast_pow hnonneg (by norm_num : (2 : ℕ) ≠ 0)
   rw [hsquare]
+
+/-- The normalized `L²` quantity is the square root of the uniform second moment. -/
+theorem uniformLpNorm_two_eq_sqrt_expect_sq {Ω : Type*} [Fintype Ω] (f : Ω → ℝ) :
+    uniformLpNorm 2 f = Real.sqrt (𝔼 x, f x ^ 2) := by
+  have hnonneg : 0 ≤ uniformLpNorm 2 f := by
+    unfold uniformLpNorm
+    apply Real.rpow_nonneg
+    exact Finset.expect_nonneg fun x _ ↦ Real.rpow_nonneg (abs_nonneg (f x)) 2
+  calc
+    uniformLpNorm 2 f = |uniformLpNorm 2 f| := (abs_of_nonneg hnonneg).symm
+    _ = Real.sqrt (uniformLpNorm 2 f ^ 2) := (Real.sqrt_sq_eq_abs _).symm
+    _ = Real.sqrt (𝔼 x, f x ^ 2) := by rw [uniformLpNorm_two_sq_eq_expect_sq]
+
+/-- The square of the normalized `L²` quantity is the normalized self-inner product. -/
+theorem uniformLpNorm_two_sq_eq_uniformInner (f : {−1,1}^[n] → ℝ) :
+    uniformLpNorm 2 f ^ 2 = ⟪f, f⟫ᵤ := by
+  rw [uniformLpNorm_two_sq_eq_expect_sq, uniformInner, RCLike.wInner_cWeight_eq_expect]
+  simp only [RCLike.inner_apply, starRingEnd_apply, star_trivial]
   apply Finset.expect_congr rfl
   intro x _
   ring
@@ -133,17 +153,12 @@ theorem uniformLpNorm_two_sq_eq_uniformInner (f : {−1,1}^[n] → ℝ) :
 self-inner product. -/
 theorem uniformLpNorm_two_eq_sqrt_uniformInner (f : {−1,1}^[n] → ℝ) :
     uniformLpNorm 2 f = Real.sqrt ⟪f, f⟫ᵤ := by
-  have hnonneg : 0 ≤ uniformLpNorm 2 f := by
-    unfold uniformLpNorm
-    apply Real.rpow_nonneg
-    rw [Fintype.expect_eq_sum_div_card]
-    apply div_nonneg
-    · exact Finset.sum_nonneg fun _ _ ↦ Real.rpow_nonneg (abs_nonneg _) _
-    · positivity
-  calc
-    uniformLpNorm 2 f = |uniformLpNorm 2 f| := (abs_of_nonneg hnonneg).symm
-    _ = Real.sqrt (uniformLpNorm 2 f ^ 2) := (Real.sqrt_sq_eq_abs _).symm
-    _ = Real.sqrt ⟪f, f⟫ᵤ := by rw [uniformLpNorm_two_sq_eq_uniformInner]
+  rw [uniformLpNorm_two_eq_sqrt_expect_sq, uniformInner,
+    RCLike.wInner_cWeight_eq_expect]
+  congr 2
+  funext x
+  simp only [RCLike.inner_apply, starRingEnd_apply, star_trivial]
+  ring
 
 /-- Plancherel's identity on `{-1,1}ⁿ`. -/
 theorem plancherel (f g : {−1,1}^[n] → ℝ) :
@@ -466,6 +481,10 @@ theorem spectralSample_apply_toReal (f : BooleanFunction n) (S : Finset (Fin n))
 /-- O'Donnell, Definition 1.19: level-`k` Fourier weight `𝐖ᵏ[f]`. -/
 noncomputable def fourierWeightAtLevel (k : ℕ) (f : {−1,1}^[n] → ℝ) : ℝ :=
   ∑ S ∈ (Finset.univ.filter fun S : Finset (Fin n) ↦ S.card = k), fourierWeight f S
+
+/-- O'Donnell, Definition 1.19: Fourier weight through level `k`, denoted `𝐖≤ᵏ[f]`. -/
+noncomputable def fourierWeightAtMost (k : ℕ) (f : {−1,1}^[n] → ℝ) : ℝ :=
+  ∑ S ∈ (Finset.univ.filter fun S : Finset (Fin n) ↦ S.card ≤ k), fourierWeight f S
 
 /-- The homogeneous degree-`k` part `f⁼ᵏ`. -/
 noncomputable def degreePart (k : ℕ) (f : {−1,1}^[n] → ℝ) : {−1,1}^[n] → ℝ :=

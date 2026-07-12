@@ -31,40 +31,85 @@ validate_site() {
 
   jq -e '
     [.previews[] | select(.targetKind == "block" and .facet == "statement")] as $blocks
+    | [$blocks[] | select(any(.tags[]; startswith("section-1-")))] as $chapter1
+    | [$blocks[] | select(any(.tags[]; startswith("section-2-")))] as $chapter2
+    | [$blocks[] | select(any(.tags[]; startswith("section-3-")))] as $chapter3
     | [$blocks[] | .codeData.external.decls[]?] as $decls
+    | [.previews[] | select(.targetKind == "leanDecl")] as $leanDecls
     | .graphs[0] as $graph
     | (.vbpInternalSchemaVersion == 2)
-      and ((.previews | length) == 144)
-      and (($blocks | length) == 41)
-      and (([.previews[] | select(.targetKind == "leanDecl")] | length) == 103)
-      and (all($blocks[]; (.codeData.external.decls | length) > 0))
-      and (([$blocks[].leanCodePreviewKeys[]] | length) == 103)
-      and (([$blocks[].leanCodePreviewKeys[]] | unique | length) == 103)
-      and (($decls | length) == 103)
-      and (([$decls[].canonical] | unique | length) == 103)
+      and (($blocks | length) == 183)
+      and (($chapter1 | length) == 43)
+      and (($chapter2 | length) == 78)
+      and (($chapter3 | length) == 62)
+      and (all($blocks[];
+        ([.tags[]
+          | select(startswith("section-1-") or startswith("section-2-")
+            or startswith("section-3-"))]
+          | length) == 1))
+      and ((.previews | length) == (($blocks | length) + ($leanDecls | length)))
+      and (($leanDecls | length) == ($decls | length))
+      and (([$blocks[].leanCodePreviewKeys[]] | length) == ($decls | length))
+      and (([$blocks[].leanCodePreviewKeys[]] | unique | length) == ($decls | length))
+      and (([$blocks[].leanCodePreviewKeys[]] | sort) == ([$leanDecls[].key] | sort))
+      and (([$decls[].canonical] | unique | length) == ($decls | length))
       and (all($decls[];
         .present == true
         and .provedStatus == "proved"
         and (.render | has("ok"))))
       and (all($blocks[]; (.tags | length) > 0 and .sourceLocation.ok == true))
-      and (([$blocks[] | select(.tags | index("support"))] | length) == 7)
-      and (([$blocks[] | select((.tags | index("support")) == null)] | length) == 34)
-      and (([$blocks[] | .statementUses | length] | add) == 59)
+      and (([$blocks[] | select(.tags | index("support"))] | length) == 42)
+      and (([$blocks[] | select((.tags | index("support")) == null)] | length) == 141)
+      and (([$chapter1[] | select(.tags | index("support"))] | length) == 9)
+      and (([$chapter2[] | select(.tags | index("support"))] | length) == 14)
+      and (([$chapter3[] | select(.tags | index("support"))] | length) == 19)
+      and (([$chapter1[] | .codeData.external.decls | length] | add) == 111)
+      and (([$chapter2[] | .codeData.external.decls | length] | add) == 240)
+      and (([$chapter3[] | .codeData.external.decls | length] | add) == 399)
+      and (([$blocks[] | .statementUses | length] | add) == 409)
+      and (([$chapter1[] | .statementUses | length] | add) == 62)
+      and (([$chapter2[] | .statementUses | length] | add) == 183)
+      and (([$chapter3[] | .statementUses | length] | add) == 164)
       and (([$blocks[] | .proofUses | length] | add) == 0)
-      and (([$blocks[] | .uses | length] | add) == 59)
-      and (([$blocks[] | .usedBy | length] | add) == 59)
+      and (([$blocks[] | .uses | length] | add) == 409)
+      and (([$blocks[] | .usedBy | length] | add) == 409)
       and ((.graphs | length) == 1)
-      and (($graph.nodes | length) == 41)
-      and (($graph.edges | length) == 59)
+      and (($graph.nodes | length) == 183)
+      and (([$graph.nodes[].label] | unique | length) == 183)
+      and (([$graph.nodes[].previewKey] | unique | length) == 183)
+      and (($graph.edges | length) == 409)
       and (all($graph.edges[]; .axes == ["statement"]))
       and (all($graph.nodes[];
-        .statementStatus == "formalized"
-        and .proofStatus == "formalizedWithAncestors"
-        and .warnings.leanOnlyNoStatement == false
+        .warnings.leanOnlyNoStatement == false
         and .warnings.missingExternalDecl == false
         and .warnings.unknownRef == false))
+      and (all($chapter1[];
+        .key as $key
+        | any($graph.nodes[];
+            .previewKey == $key
+            and .statementStatus == "formalized"
+            and .proofStatus == "formalizedWithAncestors")))
+      and (all($chapter2[];
+        .key as $key
+        | any($graph.nodes[];
+            .previewKey == $key
+            and .statementStatus == "formalized"
+            and .proofStatus == "formalizedWithAncestors")))
+      and (all($blocks[];
+        .key as $key
+        | (.codeData.external.decls | length) as $associated
+        | any($graph.nodes[];
+            .previewKey == $key
+            and (if $associated > 0 then
+              .statementStatus == "formalized"
+              and (.proofStatus == "formalized"
+                or .proofStatus == "formalizedWithAncestors")
+            else
+              ((.statementStatus == "ready" and .proofStatus == "ready")
+                or (.statementStatus == "blocked" and .proofStatus == "none"))
+            end))))
   ' "$manifest" >/dev/null || {
-    echo "generated Blueprint failed the Chapter 1 coverage and declaration-link checks" >&2
+    echo "generated Blueprint failed the coverage, declaration-link, or status checks" >&2
     exit 1
   }
 
@@ -74,6 +119,7 @@ validate_site() {
 build_site() {
   build_library
   echo "Rendering Blueprint HTML..."
+  rm -rf -- "$output/html-multi"
   "$lake_cmd" lean FABLBlueprintMain.lean -- --run FABLBlueprintMain.lean --output "$output"
   test -f "$output/html-multi/index.html"
   test -f "$output/html-multi/-verso-data/blueprint-manifest.json"

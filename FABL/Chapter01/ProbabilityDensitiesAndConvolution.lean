@@ -1,7 +1,7 @@
 /-
-Copyright (c) 2026 FABL contributors. All rights reserved.
+Copyright (c) 2026 Asher Yan. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: FABL contributors
+Authors: Asher Yan with Codex
 -/
 module
 
@@ -9,6 +9,9 @@ public import FABL.Chapter01.BasicFourierFormulas
 
 /-!
 # Probability densities and convolution
+
+Book items: Definition 1.20, Definition 1.22, Definition 1.24, Fact 1.21, Fact 1.23, Proposition
+1.25, Proposition 1.26, Theorem 1.27.
 
 Formalization of Section 1.5 of O'Donnell's *Analysis of Boolean Functions*.
 -/

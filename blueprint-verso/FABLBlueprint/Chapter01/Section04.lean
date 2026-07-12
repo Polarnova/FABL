@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Asher Yan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Asher Yan with Codex
+-/
 import Verso
 import VersoManual
 import VersoBlueprint
@@ -7,9 +12,7 @@ open Verso.Genre
 open Verso.Genre.Manual
 open Informal
 
-#doc (Manual) "Section 1.4" =>
-
-# 1.4. Basic Fourier formulas
+#doc (Manual) "Basic Fourier formulas" =>
 
 :::proposition "proposition-1.8" (lean := "FABL.fourierCoeff_eq_uniformInner") (uses := "theorem-1.1, theorem-1.5") (tags := "section-1-4, fidelity-exact")
 *Proposition 1.8.* For $`f:\{-1,1\}^n\to\mathbb R` and
@@ -25,7 +28,7 @@ $$`\langle f,f\rangle
 =\mathbb E_{\boldsymbol{x}\sim\{-1,1\}^n}[f(\boldsymbol{x})^2]
 =\sum_{S\subseteq[n]}\widehat f(S)^2.`
 In particular, if $`f:\{-1,1\}^n\to\{-1,1\}` is Boolean-valued, then
-$$`\sum_{S\subseteq[n]}\widehat f(S)^2=1.`
+$`\sum_{S\subseteq[n]}\widehat f(S)^2=1.`
 :::
 
 :::theorem "plancherel" (lean := "FABL.plancherel") (uses := "theorem-1.5, proposition-1.8") (tags := "section-1-4, fidelity-exact")
@@ -56,14 +59,14 @@ the fraction of inputs on which they disagree.
 *Definition 1.11.* The mean of $`f:\{-1,1\}^n\to\mathbb R` is
 $`\mathbb E[f]`. When $`f` has mean $`0`, it is called unbiased, or balanced.
 If $`f:\{-1,1\}^n\to\{-1,1\}` is Boolean-valued, then
-$$`\mathbb E[f]=\Pr[f=1]-\Pr[f=-1];`
+$`\mathbb E[f]=\Pr[f=1]-\Pr[f=-1];`
 thus $`f` is unbiased if and only if it takes value $`1` on exactly half of the
 points of the Hamming cube.
 :::
 
 :::lemma_ "fact-1.12" (lean := "FABL.mean_eq_fourierCoeff_empty, FABL.isBalanced_iff_fourierCoeff_empty_eq_zero") (uses := "proposition-1.8") (tags := "section-1-4, fidelity-exact")
 *Fact 1.12.* If $`f:\{-1,1\}^n\to\mathbb R`, then
-$$`\mathbb E[f]=\widehat f(\varnothing).`
+$`\mathbb E[f]=\widehat f(\varnothing).`
 In particular, a Boolean-valued $`f` is unbiased if and only if its empty-set
 Fourier coefficient is $`0`.
 :::
@@ -86,19 +89,14 @@ $$`\operatorname{Var}[f]
 
 :::lemma_ "support-exercise-1.16" (lean := "FABL.relativeHammingDist_one_eq_uniformProbability_neg_one, FABL.relativeHammingDist_neg_one_eq_uniformProbability_one, FABL.variance_eq_four_mul_relativeHammingDist_one_mul_neg_one") (uses := "fact-1.14, definition-1.10") (tags := "section-1-4, support")
 *Exercise 1.16.* For $`f:\{-1,1\}^n\to\{-1,1\}`,
-$$`\operatorname{dist}(f,1)=\Pr[f=-1],
-\qquad
-\operatorname{dist}(f,-1)=\Pr[f=1],`
-and therefore
-$$`\operatorname{Var}[f]
-=4\operatorname{dist}(f,1)\operatorname{dist}(f,-1).`
+$`\operatorname{dist}(f,1)=\Pr[f=-1], \qquad \operatorname{dist}(f,-1)=\Pr[f=1],`
+and therefore $`\operatorname{Var}[f]=4\operatorname{dist}(f,1)\operatorname{dist}(f,-1).`
 :::
 
 :::proposition "proposition-1.15" (lean := "FABL.distanceToNearestConstant, FABL.variance_bounds_distanceToNearestConstant") (uses := "fact-1.14, support-exercise-1.16") (tags := "section-1-4, fidelity-exact")
 *Proposition 1.15.* Let $`f:\{-1,1\}^n\to\{-1,1\}` and set
-$$`\epsilon=\min\{\operatorname{dist}(f,1),\operatorname{dist}(f,-1)\}.`
-Then
-$$`2\epsilon\le\operatorname{Var}[f]\le4\epsilon.`
+$`\epsilon=\min\{\operatorname{dist}(f,1),\operatorname{dist}(f,-1)\}.`
+Then $`2\epsilon\le\operatorname{Var}[f]\le4\epsilon.`
 :::
 
 :::proposition "proposition-1.16" (lean := "FABL.covariance, FABL.covariance_eq_uniformInner_centered, FABL.covariance_eq_sum_fourierCoeff_mul") (uses := "plancherel, fact-1.12") (tags := "section-1-4, fidelity-exact")
@@ -114,7 +112,7 @@ $$`\operatorname{Cov}[f,g]
 :::definition "definition-1.17" (lean := "FABL.fourierWeight") (uses := "proposition-1.8") (tags := "section-1-4, fidelity-exact")
 *Definition 1.17.* For $`f:\{-1,1\}^n\to\mathbb R` and
 $`S\subseteq[n]`, the Fourier weight of $`f` on $`S` is
-$$`\widehat f(S)^2.`
+$`\widehat f(S)^2.`
 :::
 
 :::definition "definition-1.18" (lean := "FABL.spectralSample, FABL.spectralSample_apply_toReal") (uses := "definition-1.17, parseval") (tags := "section-1-4, fidelity-exact-with-PMF-codomain")
@@ -124,15 +122,15 @@ in which the set $`S` has probability $`\widehat f(S)^2`. Write
 $`\boldsymbol{S}\sim\mathcal S_f` for a draw from this distribution.
 :::
 
-:::definition "definition-1.19" (lean := "FABL.fourierWeightAtLevel, FABL.degreePart, FABL.fourierWeightAtLevel_eq_uniformLpNorm_degreePart_sq, FABL.fourierWeightAbove, FABL.lowDegreePart, FABL.spectralSample_card_eq") (uses := "definition-1.17, definition-1.18") (tags := "section-1-4, fidelity-definitions-generalized-to-all-natural-k")
+:::definition "definition-1.19" (lean := "FABL.fourierWeightAtLevel, FABL.fourierWeightAtMost, FABL.degreePart, FABL.fourierWeightAtLevel_eq_uniformLpNorm_degreePart_sq, FABL.fourierWeightAbove, FABL.lowDegreePart, FABL.spectralSample_card_eq") (uses := "definition-1.17, definition-1.18") (tags := "section-1-4, fidelity-definitions-generalized-to-all-natural-k")
 *Definition 1.19.* For $`f:\{-1,1\}^n\to\mathbb R` and an integer $`k`
 with $`0\le k\le n`, the Fourier weight of $`f` at degree $`k` is
 $$`\mathbf W^k[f]
 =\sum_{\substack{S\subseteq[n]\\|S|=k}}\widehat f(S)^2.`
 If $`f` is Boolean-valued, equivalently
-$$`\mathbf W^k[f]=\Pr_{\boldsymbol{S}\sim\mathcal S_f}[|\boldsymbol{S}|=k].`
+$`\mathbf W^k[f]=\Pr_{\boldsymbol{S}\sim\mathcal S_f}[|\boldsymbol{S}|=k].`
 Define the degree-$`k` part of $`f` by
-$$`f^{=k}=\sum_{|S|=k}\widehat f(S)\chi_S.`
+$`f^{=k}=\sum_{|S|=k}\widehat f(S)\chi_S.`
 Then Parseval's Theorem gives $`\mathbf W^k[f]=\lVert f^{=k}\rVert_2^2`.
 Also write
 $$`\mathbf W^{>k}[f]=\sum_{|S|>k}\widehat f(S)^2,

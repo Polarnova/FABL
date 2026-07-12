@@ -1,7 +1,7 @@
 /-
-Copyright (c) 2026 FABL contributors. All rights reserved.
+Copyright (c) 2026 Asher Yan. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: FABL contributors
+Authors: Asher Yan with Codex
 -/
 module
 
@@ -9,6 +9,8 @@ public import FABL.Chapter01.ProbabilityDensitiesAndConvolution
 
 /-!
 # Almost linear functions and the BLR test
+
+Book items: Definition 1.28, BLR Test, Definition 1.29, Proposition 1.31, Theorem 1.30.
 
 Formalization of the highlight in Section 1.6 of O'Donnell's
 *Analysis of Boolean Functions*.

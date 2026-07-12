@@ -1,6 +1,8 @@
 name = "FABL"
 version = "0.1.0"
-keywords = ["math"]
+description = "Formal Analysis of Boolean Functions in Lean"
+keywords = ["mathematics", "boolean-functions", "fourier-analysis", "formalization"]
+license = "Apache-2.0"
 defaultTargets = ["FABL"]
 
 [leanOptions]

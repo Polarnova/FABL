@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Asher Yan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Asher Yan with Codex
+-/
 import Verso
 import VersoManual
 import VersoBlueprint
@@ -7,9 +12,7 @@ open Verso.Genre
 open Verso.Genre.Manual
 open Informal
 
-#doc (Manual) "Section 1.6" =>
-
-# 1.6. Highlight: Almost linear functions and the BLR Test
+#doc (Manual) "Highlight: Almost linear functions and the BLR Test" =>
 
 :::definition "definition-1.28" (lean := "FABL.IsF₂Linear, FABL.f₂DotProduct, FABL.isF₂Linear_iff_exists_dotProduct, FABL.isF₂Linear_iff_exists_coordinateSum") (tags := "section-1-6, fidelity-exact")
 *Definition 1.28.* A function $`f:\mathbb F_2^n\to\mathbb F_2` is linear if

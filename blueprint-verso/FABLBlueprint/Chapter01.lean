@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Asher Yan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Asher Yan with Codex
+-/
 import Verso
 import VersoManual
 import VersoBlueprint
@@ -12,15 +17,10 @@ open Verso.Genre
 open Verso.Genre.Manual
 open Informal
 
-#doc (Manual) "Chapter 1: Boolean functions and the Fourier expansion" =>
+#doc (Manual) "Boolean functions and the Fourier expansion" =>
 
-This chapter follows the May 2021 arXiv edition of
-[Ryan O'Donnell's *Analysis of Boolean Functions*](https://arxiv.org/abs/2105.10386).
-The bold labels below are the source labels from the book; the surrounding
-Blueprint numbering is only document-local navigation.
-
-Proof prose is intentionally omitted. The attached compiled Lean declarations
-contain the formal proofs.
+Boolean functions on the discrete cube, multilinear representations, the parity
+basis, Fourier identities, probability densities, convolution, and the BLR test.
 
 {include 0 FABLBlueprint.Chapter01.Section01}
 {include 0 FABLBlueprint.Chapter01.Section02}

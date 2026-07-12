@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Asher Yan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Asher Yan with Codex
+-/
 import VersoManual
 import VersoBlueprint.PreviewManifest
 import FABLBlueprint.Blueprint
@@ -5,9 +10,23 @@ import FABLBlueprint.Blueprint
 open Verso Doc
 open Verso.Genre Manual
 
-/-- Join each book-facing statement to its generated Lean declaration panel in
+/-- Minimal layout fixes for FABL's long title and joined statement/code cards in
 the official Blueprint theme. -/
 def statementCodeLayoutCss : CSS := ⟨r#"
+@media screen and (min-width: 701px) {
+  html[data-bp-style="blueprint"] .header-title-wrapper {
+    box-sizing: border-box;
+    min-width: 0;
+    padding-right: calc(var(--search-bar-width) + 1rem);
+  }
+
+  html[data-bp-style="blueprint"] .header-title {
+    font-size: clamp(1rem, 1.4vw, 1.5rem);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 html[data-bp-style="blueprint"]
   .bp_wrapper[id$="--statement"]:has(+ .bp_code_panel_wrapper) {
   margin-bottom: 0;

@@ -1,136 +1,84 @@
-# FABL
+# FABL: Formal Analysis of Boolean Functions in Lean
 
-**Formal Analysis of Boolean Functions in Lean** is an independent Lean 4 and Mathlib
-formalization of Ryan O'Donnell's *Analysis of Boolean Functions*.
+FABL is a Lean 4 and Mathlib formalization of Ryan O'Donnell's
+[*Analysis of Boolean Functions*](https://arxiv.org/abs/2105.10386), following the May 2021
+edition. It develops the book's results as a reusable theorem library while preserving the domains,
+normalizations, and hypotheses of the original statements.
 
-## Current objective
+## Status
 
-The first release target is complete coverage of the definitions and proved statements in Chapters
-1 and 2. Results stated there whose proofs are deferred to later chapters remain explicit dependency
-nodes. End-of-chapter exercises are included only when a main-text proof depends on them.
+Chapters 1--3 are proof-complete. The production library contains no `sorry`, project-defined
+axioms, or unsafe proof shortcuts.
 
-Chapter 1 is **proof-complete**. Its 34 primary nodes—31 consecutively numbered items, Parseval,
-Plancherel, and the BLR Test—have book-facing Lean declarations and kernel-checked proofs. The root
-project builds with no `sorry`, `admit`, project-defined `axiom`, `unsafe`, or `native_decide` in
-production Lean sources. The generated Blueprint connects every complete book-facing statement to
-its compiled Lean declarations. Chapter 2 remains the next coverage target.
+| Chapter | Subject | Book items | Lean declarations | Dependency edges |
+|---|---|---:|---:|---:|
+| 1 | Boolean functions and Fourier expansion | 43 | 111 | 62 |
+| 2 | Influence and noise sensitivity | 78 | 240 | 183 |
+| 3 | Spectral structure and learning | 62 | 399 | 164 |
+| **Total** |  | **183** | **750** | **409** |
 
-Coverage means that every in-scope book item has:
+The project aims to formalize the complete book. A book item is counted only when its full
+human-readable statement is linked to compiled Lean declarations and its mathematical dependencies
+have been reviewed.
 
-- a source identifier and a Mathlib-style Lean declaration name;
-- a fidelity classification recording whether the Lean statement is exact or more general;
-- a kernel-checked proof with no unproved declarations or project-defined axioms;
-- a reviewed mathematical dependency path from the book statement to the compiled Lean source.
+## Using FABL
 
-## Architecture
-
-The source tree follows the book rather than imposing a mature subject taxonomy prematurely:
-
-```text
-FABL/
-  Chapter01/
-    FunctionsAsMultilinearPolynomials.lean
-    ParityBasis.lean
-    BasicFourierFormulas.lean
-    ProbabilityDensitiesAndConvolution.lean
-    BLR.lean
-  Chapter02/
-    SocialChoiceFunctions.lean
-    InfluencesAndDerivatives.lean
-    TotalInfluence.lean
-    NoiseStability.lean
-    Arrow.lean
-```
-
-Each section chooses the domain representation stated by the mathematics it formalizes. FABL does
-not preselect one universal Boolean cube. Bridges are introduced only when a production theorem
-actually crosses representations.
-
-`FABL.Mathlib` publicly imports the complete pinned Mathlib release. Before adding a declaration,
-contributors must search Mathlib first. An exact existing result is reused directly; a more general
-result proves the book-facing theorem; a representation mismatch receives a thin bridge; only a
-genuine gap is implemented locally.
-
-The Chapter 1 implementation backbone is:
-
-- `Finset.expect` for normalized finite expectation;
-- `RCLike.wInner RCLike.cWeight` for the normalized inner product;
-- `AddChar` and finite-character orthogonality for Walsh characters;
-- `Module.Basis` for subset-indexed real Walsh bases;
-- `hammingDist` for disagreement counting;
-- `PMF` for the genuine distributions induced by real densities;
-- `DiscreteConvolution.addConvolution` for the unnormalized algebraic convolution core.
-
-FABL adds only the book-specific indexing, normalization, representation bridges, and results that
-Mathlib does not already provide. See `DESIGN.md` for the audited reuse boundary.
-
-## Construction workflow
-
-FABL uses the Blueprint pattern illustrated by the
-[PFR formalization](https://terrytao.wordpress.com/2023/11/18/formalizing-the-proof-of-pfr-in-lean4-using-blueprint-a-short-tour/):
-
-1. transcribe every in-scope book item, including its hypotheses, quantifiers, domains, and displayed
-   formulas, into the matching Verso section;
-2. search Mathlib and classify each needed declaration as direct reuse, specialization, thin
-   representation bridge, or genuine local theorem;
-3. write and audit the exact Lean statements before starting their proofs;
-4. attach each statement to compiled declarations with `lean :=` and record its reviewed
-   mathematical dependencies with `uses :=`;
-5. prove only dependency-ready leaves; proofs live exclusively in the production Lean library;
-6. close each leaf with a narrow module build, then close the chapter with the full build, Blueprint
-   validation, and a second statement-fidelity audit against the book.
-
-Book order determines physical modules and source coverage. The Blueprint dependency graph
-determines proof order; these are deliberately different concerns.
-
-## Build
+The repository pins its Lean and Mathlib versions. After cloning, obtain the precompiled Mathlib
+cache and build the library:
 
 ```bash
-lake update
 lake exe cache get
 lake build
-rg -n '\b(sorry|admit|axiom|unsafe|native_decide)\b' FABL FABL.lean
 ```
 
-The root `FABL.lean` imports every production module, so the default build checks the entire
-formalization.
+The root module imports every verified production module:
 
-The book-facing Blueprint is itself Lean source and uses the official
-[Verso Blueprint](https://github.com/leanprover/verso-blueprint):
+```lean
+import FABL
+```
+
+Source modules follow the chapters and sections of the book under `FABL/Chapter01`,
+`FABL/Chapter02`, and `FABL/Chapter03`. Larger sections expose a stable section-level import and are
+internally divided at mathematical boundaries.
+
+## Book and dependency graph
+
+The Verso Blueprint presents the book-facing statements beside their Lean declarations and records
+the reviewed dependency graph. To build and serve it locally:
 
 ```bash
 cd blueprint-verso
-lake update
 lake exe cache get
-./scripts/site.sh build
-lake exe vbp check
 ./scripts/site.sh serve
 ```
 
-Open [http://localhost:8000/](http://localhost:8000/). Do not open the generated HTML through
-`file://`; the dependency graph and other browser assets require an HTTP server. Generate the PDF
-with `./scripts/site.sh pdf`.
+Then open [http://localhost:8000/](http://localhost:8000/). Generate the printable book with:
 
-Lake builds are incremental: the reported job count is the size of the checked dependency graph,
-not the number of modules recompiled. `site.sh` performs one aggregate Lake build; Verso 4.30 then
-renders the complete HTML site because its generated preview cache is an output artifact, not an
-incremental renderer cache.
+```bash
+./scripts/site.sh pdf
+```
 
-The maintained sources are `FABL/**/*.lean` for formal declarations and proofs, and
-`blueprint-verso/FABLBlueprint/**/*.lean` for complete book-facing statements, declaration links,
-and reviewed dependency metadata. Blueprint HTML, PDF, manifest, graph, summary, and status are
-generated under `blueprint-verso/_out/` and must not be edited. There is no separately maintained
-YAML coverage ledger, TeX Blueprint, proof-status file, or prose proof.
+The generated site, PDF, manifest, and graph live under `blueprint-verso/_out/`; they are build
+artifacts and are not committed.
 
-## Source
+## Contributing
 
-The normative source is the May 2021 arXiv edition of
-[Analysis of Boolean Functions](https://arxiv.org/abs/2105.10386).
+Read [`AGENTS.md`](AGENTS.md) for the statement-inventory, Mathlib-reuse, proof, Blueprint, and
+verification contracts. [`DESIGN.md`](DESIGN.md) documents representation choices, the audited
+Mathlib boundary, and the treatment of algorithmic complexity. Contributions should reuse Mathlib
+or an earlier FABL result whenever possible and add a local theorem only for a genuine gap.
 
-## Acknowledgements
+## References and prior work
 
-FABL is a from-scratch formalization. Its design benefits from studying
-[roos-j/lean-booleanfun](https://github.com/roos-j/lean-booleanfun), an earlier Lean 4
-formalization of foundational results in the analysis of Boolean functions. FABL neither imports nor
-depends on that repository. The reuse audit used its `main` snapshot at commit `a76446e4` only as a
-reference for comparing proof architecture and Mathlib coverage; no source was copied.
+- Ryan O'Donnell, [*Analysis of Boolean Functions*](https://arxiv.org/abs/2105.10386), May 2021.
+- [Mathlib](https://github.com/leanprover-community/mathlib4), the mathematical foundation used by
+  FABL.
+- [Verso Blueprint](https://github.com/leanprover/verso-blueprint), used for the book and dependency
+  graph.
+- [roos-j/lean-booleanfun](https://github.com/roos-j/lean-booleanfun), cited as earlier Lean 4 work
+  on Boolean-function analysis. FABL is a from-scratch implementation and does not import, vendor,
+  or copy that repository.
+
+## License
+
+FABL is released under the Apache License 2.0. See [`LICENSE`](LICENSE).

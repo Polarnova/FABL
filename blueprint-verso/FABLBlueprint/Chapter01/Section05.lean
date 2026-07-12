@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Asher Yan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Asher Yan with Codex
+-/
 import Verso
 import VersoManual
 import VersoBlueprint
@@ -7,15 +12,13 @@ open Verso.Genre
 open Verso.Genre.Manual
 open Informal
 
-#doc (Manual) "Section 1.5" =>
-
-# 1.5. Probability densities and convolution
+#doc (Manual) "Probability densities and convolution" =>
 
 :::definition "definition-1.20" (lean := "FABL.ProbabilityDensity, FABL.ProbabilityDensity.toPMF, FABL.ProbabilityDensity.toPMF_apply") (uses := "notation-1.4") (tags := "section-1-5, fidelity-nonnegativity-as-structure-invariant")
 *Definition 1.20.* A probability density function on the Hamming cube
 $`\mathbb F_2^n` is a nonnegative function
 $`\varphi:\mathbb F_2^n\to\mathbb R^{\ge0}` satisfying
-$$`\mathbb E_{\boldsymbol{x}\sim\mathbb F_2^n}[\varphi(\boldsymbol{x})]=1.`
+$`\mathbb E_{\boldsymbol{x}\sim\mathbb F_2^n}[\varphi(\boldsymbol{x})]=1.`
 The notation $`\boldsymbol{y}\sim\varphi` means that $`\boldsymbol{y}` is drawn
 from the associated probability distribution, defined by
 $$`\Pr_{\boldsymbol{y}\sim\varphi}[\boldsymbol{y}=y]
@@ -42,7 +45,7 @@ $$`\mathbf 1_A(x)=
 \end{cases}`
 If $`A\ne\varnothing`, write $`\varphi_A` for the density of the uniform
 distribution on $`A`, namely
-$$`\varphi_A=\frac{1}{\mathbb E[\mathbf 1_A]}\mathbf 1_A.`
+$`\varphi_A=\frac{1}{\mathbb E[\mathbf 1_A]}\mathbf 1_A.`
 The notation $`\boldsymbol{y}\sim A` abbreviates
 $`\boldsymbol{y}\sim\varphi_A`.
 :::
@@ -50,7 +53,7 @@ $`\boldsymbol{y}\sim\varphi_A`.
 :::lemma_ "fact-1.23" (lean := "FABL.binaryFourierCoeff_subsetDensity_singleton_zero, FABL.subsetDensity_singleton_zero_eq_sum_χ") (uses := "definition-1.22") (tags := "section-1-5, fidelity-exact")
 *Fact 1.23.* Every Fourier coefficient of $`\varphi_{\{0\}}` is $`1`;
 equivalently, its Fourier expansion is
-$$`\varphi_{\{0\}}(y)=\sum_{S\subseteq[n]}\chi_S(y).`
+$`\varphi_{\{0\}}(y)=\sum_{S\subseteq[n]}\chi_S(y).`
 :::
 
 :::definition "definition-1.24" (lean := "FABL.convolution, FABL.convolution_apply, FABL.convolution_apply_add, FABL.convolution_apply_swap, FABL.convolution_apply_swap_add") (uses := "notation-1.4") (tags := "section-1-5, fidelity-exact-normalized-convolution")
@@ -83,9 +86,7 @@ and $`g:\mathbb F_2^n\to\mathbb R`, then for every $`x\in\mathbb F_2^n`,
 $$`(\varphi*g)(x)
 =\mathbb E_{\boldsymbol{y}\sim\varphi}[g(x-\boldsymbol{y})]
 =\mathbb E_{\boldsymbol{y}\sim\varphi}[g(x+\boldsymbol{y})].`
-In particular,
-$$`\mathbb E_{\boldsymbol{y}\sim\varphi}[g(\boldsymbol{y})]
-=(\varphi*g)(0).`
+In particular, $`\mathbb E_{\boldsymbol{y}\sim\varphi}[g(\boldsymbol{y})]=(\varphi*g)(0).`
 :::
 
 :::proposition "proposition-1.26" (lean := "FABL.ProbabilityDensity.convolution, FABL.ProbabilityDensity.toPMF_convolution, FABL.convolution_probability_eq_add") (uses := "definition-1.20, definition-1.24") (tags := "section-1-5, fidelity-exact-pmf-law-and-event-probability-formula")
@@ -100,5 +101,5 @@ independently.
 :::theorem "theorem-1.27" (lean := "FABL.binaryFourierCoeff_convolution") (uses := "definition-1.24, definition-1.2") (tags := "section-1-5, fidelity-exact")
 *Theorem 1.27.* Let $`f,g:\mathbb F_2^n\to\mathbb R`. Then for every
 $`S\subseteq[n]`,
-$$`\widehat{f*g}(S)=\widehat f(S)\widehat g(S).`
+$`\widehat{f*g}(S)=\widehat f(S)\widehat g(S).`
 :::
