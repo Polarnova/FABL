@@ -20,6 +20,9 @@ jobs:
             exit 1
           fi
       - uses: leanprover/lean-action@v1
+      - name: Fetch Mathlib cache for Blueprint
+        working-directory: blueprint-verso
+        run: lake exe cache get
       - name: Build and validate Verso Blueprint
         working-directory: blueprint-verso
         run: ./scripts/site.sh build
