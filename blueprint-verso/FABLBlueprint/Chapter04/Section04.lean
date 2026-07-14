@@ -14,7 +14,7 @@ open Informal
 
 #doc (Manual) "Håstad's Switching Lemma and the spectrum of DNFs" =>
 
-:::lemma_ "support-exercise-4.19" (lean := "FABL.freeIndicator, FABL.expect_freeIndicator, FABL.expect_sum_freeIndicator, FABL.indicator_nonempty_inter_le_sum_free, FABL.expect_nonempty_inter_le, FABL.DNFTerm.supportIndices, FABL.DNFTerm.card_supportIndices_eq_width, FABL.dnfHasFreeSupportIndicator, FABL.dnfTermFreeSupportSum, FABL.dnfHasFreeSupportIndicator_le_sum, FABL.expect_dnfTermFreeSupportSum, FABL.babySwitching_sizeDependent") (uses := "definition-4.1, definition-4.15") (tags := "section-4-4, support, fidelity-weak-size-dependent")
+:::lemma_ "support-exercise-4.19" (lean := "FABL.freeIndicator, FABL.expect_freeIndicator, FABL.expect_sum_freeIndicator, FABL.indicator_nonempty_inter_le_sum_free, FABL.expect_nonempty_inter_le, FABL.DNFTerm.supportIndices, FABL.DNFTerm.card_supportIndices_eq_width, FABL.dnfHasFreeSupportIndicator, FABL.dnfTermFreeSupportSum, FABL.dnfHasFreeSupportIndicator_le_sum, FABL.expect_dnfTermFreeSupportSum") (uses := "definition-4.1, definition-4.15") (tags := "section-4-4, support, fidelity-weak-size-dependent")
 *Exercise 4.19 (Baby Switching Lemma with constant $`3`).* Let
 $`\varphi=T_1\vee\cdots\vee T_s` be a DNF of width $`w\ge1` and let
 $`(\boldsymbol J\mid\boldsymbol z)` be a $`\delta`-random restriction with

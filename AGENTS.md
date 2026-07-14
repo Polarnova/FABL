@@ -170,10 +170,10 @@ The completed Chapter 3 baseline is 62 nodes (43 primary and 19 support), 399 as
 declarations, and 164 reviewed dependency edges across Sections 3.1--3.5. The aggregate Chapters
 1--3 baseline is 183 nodes, 750 declaration associations, and 409 edges.
 
-The Chapter 4 inventory baseline is 45 nodes (37 primary and 8 support), 48 associated Lean
-declarations (Section 4.1 production only), and 110 reviewed dependency edges across Sections
+The Chapter 4 inventory baseline is 45 nodes (37 primary and 8 support), 168 associated Lean
+declarations (Sections 4.1--4.5 production), and 111 reviewed dependency edges across Sections
 4.1--4.5. Mansour's Conjecture is recorded as an open statement with no Lean association. The
-aggregate Chapters 1--4 baseline is 228 nodes, 798 declaration associations, and 519 edges.
+aggregate Chapters 1--4 baseline is 228 nodes, 918 declaration associations, and 520 edges.
 
 Include every inventoried chapter in `Blueprint.lean` and `Book.lean` throughout its active proof
 phase so the official diagram exposes unfinished nodes and their formalization status. Keep the

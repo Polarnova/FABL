@@ -28,7 +28,9 @@ variable {n : ℕ}
 
 /-- Gate label at an internal layer: AND or OR. -/
 inductive CircuitGate
+  /-- Logical $\text{AND}$ gate ($\wedge$). -/
   | and
+  /-- Logical $\text{OR}$ gate ($\vee$). -/
   | or
   deriving DecidableEq, Repr
 
@@ -45,8 +47,9 @@ literals with nodup indices), and layers `2..d` are lists of gates taking wire i
 into the previous layer. The final layer has exactly one gate (the output).
 -/
 structure DepthCircuit (n : ℕ) where
-  /-- Depth `d ≥ 2`. -/
+  /-- Depth $d \ge 2$. -/
   depth : ℕ
+  /-- The constraint that depth $d \ge 2$. -/
   depth_ge : 2 ≤ depth
   /-- Layer-1 gates as DNF terms (AND or OR of literals, depending on the bottom polarity). -/
   layer1 : List (DNFTerm n)

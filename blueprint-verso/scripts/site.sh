@@ -69,7 +69,7 @@ validate_site() {
       and (([$chapter1[] | .codeData.external.decls | length] | add) == 111)
       and (([$chapter2[] | .codeData.external.decls | length] | add) == 240)
       and (([$chapter3[] | .codeData.external.decls | length] | add) == 399)
-      and (([$chapter4[] | .codeData.external.decls | length] | add) == 169)
+      and (([$chapter4[] | .codeData.external.decls | length] | add) == 168)
       and (([$blocks[] | .statementUses | length] | add) == 520)
       and (([$chapter1[] | .statementUses | length] | add) == 62)
       and (([$chapter2[] | .statementUses | length] | add) == 183)

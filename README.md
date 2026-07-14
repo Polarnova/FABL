@@ -16,8 +16,8 @@ library contains no `sorry`, project-defined axioms, or unsafe proof shortcuts.
 | 1 | Boolean functions and Fourier expansion | 43 | 111 | 62 |
 | 2 | Influence and noise sensitivity | 78 | 240 | 183 |
 | 3 | Spectral structure and learning | 62 | 399 | 164 |
-| 4 | DNF formulas and small-depth circuits | 45 | 48 | 110 |
-| **Total** |  | **228** | **798** | **519** |
+| 4 | DNF formulas and small-depth circuits | 45 | 168 | 111 |
+| **Total** |  | **228** | **918** | **520** |
 
 The project aims to formalize the complete book. A book item is counted only when its full
 human-readable statement is linked to compiled Lean declarations and its mathematical dependencies
