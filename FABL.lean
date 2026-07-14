@@ -8,11 +8,12 @@ module
 public import FABL.Chapter01
 public import FABL.Chapter02
 public import FABL.Chapter03
+public import FABL.Chapter04
 
 /-!
 # FABL
 
-Book coverage: Chapters 1--3.
+Book coverage: Chapters 1--4.
 
 The public import surface for the formalization of Ryan O'Donnell's
 *Analysis of Boolean Functions*.

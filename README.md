@@ -7,15 +7,17 @@ normalizations, and hypotheses of the original statements.
 
 ## Status
 
-Chapters 1--3 are proof-complete. The production library contains no `sorry`, project-defined
-axioms, or unsafe proof shortcuts.
+Chapters 1--3 are proof-complete. Chapter 4 has a complete Blueprint inventory for
+Sections 4.1--4.5; formalization of its production library is in progress. The production
+library contains no `sorry`, project-defined axioms, or unsafe proof shortcuts.
 
 | Chapter | Subject | Book items | Lean declarations | Dependency edges |
 |---|---|---:|---:|---:|
 | 1 | Boolean functions and Fourier expansion | 43 | 111 | 62 |
 | 2 | Influence and noise sensitivity | 78 | 240 | 183 |
 | 3 | Spectral structure and learning | 62 | 399 | 164 |
-| **Total** |  | **183** | **750** | **409** |
+| 4 | DNF formulas and small-depth circuits | 45 | 48 | 110 |
+| **Total** |  | **228** | **798** | **519** |
 
 The project aims to formalize the complete book. A book item is counted only when its full
 human-readable statement is linked to compiled Lean declarations and its mathematical dependencies
@@ -38,8 +40,8 @@ import FABL
 ```
 
 Source modules follow the chapters and sections of the book under `FABL/Chapter01`,
-`FABL/Chapter02`, and `FABL/Chapter03`. Larger sections expose a stable section-level import and are
-internally divided at mathematical boundaries.
+`FABL/Chapter02`, `FABL/Chapter03`, and `FABL/Chapter04`. Larger sections expose a stable
+section-level import and are internally divided at mathematical boundaries.
 
 ## Book and dependency graph
 

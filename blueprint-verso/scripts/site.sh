@@ -34,18 +34,20 @@ validate_site() {
     | [$blocks[] | select(any(.tags[]; startswith("section-1-")))] as $chapter1
     | [$blocks[] | select(any(.tags[]; startswith("section-2-")))] as $chapter2
     | [$blocks[] | select(any(.tags[]; startswith("section-3-")))] as $chapter3
+    | [$blocks[] | select(any(.tags[]; startswith("section-4-")))] as $chapter4
     | [$blocks[] | .codeData.external.decls[]?] as $decls
     | [.previews[] | select(.targetKind == "leanDecl")] as $leanDecls
     | .graphs[0] as $graph
     | (.vbpInternalSchemaVersion == 2)
-      and (($blocks | length) == 183)
+      and (($blocks | length) == 228)
       and (($chapter1 | length) == 43)
       and (($chapter2 | length) == 78)
       and (($chapter3 | length) == 62)
+      and (($chapter4 | length) == 45)
       and (all($blocks[];
         ([.tags[]
           | select(startswith("section-1-") or startswith("section-2-")
-            or startswith("section-3-"))]
+            or startswith("section-3-") or startswith("section-4-"))]
           | length) == 1))
       and ((.previews | length) == (($blocks | length) + ($leanDecls | length)))
       and (($leanDecls | length) == ($decls | length))
@@ -58,26 +60,29 @@ validate_site() {
         and .provedStatus == "proved"
         and (.render | has("ok"))))
       and (all($blocks[]; (.tags | length) > 0 and .sourceLocation.ok == true))
-      and (([$blocks[] | select(.tags | index("support"))] | length) == 42)
-      and (([$blocks[] | select((.tags | index("support")) == null)] | length) == 141)
+      and (([$blocks[] | select(.tags | index("support"))] | length) == 50)
+      and (([$blocks[] | select((.tags | index("support")) == null)] | length) == 178)
       and (([$chapter1[] | select(.tags | index("support"))] | length) == 9)
       and (([$chapter2[] | select(.tags | index("support"))] | length) == 14)
       and (([$chapter3[] | select(.tags | index("support"))] | length) == 19)
+      and (([$chapter4[] | select(.tags | index("support"))] | length) == 8)
       and (([$chapter1[] | .codeData.external.decls | length] | add) == 111)
       and (([$chapter2[] | .codeData.external.decls | length] | add) == 240)
       and (([$chapter3[] | .codeData.external.decls | length] | add) == 399)
-      and (([$blocks[] | .statementUses | length] | add) == 409)
+      and (([$chapter4[] | .codeData.external.decls | length] | add) == 169)
+      and (([$blocks[] | .statementUses | length] | add) == 520)
       and (([$chapter1[] | .statementUses | length] | add) == 62)
       and (([$chapter2[] | .statementUses | length] | add) == 183)
       and (([$chapter3[] | .statementUses | length] | add) == 164)
+      and (([$chapter4[] | .statementUses | length] | add) == 111)
       and (([$blocks[] | .proofUses | length] | add) == 0)
-      and (([$blocks[] | .uses | length] | add) == 409)
-      and (([$blocks[] | .usedBy | length] | add) == 409)
+      and (([$blocks[] | .uses | length] | add) == 520)
+      and (([$blocks[] | .usedBy | length] | add) == 520)
       and ((.graphs | length) == 1)
-      and (($graph.nodes | length) == 183)
-      and (([$graph.nodes[].label] | unique | length) == 183)
-      and (([$graph.nodes[].previewKey] | unique | length) == 183)
-      and (($graph.edges | length) == 409)
+      and (($graph.nodes | length) == 228)
+      and (([$graph.nodes[].label] | unique | length) == 228)
+      and (([$graph.nodes[].previewKey] | unique | length) == 228)
+      and (($graph.edges | length) == 520)
       and (all($graph.edges[]; .axes == ["statement"]))
       and (all($graph.nodes[];
         .warnings.leanOnlyNoStatement == false

@@ -3,8 +3,8 @@
 ## Mission and sources of truth
 
 FABL formalizes the May 2021 arXiv edition of Ryan O'Donnell's *Analysis of Boolean Functions* in
-Lean 4 and Mathlib. Chapters 1--3 are proof-complete; the project objective is complete coverage of
-every chapter.
+Lean 4 and Mathlib. Chapters 1--3 are proof-complete and Chapter 4 has a complete Blueprint
+inventory for Sections 4.1--4.5; the project objective is complete coverage of every chapter.
 
 1. The book determines mathematical scope and complete human-readable statements.
 2. Production declarations under `FABL/**/*.lean` determine formal statements and proofs.
@@ -169,6 +169,11 @@ declarations, and 183 reviewed dependency edges across Sections 2.1--2.5. The ag
 The completed Chapter 3 baseline is 62 nodes (43 primary and 19 support), 399 associated Lean
 declarations, and 164 reviewed dependency edges across Sections 3.1--3.5. The aggregate Chapters
 1--3 baseline is 183 nodes, 750 declaration associations, and 409 edges.
+
+The Chapter 4 inventory baseline is 45 nodes (37 primary and 8 support), 48 associated Lean
+declarations (Section 4.1 production only), and 110 reviewed dependency edges across Sections
+4.1--4.5. Mansour's Conjecture is recorded as an open statement with no Lean association. The
+aggregate Chapters 1--4 baseline is 228 nodes, 798 declaration associations, and 519 edges.
 
 Include every inventoried chapter in `Blueprint.lean` and `Book.lean` throughout its active proof
 phase so the official diagram exposes unfinished nodes and their formalization status. Keep the
