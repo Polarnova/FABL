@@ -7,21 +7,24 @@ normalizations, and hypotheses of the original statements.
 
 ## Status
 
-Chapters 1--3 are proof-complete. Chapter 4 has a complete Blueprint inventory for
-Sections 4.1--4.5; formalization of its production library is in progress. The production
-library contains no `sorry`, project-defined axioms, or unsafe proof shortcuts.
+Chapters 1--3 are proof-complete. Chapter 4 has a complete Blueprint inventory and a proved core
+production library for Sections 4.1--4.5. Its one remaining external-result gap is the independent
+Håstad sharpening cited in Remark 4.29; Mansour's Conjecture is retained honestly as an open
+statement. The production library contains no `sorry`, project-defined axioms, or unsafe proof
+shortcuts.
 
 | Chapter | Subject | Book items | Lean declarations | Dependency edges |
 |---|---|---:|---:|---:|
 | 1 | Boolean functions and Fourier expansion | 43 | 111 | 62 |
 | 2 | Influence and noise sensitivity | 78 | 240 | 183 |
 | 3 | Spectral structure and learning | 62 | 399 | 164 |
-| 4 | DNF formulas and small-depth circuits | 45 | 168 | 111 |
-| **Total** |  | **228** | **918** | **520** |
+| 4 | DNF formulas and small-depth circuits | 45 | 360 | 111 |
+| **Total** |  | **228** | **1110** | **520** |
 
-The project aims to formalize the complete book. A book item is counted only when its full
-human-readable statement is linked to compiled Lean declarations and its mathematical dependencies
-have been reviewed.
+The project aims to formalize the complete book. Book-item totals count complete inventory nodes;
+declaration totals count their compiled Lean associations. Open or external statement-only nodes
+remain visible without placeholder declarations, and every dependency edge is mathematically
+reviewed.
 
 ## Using FABL
 

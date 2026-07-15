@@ -7,7 +7,6 @@ import Verso
 import VersoManual
 import VersoBlueprint
 import FABL.Chapter04.DNFFormulas
-import FABL.Chapter04.DecisionTreeDNF
 
 open Verso.Genre
 open Verso.Genre.Manual
@@ -27,11 +26,11 @@ Production declarations store each literal as a coordinate together with a
 required sign on the cube $`\{-1,1\}^n`, with $`-1` representing logical True.
 :::
 
-:::lemma_ "example-4.2" (lean := "FABL.sort3, FABL.sort3DNF, FABL.size_sort3DNF, FABL.width_sort3DNF") (uses := "definition-4.1") (tags := "section-4-1, fidelity-exact")
+:::lemma_ "example-4.2" (lean := "FABL.signToBit, FABL.sort3, FABL.sort3ReducedDNF, FABL.sort3DNF, FABL.sort3ReducedDNF_toBooleanFunction, FABL.sort3DNF_toBooleanFunction, FABL.size_sort3ReducedDNF, FABL.width_sort3ReducedDNF, FABL.size_sort3DNF, FABL.width_sort3DNF") (uses := "definition-4.1") (tags := "section-4-1, fidelity-exact-canonical-sign-bridge-with-redundancy-note")
 *Example 4.2.* The function $`\operatorname{Sort}_3:\{-1,1\}^3\to\{-1,1\}` is
 defined by $`\operatorname{Sort}_3(x_1,x_2,x_3)=-1` if and only if the bits are
-sorted in either nondecreasing or nonincreasing order under the standard
-bit embedding of signs. It is computed by the width-$`2` DNF
+sorted in either nondecreasing or nonincreasing order under the canonical
+embedding $`0\mapsto+1`, $`1\mapsto-1`. It is computed by the width-$`2` DNF
 $$`
 (x_1\wedge x_2)
 \vee
@@ -41,6 +40,9 @@ $$`
 \vee
 (x_1\wedge\overline{x_3}).
 `
+The displayed formula has four terms, with its last term redundant; deleting it
+gives the size-$`3`, width-$`2` formula asserted in the following paragraph of
+the book. Production proves that both formulas compute $`\operatorname{Sort}_3`.
 :::
 
 :::lemma_ "support-exercise-4.1" (lean := "FABL.DNFTerm.minterm, FABL.DNFTerm.width_minterm, FABL.DNFTerm.eval_minterm_eq_neg_one_iff, FABL.mintermDNF, FABL.size_mintermDNF_le, FABL.width_mintermDNF_le, FABL.mintermDNF_toBooleanFunction, FABL.exists_DNFFormula_size_width_bound, FABL.hasDNFSizeLE_two_pow, FABL.hasDNFWidthLE_dimension") (uses := "definition-4.1") (tags := "section-4-1, support, fidelity-exact")
@@ -71,19 +73,30 @@ $`f^\dagger(x)=\neg f(\neg x)` (cf. Exercise 1.8). In $`\pm1` notation this is
 $`f^\dagger(x)=-f(-x)`.
 :::
 
-:::proposition "proposition-4.5" (lean := "FABL.booleanFunctionOfBinary, FABL.binaryOfBooleanFunction, FABL.F₂DecisionTree.Path.toDNFTerm, FABL.F₂DecisionTree.Path.width_toDNFTerm, FABL.F₂DecisionTree.Path.eval_toDNFTerm_eq_neg_one_iff, FABL.F₂DecisionTree.toDNFFormula, FABL.F₂DecisionTree.size_toDNFFormula_le, FABL.F₂DecisionTree.width_toDNFFormula_le, FABL.F₂DecisionTree.toDNFFormula_toBooleanFunction, FABL.F₂DecisionTree.hasDNFSizeWidth_of_decisionTree, FABL.F₂DecisionTree.hasDNFSizeWidth_of_computes, FABL.F₂DecisionTree.toCNFFormula, FABL.F₂DecisionTree.size_toCNFFormula_le, FABL.F₂DecisionTree.width_toCNFFormula_le, FABL.exists_DNF_of_decisionTree") (uses := "definition-4.1, definition-4.3, definition-4.4, definition-3.13, definition-3.14") (tags := "section-4-1, fidelity-exact-binary-sign-bridge")
+:::proposition "proposition-4.5" (lean := "FABL.booleanFunctionOfBinary, FABL.binaryOfBooleanFunction, FABL.F₂DecisionTree.Path.toDNFTerm, FABL.F₂DecisionTree.Path.width_toDNFTerm, FABL.F₂DecisionTree.Path.eval_toDNFTerm_eq_neg_one_iff, FABL.F₂DecisionTree.Path.toCNFClause, FABL.F₂DecisionTree.Path.width_toCNFClause, FABL.F₂DecisionTree.Path.clauseEval_toCNFClause_eq_one_iff, FABL.F₂DecisionTree.toDNFFormula, FABL.F₂DecisionTree.size_toDNFFormula_le, FABL.F₂DecisionTree.width_toDNFFormula_le, FABL.F₂DecisionTree.toDNFFormula_toBooleanFunction, FABL.F₂DecisionTree.hasDNFSizeWidth_of_decisionTree, FABL.F₂DecisionTree.hasDNFSizeWidth_of_computes, FABL.F₂DecisionTree.toCNFFormula, FABL.F₂DecisionTree.size_toCNFFormula_le, FABL.F₂DecisionTree.width_toCNFFormula_le, FABL.F₂DecisionTree.eval_toCNFFormula_eq_one, FABL.F₂DecisionTree.toCNFFormula_toBooleanFunction, FABL.F₂DecisionTree.hasCNFSizeWidth_of_decisionTree, FABL.F₂DecisionTree.hasCNFSizeWidth_of_computes, FABL.exists_DNF_of_decisionTree, FABL.exists_CNF_of_decisionTree") (uses := "definition-4.1, definition-4.3, definition-4.4, definition-3.13, definition-3.14") (tags := "section-4-1, fidelity-exact-binary-sign-bridge")
 *Proposition 4.5.* Let $`f:\{0,1\}^n\to\{0,1\}` be computable by a decision
 tree $`T` of size $`s` and depth $`k`. Then $`f` is computable by a DNF (and
 also by a CNF) of size at most $`s` and width at most $`k`.
-Production builds one DNF term per True leaf path (and one CNF clause per False
-leaf path) under the standard $`\mathbb F_2\leftrightarrow\{\pm1\}` cube bridge.
+Production builds one DNF term per True leaf path and a clause that excludes
+each False leaf path under the standard $`\mathbb F_2\leftrightarrow\{\pm1\}`
+cube bridge; both constructions carry exact evaluation theorems.
 :::
 
-:::lemma_ "example-4.6" (uses := "example-4.2, proposition-4.5, definition-3.13") (tags := "section-4-1")
+:::lemma_ "example-4.6" (lean := "FABL.sort3DecisionTreeDNFPrefix, FABL.sort3DecisionTreeDNFPrinted, FABL.size_sort3DecisionTreeDNFPrinted, FABL.width_sort3DecisionTreeDNFPrinted, FABL.sort3DecisionTreeDNFPrinted_counterexample, FABL.sort3DecisionTreeDNF, FABL.size_sort3DecisionTreeDNF, FABL.width_sort3DecisionTreeDNF, FABL.sort3DecisionTreeDNF_toBooleanFunction") (uses := "example-4.2, proposition-4.5, definition-3.13") (tags := "section-4-1, fidelity-book-erratum")
 *Example 4.6.* Converting the decision tree for $`\operatorname{Sort}_3` from
-Figure 3.1 by the construction of Proposition 4.5 yields a DNF of size $`4`
-(at most the tree size $`6`) and width $`3` (at most the tree depth $`3`).
-This DNF is not unique and is not as simple as the DNF of Example 4.2.
+Figure 3.1 by the construction of Proposition 4.5 is printed as
+$$`
+(\overline{x_1}\wedge\overline{x_3}\wedge\overline{x_2})
+\vee(\overline{x_1}\wedge x_3)
+\vee(x_1\wedge\overline{x_2}\wedge\overline{x_3})
+\vee(x_2\wedge x_3).
+`
+It has size $`4` (at most the tree size $`6`) and width $`3` (at most the tree
+depth $`3`). In the May 2021 edition the printed formula is not equivalent to
+$`\operatorname{Sort}_3`: on the sorted input $`110` it is False. Production
+records this counterexample and proves that the minimally corrected formula,
+obtained by replacing the last term by $`x_1\wedge x_2`, computes
+$`\operatorname{Sort}_3` with the same size and width.
 :::
 
 :::lemma_ "support-exercise-2.10" (lean := "FABL.IsNegOnePivotal, FABL.booleanInfluence_eq_two_mul_negOnePivotal_probability, FABL.totalInfluence_eq_two_mul_expect_card_negOnePivotal") (uses := "definition-2.12, definition-2.13, definition-2.27, proposition-2.28") (tags := "section-4-1, support, fidelity-exact")
@@ -99,7 +112,7 @@ $`f(x^{\oplus i})=1` (False). Equivalently,
 $`\operatorname{Inf}_i[f]=2\Pr[i\text{ is }(-1)\text{-pivotal}]`.
 :::
 
-:::proposition "proposition-4.7" (lean := "FABL.card_negOnePivotal_le_width, FABL.totalInfluence_le_two_mul_of_hasDNFWidthLE") (uses := "definition-4.3, support-exercise-2.10") (tags := "section-4-1, fidelity-exact")
+:::proposition "proposition-4.7" (lean := "FABL.card_negOnePivotal_le_width, FABL.totalInfluence_le_two_mul_of_hasDNFWidthLE, FABL.sq_discreteDerivative_booleanDual, FABL.totalInfluence_booleanDual, FABL.totalInfluence_le_two_mul_of_hasCNFWidthLE") (uses := "definition-4.3, definition-4.4, support-exercise-2.10") (tags := "section-4-1, fidelity-exact")
 *Proposition 4.7.* Suppose $`f:\{-1,1\}^n\to\{-1,1\}` has
 $`\operatorname{DNFwidth}(f)\le w`. Then $`\mathbf I[f]\le 2w`.
 (The same bound holds for CNFs of width at most $`w`, since
@@ -112,21 +125,24 @@ $`\operatorname{DNFwidth}(f)\le w`. Then for every $`\epsilon>0`, the Fourier
 spectrum of $`f` is $`\epsilon`-concentrated on degree up to $`2w/\epsilon`.
 :::
 
-:::proposition "proposition-4.9" (lean := "FABL.DNFFormula.truncateWidth, FABL.DNFFormula.width_truncateWidth_le, FABL.dnfWidthTruncationCutoff, FABL.relativeHammingDist_truncateWidth_le, FABL.exists_DNF_width_truncation_close") (uses := "definition-4.1, definition-4.3, definition-1.10") (tags := "section-4-1, fidelity-exact")
+:::proposition "proposition-4.9" (lean := "FABL.DNFFormula.truncateWidth, FABL.DNFFormula.width_truncateWidth_le, FABL.dnfWidthTruncationCutoff, FABL.relativeHammingDist_truncateWidth_le, FABL.exists_DNF_width_truncation_close, FABL.CNFFormula.booleanDual_involutive, FABL.CNFFormula.relativeHammingDist_booleanDual, FABL.CNFFormula.truncateWidth, FABL.CNFFormula.width_truncateWidth_le, FABL.CNFFormula.relativeHammingDist_truncateWidth_le_of_size_le, FABL.exists_CNF_width_truncation_close") (uses := "definition-4.1, definition-4.3, definition-4.4, definition-1.10") (tags := "section-4-1, fidelity-book-wording-clarified")
 *Proposition 4.9.* Let $`f:\{-1,1\}^n\to\{-1,1\}` be computable by a DNF (or
 CNF) of size $`s` and let $`\epsilon\in(0,1]`. Then $`f` is $`\epsilon`-close
 (in relative Hamming distance) to a function $`g` computable by a DNF of
 width $`\log(s/\epsilon)`.
+
+The May 2021 text prints “DNF” in the conclusion even for the parenthetical CNF input, then says
+that the analogous proof works for CNFs. Production formalizes the intended respective forms:
+DNF input gives DNF output and CNF input gives CNF output, both with the natural cutoff
+$`\lceil\log_2(s/\epsilon)\rceil`.
 :::
 
-:::lemma_ "support-exercise-3.17" (uses := "definition-3.1, definition-3.28, definition-1.10") (tags := "section-4-1, support")
-*Exercise 3.17 (concentration transfer under closeness).* Suppose
-$`f,g:\{-1,1\}^n\to\{-1,1\}` satisfy
-$`\Pr[f\neq g]\le\epsilon` and that the Fourier spectrum of $`g` is
-$`\delta`-concentrated on a collection $`\mathcal F` (respectively, on degree
-up to $`k`). Then the Fourier spectrum of $`f` is
-$`O(\epsilon+\delta)`-concentrated on the same collection (respectively, the
-same degree bound), up to adjusting absolute constants as in the book.
+:::lemma_ "support-exercise-3.17" (lean := "FABL.fourierCoeff_sub, FABL.IsFourierSpectrumConcentratedOn.transfer_of_uniformLpNorm_sub_sq_le") (uses := "definition-3.28, parseval") (tags := "section-4-1, support, fidelity-exact")
+*Exercise 3.17 (concentration transfer).* Suppose the Fourier spectrum of
+$`f:\{-1,1\}^n\to\mathbb R` is $`\epsilon_1`-concentrated on a collection
+$`\mathcal F`, and $`g:\{-1,1\}^n\to\mathbb R` satisfies
+$`\lVert f-g\rVert_2^2\le\epsilon_2`. Then the Fourier spectrum of $`g` is
+$`2(\epsilon_1+\epsilon_2)`-concentrated on $`\mathcal F`.
 :::
 
 :::theorem "mansours-conjecture" (uses := "definition-4.3, definition-3.28") (tags := "section-4-1, open, conjecture")

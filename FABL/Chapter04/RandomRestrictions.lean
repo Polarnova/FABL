@@ -11,8 +11,8 @@ public import FABL.Chapter04.DNFFormulas
 /-!
 # Random restrictions
 
-Book items: Definition 4.15, Definition 4.16, Proposition 4.17, Corollary 4.18, Lemma 4.19,
-Theorem 4.20.
+Book items: Definition 4.15, Definition 4.16, Proposition 4.17, Corollary 4.18,
+Lemma 4.19, and Theorem 4.20.
 
 Formalization of Section 4.3 of O'Donnell's *Analysis of Boolean Functions*.
 -/
@@ -1172,16 +1172,237 @@ theorem restrictedWidth_ge_probability_le (T : DNFTerm n) (w : ℕ) :
         _ = ((3 : ℝ) / 4) ^ T.width := term_not_falsified_weight T
         _ ≤ ((3 : ℝ) / 4) ^ w := hpow
 
-/-- O'Donnell, Theorem 4.20 (dimension-scale baseline via Proposition 4.7).
+/-! ## Logarithmic total influence of small DNF formulas -/
 
-The book proves the sharper bound `I[f] ≤ O(log s)` for size-`s` DNFs via Corollary 4.18,
-Proposition 4.7, and Lemma 4.19. As a complete proved baseline from Proposition 4.7: every
-Boolean function has DNF width at most `n`, so `I[f] ≤ 2n`.
--/
-theorem totalInfluence_le_of_hasDNFSizeLE
-    {f : BooleanFunction n} {s : ℕ} (_hf : HasDNFSizeLE f s) :
-    totalInfluence f.toReal ≤ 2 * (n : ℝ) := by
-  simpa using
-    (totalInfluence_le_two_mul_of_hasDNFWidthLE (hasDNFWidthLE_dimension f))
+
+variable {n : ℕ}
+
+theorem sum_inverse_two_pow_succ_Ico_le (m n : ℕ) :
+    (∑ k ∈ Finset.Ico m n, ((2 : ℝ) ^ (k + 1))⁻¹) ≤ ((2 : ℝ) ^ m)⁻¹ := by
+  rw [Finset.sum_Ico_eq_sum_range]
+  calc
+    (∑ k ∈ Finset.range (n - m), ((2 : ℝ) ^ (m + k + 1))⁻¹) =
+        ((2 : ℝ) ^ m)⁻¹ * ((1 / 2 : ℝ) *
+          ∑ k ∈ Finset.range (n - m), (1 / 2 : ℝ) ^ k) := by
+      rw [Finset.mul_sum, Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro k _
+      rw [show m + k + 1 = m + (k + 1) by omega, pow_add, pow_succ]
+      field_simp
+      rw [← mul_pow]
+      norm_num
+    _ ≤ ((2 : ℝ) ^ m)⁻¹ * ((1 / 2 : ℝ) * 2) := by
+      gcongr
+      exact sum_geometric_two_le (n - m)
+    _ = ((2 : ℝ) ^ m)⁻¹ := by ring
+
+namespace DNFFormula
+
+/-- A canonical satisfied term, with the empty term used when the DNF evaluates to `1`. -/
+noncomputable def selectedTerm (φ : DNFFormula n) (x : {−1,1}^[n]) : DNFTerm n :=
+  if h : φ.eval x = -1 then Classical.choose ((φ.eval_eq_neg_one_iff x).1 h)
+  else DNFTerm.empty
+
+/-- Width of the selected satisfied term. -/
+noncomputable def selectedWidth (φ : DNFFormula n) (x : {−1,1}^[n]) : ℕ :=
+  (φ.selectedTerm x).width
+
+theorem selectedTerm_mem (φ : DNFFormula n) (x : {−1,1}^[n])
+    (hx : φ.eval x = -1) : φ.selectedTerm x ∈ φ.terms := by
+  rw [selectedTerm, dif_pos hx]
+  exact (Classical.choose_spec ((φ.eval_eq_neg_one_iff x).1 hx)).1
+
+theorem selectedTerm_eval (φ : DNFFormula n) (x : {−1,1}^[n])
+    (hx : φ.eval x = -1) : (φ.selectedTerm x).eval x = -1 := by
+  rw [selectedTerm, dif_pos hx]
+  exact (Classical.choose_spec ((φ.eval_eq_neg_one_iff x).1 hx)).2
+
+theorem selectedWidth_eq_zero_of_eval_ne (φ : DNFFormula n) (x : {−1,1}^[n])
+    (hx : φ.eval x ≠ -1) : φ.selectedWidth x = 0 := by
+  simp [selectedWidth, selectedTerm, hx]
+
+theorem selectedWidth_le_dimension (φ : DNFFormula n) (x : {−1,1}^[n]) :
+    φ.selectedWidth x ≤ n :=
+  (φ.selectedTerm x).width_le_dimension
+
+end DNFFormula
+
+theorem card_negOnePivotal_le_selectedWidth (φ : DNFFormula n) (x : {−1,1}^[n]) :
+    (Finset.univ.filter fun i ↦ IsNegOnePivotal φ.toBooleanFunction i x).card ≤
+      φ.selectedWidth x := by
+  classical
+  by_cases hx : φ.eval x = -1
+  · exact card_negOnePivotal_le_term_width φ x (φ.selectedTerm x)
+      (φ.selectedTerm_mem x hx) (φ.selectedTerm_eval x hx)
+  · have hempty :
+        (Finset.univ.filter fun i ↦ IsNegOnePivotal φ.toBooleanFunction i x) = ∅ := by
+      ext i
+      simp [IsNegOnePivotal, DNFFormula.toBooleanFunction, hx]
+    simp [hempty]
+
+theorem selectedWidth_tail_probability_le (φ : DNFFormula n) (k : ℕ) (hk : 0 < k) :
+    uniformProbability (fun x ↦ k ≤ φ.selectedWidth x) ≤
+      (φ.size : ℝ) * ((2 : ℝ) ^ k)⁻¹ := by
+  classical
+  let indicators := fun x : {−1,1}^[n] ↦
+    φ.terms.map fun T ↦ if T.eval x = -1 ∧ k ≤ T.width then (1 : ℝ) else 0
+  have hpoint (x : {−1,1}^[n]) :
+      (if k ≤ φ.selectedWidth x then (1 : ℝ) else 0) ≤ (indicators x).sum := by
+    by_cases hxw : k ≤ φ.selectedWidth x
+    · rw [if_pos hxw]
+      have hφx : φ.eval x = -1 := by
+        by_contra hne
+        have hzero := φ.selectedWidth_eq_zero_of_eval_ne x hne
+        omega
+      let T := φ.selectedTerm x
+      have hTmem : T ∈ φ.terms := φ.selectedTerm_mem x hφx
+      have hTeval : T.eval x = -1 := φ.selectedTerm_eval x hφx
+      have hTw : k ≤ T.width := hxw
+      have hmem : (if T.eval x = -1 ∧ k ≤ T.width then (1 : ℝ) else 0) ∈
+          indicators x := List.mem_map_of_mem hTmem
+      have hnonneg : ∀ y ∈ indicators x, 0 ≤ y := by
+        intro y hy
+        obtain ⟨U, _, rfl⟩ := List.mem_map.mp hy
+        split_ifs <;> norm_num
+      simpa [hTeval, hTw] using List.single_le_sum hnonneg _ hmem
+    · rw [if_neg hxw]
+      exact List.sum_nonneg fun y hy ↦ by
+        obtain ⟨T, _, rfl⟩ := List.mem_map.mp hy
+        split_ifs <;> norm_num
+  have hexpect :
+      uniformProbability (fun x ↦ k ≤ φ.selectedWidth x) ≤
+        𝔼 x, (indicators x).sum :=
+    Finset.expect_le_expect fun x _ ↦ hpoint x
+  have hterm (T : DNFTerm n) :
+      (𝔼 x, if T.eval x = -1 ∧ k ≤ T.width then (1 : ℝ) else 0) ≤
+        ((2 : ℝ) ^ k)⁻¹ := by
+    by_cases hTk : k ≤ T.width
+    · have hprob :
+          (𝔼 x, if T.eval x = -1 ∧ k ≤ T.width then (1 : ℝ) else 0) =
+            ((2 : ℝ) ^ T.width)⁻¹ := by
+          simpa [hTk, uniformProbability] using uniformProbability_DNFTerm_eval_neg_one T
+      rw [hprob]
+      exact inv_anti₀ (pow_pos (by norm_num) _)
+        (pow_le_pow_right₀ (by norm_num : (1 : ℝ) ≤ 2) hTk)
+    · simp [hTk]
+  calc
+    uniformProbability (fun x ↦ k ≤ φ.selectedWidth x) ≤
+        𝔼 x, (indicators x).sum := hexpect
+    _ = (φ.terms.map fun T ↦
+          𝔼 x, if T.eval x = -1 ∧ k ≤ T.width then (1 : ℝ) else 0).sum :=
+      expect_sum_list_map φ.terms
+        (fun T x ↦ if T.eval x = -1 ∧ k ≤ T.width then (1 : ℝ) else 0)
+    _ ≤ (φ.terms.map fun _ : DNFTerm n ↦ ((2 : ℝ) ^ k)⁻¹).sum :=
+      List.sum_le_sum fun T _ ↦ hterm T
+    _ = (φ.size : ℝ) * ((2 : ℝ) ^ k)⁻¹ := by simp [DNFFormula.size]
+
+theorem uniformProbability_le_one {Ω : Type*} [Fintype Ω] [Nonempty Ω]
+    (P : Ω → Prop) [DecidablePred P] : uniformProbability P ≤ 1 := by
+  rw [uniformProbability]
+  calc
+    (𝔼 x, if P x then (1 : ℝ) else 0) ≤ 𝔼 _x : Ω, (1 : ℝ) :=
+      Finset.expect_le_expect fun x _ ↦ by split_ifs <;> norm_num
+    _ = 1 := Fintype.expect_const 1
+
+theorem expect_selectedWidth_eq_sum_tail (φ : DNFFormula n) :
+    (𝔼 x, (φ.selectedWidth x : ℝ)) =
+      ∑ k ∈ Finset.range n,
+        uniformProbability (fun x ↦ k + 1 ≤ φ.selectedWidth x) := by
+  classical
+  have hpoint (x : {−1,1}^[n]) :
+      (φ.selectedWidth x : ℝ) =
+        ∑ k ∈ Finset.range n,
+          (if k + 1 ≤ φ.selectedWidth x then (1 : ℝ) else 0) := by
+    rw [Finset.sum_boole]
+    have hfilter :
+        (Finset.range n).filter (fun k ↦ k + 1 ≤ φ.selectedWidth x) =
+          Finset.range (φ.selectedWidth x) := by
+      ext k
+      have hw := φ.selectedWidth_le_dimension x
+      simp only [Finset.mem_filter, Finset.mem_range]
+      omega
+    rw [hfilter, Finset.card_range]
+  calc
+    (𝔼 x, (φ.selectedWidth x : ℝ)) =
+        𝔼 x, ∑ k ∈ Finset.range n,
+          (if k + 1 ≤ φ.selectedWidth x then (1 : ℝ) else 0) :=
+      Finset.expect_congr rfl fun x _ ↦ hpoint x
+    _ = ∑ k ∈ Finset.range n,
+          𝔼 x, (if k + 1 ≤ φ.selectedWidth x then (1 : ℝ) else 0) := by
+      rw [Finset.expect_sum_comm]
+    _ = ∑ k ∈ Finset.range n,
+          uniformProbability (fun x ↦ k + 1 ≤ φ.selectedWidth x) := rfl
+
+theorem expect_selectedWidth_le_clog_add_one
+    (φ : DNFFormula n) {s : ℕ} (hsize : φ.size ≤ s) :
+    (𝔼 x, (φ.selectedWidth x : ℝ)) ≤ (Nat.clog 2 s : ℝ) + 1 := by
+  classical
+  let m := Nat.clog 2 s
+  let q : ℕ → ℝ := fun k ↦
+    uniformProbability (fun x ↦ k + 1 ≤ φ.selectedWidth x)
+  have hq_one (k : ℕ) : q k ≤ 1 := uniformProbability_le_one _
+  have hq_tail (k : ℕ) : q k ≤ (s : ℝ) * ((2 : ℝ) ^ (k + 1))⁻¹ := by
+    calc
+      q k ≤ (φ.size : ℝ) * ((2 : ℝ) ^ (k + 1))⁻¹ :=
+        selectedWidth_tail_probability_le φ (k + 1) (by omega)
+      _ ≤ (s : ℝ) * ((2 : ℝ) ^ (k + 1))⁻¹ := by
+        exact mul_le_mul_of_nonneg_right (by exact_mod_cast hsize)
+          (inv_nonneg.mpr (pow_nonneg (by norm_num) _))
+  have hs_pow : (s : ℝ) * ((2 : ℝ) ^ m)⁻¹ ≤ 1 := by
+    have hnat : s ≤ 2 ^ m := Nat.le_pow_clog (by norm_num) s
+    have hreal : (s : ℝ) ≤ (2 : ℝ) ^ m := by exact_mod_cast hnat
+    calc
+      (s : ℝ) * ((2 : ℝ) ^ m)⁻¹ ≤
+          (2 : ℝ) ^ m * ((2 : ℝ) ^ m)⁻¹ := by gcongr
+      _ = 1 := mul_inv_cancel₀ (pow_ne_zero _ (by norm_num))
+  rw [expect_selectedWidth_eq_sum_tail]
+  change (∑ k ∈ Finset.range n, q k) ≤ (m : ℝ) + 1
+  by_cases hnm : n ≤ m
+  · calc
+      (∑ k ∈ Finset.range n, q k) ≤ ∑ _k ∈ Finset.range n, (1 : ℝ) :=
+        Finset.sum_le_sum fun k _ ↦ hq_one k
+      _ = (n : ℝ) := by simp
+      _ ≤ (m : ℝ) := by exact_mod_cast hnm
+      _ ≤ (m : ℝ) + 1 := by linarith
+  · have hmn : m ≤ n := Nat.le_of_lt (Nat.lt_of_not_ge hnm)
+    rw [← Finset.sum_range_add_sum_Ico q hmn]
+    have hhead : (∑ k ∈ Finset.range m, q k) ≤ (m : ℝ) := by
+      calc
+        (∑ k ∈ Finset.range m, q k) ≤ ∑ _k ∈ Finset.range m, (1 : ℝ) :=
+          Finset.sum_le_sum fun k _ ↦ hq_one k
+        _ = (m : ℝ) := by simp
+    have htail : (∑ k ∈ Finset.Ico m n, q k) ≤ 1 := by
+      calc
+        (∑ k ∈ Finset.Ico m n, q k) ≤
+            ∑ k ∈ Finset.Ico m n, (s : ℝ) * ((2 : ℝ) ^ (k + 1))⁻¹ :=
+          Finset.sum_le_sum fun k _ ↦ hq_tail k
+        _ = (s : ℝ) * ∑ k ∈ Finset.Ico m n, ((2 : ℝ) ^ (k + 1))⁻¹ := by
+          rw [Finset.mul_sum]
+        _ ≤ (s : ℝ) * ((2 : ℝ) ^ m)⁻¹ := by
+          gcongr
+          exact sum_inverse_two_pow_succ_Ico_le m n
+        _ ≤ 1 := hs_pow
+    linarith
+
+/-- O'Donnell, Theorem 4.20, with an explicit logarithmic bound. -/
+theorem totalInfluence_le_two_mul_clog_add_one_of_hasDNFSizeLE
+    {f : BooleanFunction n} {s : ℕ} (hf : HasDNFSizeLE f s) :
+    totalInfluence f.toReal ≤ 2 * ((Nat.clog 2 s : ℝ) + 1) := by
+  classical
+  obtain ⟨φ, hsize, rfl⟩ := hf
+  rw [totalInfluence_eq_two_mul_expect_card_negOnePivotal]
+  have hpoint (x : {−1,1}^[n]) :
+      ((Finset.univ.filter fun i ↦
+          IsNegOnePivotal φ.toBooleanFunction i x).card : ℝ) ≤
+        (φ.selectedWidth x : ℝ) := by
+    exact_mod_cast card_negOnePivotal_le_selectedWidth φ x
+  have hexpect :
+      (𝔼 x, ((Finset.univ.filter fun i ↦
+          IsNegOnePivotal φ.toBooleanFunction i x).card : ℝ)) ≤
+        𝔼 x, (φ.selectedWidth x : ℝ) :=
+    Finset.expect_le_expect fun x _ ↦ hpoint x
+  have hwidth := expect_selectedWidth_le_clog_add_one φ hsize
+  nlinarith
+
 
 end FABL

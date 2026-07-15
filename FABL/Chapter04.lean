@@ -6,11 +6,16 @@ Authors: Asher Yan with Codex
 module
 
 public import FABL.Chapter04.DNFFormulas
-public import FABL.Chapter04.DecisionTreeDNF
 public import FABL.Chapter04.Tribes
+public import FABL.Chapter04.KKL
 public import FABL.Chapter04.RandomRestrictions
 public import FABL.Chapter04.Switching
+public import FABL.Chapter04.HastadSwitching
+public import FABL.Chapter04.DNFFourier
 public import FABL.Chapter04.Circuits
+public import FABL.Chapter04.CircuitInfluence
+public import FABL.Chapter04.Parity
+public import FABL.Chapter04.LMN
 
 /-!
 # Chapter 4: DNF formulas and small-depth circuits

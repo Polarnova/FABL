@@ -3,8 +3,9 @@
 ## Mission and sources of truth
 
 FABL formalizes the May 2021 arXiv edition of Ryan O'Donnell's *Analysis of Boolean Functions* in
-Lean 4 and Mathlib. Chapters 1--3 are proof-complete and Chapter 4 has a complete Blueprint
-inventory for Sections 4.1--4.5; the project objective is complete coverage of every chapter.
+Lean 4 and Mathlib. Chapters 1--3 are proof-complete. Chapter 4 has a complete Blueprint inventory
+and a proved core production library for Sections 4.1--4.5; its remaining external-result gap is
+Remark 4.29. The project objective is complete coverage of every chapter.
 
 1. The book determines mathematical scope and complete human-readable statements.
 2. Production declarations under `FABL/**/*.lean` determine formal statements and proofs.
@@ -47,16 +48,19 @@ part of the public formal API, in the production declaration's docstring.
 
 ### Module-size discipline
 
-- Keep proof-bearing modules comparable to ordinary Mathlib and CSLib source files. Aim for
-  150--900 lines of substantive Lean; review every file above 900 lines and split it before it
-  exceeds 1200 lines unless a documented mathematical reason makes the split worse.
-- Split only at a real mathematical or API boundary. Do not create arbitrary numbered fragments,
-  and do not move declarations merely to satisfy a line count.
+- Organize proof-bearing modules around complete mathematical topics and readable proof narratives.
+  File length is a review signal, not a target or a hard limit; a cohesive long module is preferable
+  to a family of short bridge files that force readers to reconstruct one argument across imports.
+- Split only at a real mathematical or public-API boundary. Do not create arbitrary numbered
+  fragments, single-use bridge modules, or move declarations merely to satisfy a line count.
+- When several support lemmas exist solely for one theorem cluster, keep them with that cluster.
+  Extract a separate module only when it has an independently understandable role or genuine reuse
+  by another topic.
 - Preserve the book-section module as a stable public-import aggregate when its implementation is
   divided into submodules. Downstream code and Blueprint associations must continue to use canonical
   declaration names, never duplicate restatements.
-- A small aggregate, bridge, or root-import file is legitimate. The lower target applies to
-  substantive proof modules, not to deliberately thin composition points.
+- A deliberately thin chapter aggregate is legitimate; thin implementation modules that merely
+  forward one proof step are not.
 
 ## Existing-theorem reuse gate
 
@@ -170,10 +174,11 @@ The completed Chapter 3 baseline is 62 nodes (43 primary and 19 support), 399 as
 declarations, and 164 reviewed dependency edges across Sections 3.1--3.5. The aggregate Chapters
 1--3 baseline is 183 nodes, 750 declaration associations, and 409 edges.
 
-The Chapter 4 inventory baseline is 45 nodes (37 primary and 8 support), 168 associated Lean
+The Chapter 4 inventory baseline is 45 nodes (37 primary and 8 support), 360 associated Lean
 declarations (Sections 4.1--4.5 production), and 111 reviewed dependency edges across Sections
-4.1--4.5. Mansour's Conjecture is recorded as an open statement with no Lean association. The
-aggregate Chapters 1--4 baseline is 228 nodes, 918 declaration associations, and 520 edges.
+4.1--4.5. Mansour's Conjecture and the external sharpening recorded in Remark 4.29 have no Lean
+association. The aggregate Chapters 1--4 baseline is 228 nodes, 1110 declaration associations, and
+520 edges.
 
 Include every inventoried chapter in `Blueprint.lean` and `Book.lean` throughout its active proof
 phase so the official diagram exposes unfinished nodes and their formalization status. Keep the

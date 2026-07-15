@@ -20,7 +20,7 @@ subset* of a finite set $`N` if each element of $`N` is included independently
 with probability $`\delta`. A *$`\delta`-random restriction* on
 $`\{-1,1\}^n` is a pair $`(\boldsymbol J\mid\boldsymbol z)` obtained by first
 drawing a $`\delta`-random subset $`\boldsymbol J\subseteq[n]` and then drawing
-$`\boldsymbol z\sim\{-1,1\}^{\boldsymbol J}` uniformly. Coordinate $`i` is
+$`\boldsymbol z\sim\{-1,1\}^{\overline{\boldsymbol J}}` uniformly. Coordinate $`i` is
 *free* if $`i\in\boldsymbol J` and *fixed* otherwise. Equivalently, each
 coordinate is independently free with probability $`\delta` and fixed to
 $`\pm1` with probability $`(1-\delta)/2` each.
@@ -68,7 +68,7 @@ $`\mathbb E[\operatorname{Inf}_i[f_{\boldsymbol J\mid\boldsymbol z}]]
 $`\mathbb E[\mathbf I[f_{\boldsymbol J\mid\boldsymbol z}]]=\delta\mathbf I[f]`.
 Proved Fourier-free (Exercise 4.9 style): condition on whether $`i` is free; when free,
 the free/fixed product measure recovers ambient influence; free-set weight of
-$`\{J:i\in J\}` is $`\delta`$.
+$`\{J:i\in J\}` is $`\delta`.
 :::
 
 :::lemma_ "lemma-4.19" (lean := "FABL.literal_not_falsified_local_weight, FABL.DNFTerm.notFalsified, FABL.term_not_falsified_weight, FABL.restrictedWidth_ge_probability_le") (uses := "definition-4.1, definition-4.15, definition-4.16") (tags := "section-4-3, fidelity-exact-coordinate-restriction-model")
@@ -85,11 +85,16 @@ proves the non-falsification weight equals $`(3/4)^{\operatorname{width}(T)}`,
 and obtains the stated tail bound.
 :::
 
-:::theorem "theorem-4.20" (lean := "FABL.totalInfluence_le_of_hasDNFSizeLE") (uses := "lemma-4.19, proposition-4.7, corollary-4.18, definition-4.3") (tags := "section-4-3, fidelity-weak-dimension-bound")
+:::theorem "theorem-4.20" (lean := "FABL.sum_inverse_two_pow_succ_Ico_le, FABL.DNFFormula.selectedTerm, FABL.DNFFormula.selectedWidth, FABL.DNFFormula.selectedTerm_mem, FABL.DNFFormula.selectedTerm_eval, FABL.DNFFormula.selectedWidth_eq_zero_of_eval_ne, FABL.DNFFormula.selectedWidth_le_dimension, FABL.card_negOnePivotal_le_selectedWidth, FABL.selectedWidth_tail_probability_le, FABL.uniformProbability_le_one, FABL.expect_selectedWidth_eq_sum_tail, FABL.expect_selectedWidth_le_clog_add_one, FABL.totalInfluence_le_two_mul_clog_add_one_of_hasDNFSizeLE") (uses := "proposition-4.7, definition-4.3") (tags := "section-4-3, fidelity-exact-explicit-logarithmic-bound")
 *Theorem 4.20.* Let $`f:\{-1,1\}^n\to\{-1,1\}` be computable by a DNF of size
 $`s`. Then $`\mathbf I[f]\le O(\log s)`.
-The production declaration currently records the honest dimension-scale bound
-$`\mathbf I[f]\le 2n` obtained from Proposition 4.7 and the universal width-$`n`
-DNF representation; the book’s $`O(\log s)` constant-factor refinement via
-Lemma 4.19 and Corollary 4.18 is the intended strengthening.
+Production proves the explicit bound
+$$`
+\mathbf I[f]\le 2\bigl(\lceil\log_2 s\rceil+1\bigr),
+`
+which implies the stated $`O(\log s)` claim. The formal proof selects one satisfied
+term on every true input, bounds the number of negative pivotal coordinates by that
+term's width, proves the tail estimate
+$`\Pr[\operatorname{width}\ge k]\le s2^{-k}`, and sums the tails. This is a direct
+proof of the same claim; unlike the book's proof, it does not use random restrictions.
 :::
