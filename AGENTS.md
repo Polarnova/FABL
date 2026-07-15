@@ -3,9 +3,10 @@
 ## Mission and sources of truth
 
 FABL formalizes the May 2021 arXiv edition of Ryan O'Donnell's *Analysis of Boolean Functions* in
-Lean 4 and Mathlib. Chapters 1--3 are proof-complete. Chapter 4 has a complete Blueprint inventory
-and a proved core production library for Sections 4.1--4.5; its remaining external-result gap is
-Remark 4.29. The project objective is complete coverage of every chapter.
+Lean 4 and Mathlib. Chapters 1--4 are complete. Open conjectures and non-dependency remarks are
+represented honestly as statement-only Blueprint nodes rather than placeholder Lean declarations;
+neither supplies an assumption to the production library. The project objective is complete
+coverage of every chapter.
 
 1. The book determines mathematical scope and complete human-readable statements.
 2. Production declarations under `FABL/**/*.lean` determine formal statements and proofs.
@@ -176,17 +177,18 @@ declarations, and 164 reviewed dependency edges across Sections 3.1--3.5. The ag
 
 The Chapter 4 inventory baseline is 45 nodes (37 primary and 8 support), 360 associated Lean
 declarations (Sections 4.1--4.5 production), and 111 reviewed dependency edges across Sections
-4.1--4.5. Mansour's Conjecture and the external sharpening recorded in Remark 4.29 have no Lean
-association. The aggregate Chapters 1--4 baseline is 228 nodes, 1110 declaration associations, and
-520 edges.
+4.1--4.5. Mansour's Conjecture and the non-dependency bibliographic note in Remark 4.29 have no Lean
+association and supply no assumptions to the production library. The aggregate Chapters 1--4
+baseline is 228 nodes, 1110 declaration associations, and 520 edges.
 
 Include every inventoried chapter in `Blueprint.lean` and `Book.lean` throughout its active proof
 phase so the official diagram exposes unfinished nodes and their formalization status. Keep the
 section and aggregate sources buildable, and update the manifest expectations to cover the complete
-inventory. A missing `lean :=` association is the honest representation of an unfinished node;
-never attach a placeholder declaration or weaken a statement to manufacture a completed status.
-Chapter completion still requires every node to have honest compiled declaration associations and
-the complete dependency closure to be proof-complete.
+inventory. A missing `lean :=` association is the honest representation of an unfinished node, an
+open conjecture, or a non-dependency remark; never attach a placeholder declaration or weaken a
+statement to manufacture a completed status. Chapter completion requires every formalizable result
+in scope to have honest compiled declaration associations and a proof-complete dependency closure.
+Open conjectures and non-dependency remarks remain visible without entering that closure.
 
 Verso owns chapter and section numbering. Document titles must contain only their prose title: do
 not prefix them with `Chapter N`, `Section N.M`, or a handwritten number, and do not repeat a

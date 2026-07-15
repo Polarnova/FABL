@@ -7,11 +7,10 @@ normalizations, and hypotheses of the original statements.
 
 ## Status
 
-Chapters 1--3 are proof-complete. Chapter 4 has a complete Blueprint inventory and a proved core
-production library for Sections 4.1--4.5. Its one remaining external-result gap is the independent
-Håstad sharpening cited in Remark 4.29; Mansour's Conjecture is retained honestly as an open
-statement. The production library contains no `sorry`, project-defined axioms, or unsafe proof
-shortcuts.
+Chapters 1--4 are complete. Open conjectures and non-dependency remarks are represented honestly as
+statement-only Blueprint nodes rather than placeholder Lean declarations; neither supplies an
+assumption to the production library. The production library contains no `sorry`, project-defined
+axioms, or unsafe proof shortcuts.
 
 | Chapter | Subject | Book items | Lean declarations | Dependency edges |
 |---|---|---:|---:|---:|
