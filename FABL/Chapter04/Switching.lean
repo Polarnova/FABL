@@ -1611,7 +1611,7 @@ theorem sum_restrictionAssignmentWeightAt_comp_freeCoordinateEmbedding
         g (fun i ↦ ρ (freeCoordinateEmbedding J i)) =
         ∑ free : J → CoordRestriction,
           coordRestrictionProductWeight δ free * g (enumerate free) := by
-      simpa [enumerate, freeCoordinateEmbedding] using
+      simpa [enumerate, freeCoordinateEmbedding, Equiv.arrowCongr, Function.comp_def] using
         sum_coordRestrictionProductWeight_restrict δ J (fun free ↦ g (enumerate free))
     _ = ∑ τ : Fin J.card → CoordRestriction,
         restrictionAssignmentWeightAt δ τ * g τ := by

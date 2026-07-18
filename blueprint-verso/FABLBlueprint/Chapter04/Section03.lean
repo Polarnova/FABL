@@ -53,10 +53,10 @@ $$`
 =\sum_{U\subseteq[n]}\Pr[U\cap\boldsymbol J=S]\,\widehat f(U)^2
 =\sum_{U\supseteq S}\delta^{|S|}(1-\delta)^{|U\setminus S|}\,\widehat f(U)^2.
 `
-Production proves both displays: the first moment via free-set weights
-$`\sum_{J\supseteq S}w_\delta(J)=\delta^{|S|}` and Corollary 3.22; the second moment via
-the free/fixed Parseval identity on each free set, reindexing to ambient frequencies
-with $`U\cap J=S`, and the intersection weight formula
+For the first identity, use Corollary 3.22 and
+$`\sum_{J\supseteq S}w_\delta(J)=\delta^{|S|}`. For the second, apply the
+free/fixed Parseval identity on each free set, reindex by the ambient
+frequencies satisfying $`U\cap J=S`, and use
 $`\sum_{J:U\cap J=S}w_\delta(J)=\delta^{|S|}(1-\delta)^{|U\setminus S|}` when $`S\subseteq U`.
 :::
 
@@ -66,9 +66,9 @@ $`(\boldsymbol J\mid\boldsymbol z)` is a $`\delta`-random restriction, then
 $`\mathbb E[\operatorname{Inf}_i[f_{\boldsymbol J\mid\boldsymbol z}]]
 =\delta\operatorname{Inf}_i[f]`. Hence also
 $`\mathbb E[\mathbf I[f_{\boldsymbol J\mid\boldsymbol z}]]=\delta\mathbf I[f]`.
-Proved Fourier-free (Exercise 4.9 style): condition on whether $`i` is free; when free,
-the free/fixed product measure recovers ambient influence; free-set weight of
-$`\{J:i\in J\}` is $`\delta`.
+A Fourier-free proof proceeds as in Exercise 4.9: condition on whether $`i`
+is free. In the free case, the free/fixed product measure recovers the
+ambient influence, while $`\Pr[i\in\boldsymbol J]=\delta`.
 :::
 
 :::lemma_ "lemma-4.19" (lean := "FABL.literal_not_falsified_local_weight, FABL.DNFTerm.notFalsified, FABL.term_not_falsified_weight, FABL.restrictedWidth_ge_probability_le") (uses := "definition-4.1, definition-4.15, definition-4.16") (tags := "section-4-3, fidelity-exact-coordinate-restriction-model")
@@ -79,22 +79,22 @@ $$`
 \Pr\bigl[\operatorname{width}(T_{\boldsymbol J\mid\boldsymbol z})\ge w\bigr]
 \le\Bigl(\frac34\Bigr)^w.
 `
-Production formalizes the half-random restriction as an independent product over
-coordinates (free with weight $`1/2`, fixed to each sign with weight $`1/4`),
-proves the non-falsification weight equals $`(3/4)^{\operatorname{width}(T)}`,
-and obtains the stated tail bound.
+Under the half-random restriction, each coordinate is free with probability
+$`1/2` and fixed to either sign with probability $`1/4`. Thus a term is not
+falsified with probability $`(3/4)^{\operatorname{width}(T)}`, which gives
+the tail bound.
 :::
 
 :::theorem "theorem-4.20" (lean := "FABL.sum_inverse_two_pow_succ_Ico_le, FABL.DNFFormula.selectedTerm, FABL.DNFFormula.selectedWidth, FABL.DNFFormula.selectedTerm_mem, FABL.DNFFormula.selectedTerm_eval, FABL.DNFFormula.selectedWidth_eq_zero_of_eval_ne, FABL.DNFFormula.selectedWidth_le_dimension, FABL.card_negOnePivotal_le_selectedWidth, FABL.selectedWidth_tail_probability_le, FABL.uniformProbability_le_one, FABL.expect_selectedWidth_eq_sum_tail, FABL.expect_selectedWidth_le_clog_add_one, FABL.totalInfluence_le_two_mul_clog_add_one_of_hasDNFSizeLE") (uses := "proposition-4.7, definition-4.3") (tags := "section-4-3, fidelity-exact-explicit-logarithmic-bound")
 *Theorem 4.20.* Let $`f:\{-1,1\}^n\to\{-1,1\}` be computable by a DNF of size
 $`s`. Then $`\mathbf I[f]\le O(\log s)`.
-Production proves the explicit bound
+More precisely,
 $$`
 \mathbf I[f]\le 2\bigl(\lceil\log_2 s\rceil+1\bigr),
 `
-which implies the stated $`O(\log s)` claim. The formal proof selects one satisfied
-term on every true input, bounds the number of negative pivotal coordinates by that
-term's width, proves the tail estimate
-$`\Pr[\operatorname{width}\ge k]\le s2^{-k}`, and sums the tails. This is a direct
+which implies the stated $`O(\log s)` claim. Select one satisfied
+term on every true input, bound the number of negative pivotal coordinates by that
+term's width, prove the tail estimate
+$`\Pr[\operatorname{width}\ge k]\le s2^{-k}`, and sum the tails. This is a direct
 proof of the same claim; unlike the book's proof, it does not use random restrictions.
 :::

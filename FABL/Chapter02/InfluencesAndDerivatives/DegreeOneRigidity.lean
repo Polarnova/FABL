@@ -118,6 +118,43 @@ theorem fourierWeightAtLevel_one_eq_sum_singleton (f : {−1,1}^[n] → ℝ) :
   · intro i _
     rfl
 
+/-- Fourier weight through level one is the constant coefficient squared plus the
+sum of the squared singleton coefficients. -/
+theorem fourierWeightAtMost_one_eq_empty_add_sum_singleton
+    (f : {−1,1}^[n] → ℝ) :
+    fourierWeightAtMost 1 f =
+      fourierCoeff f ∅ ^ 2 + ∑ i, fourierCoeff f {i} ^ 2 := by
+  classical
+  unfold fourierWeightAtMost fourierWeight
+  calc
+    (∑ S ∈ (Finset.univ.filter fun S : Finset (Fin n) ↦ S.card ≤ 1),
+        fourierCoeff f S ^ 2) =
+        ∑ o : Option (Fin n),
+          fourierCoeff f (o.elim ∅ fun i ↦ {i}) ^ 2 := by
+      symm
+      apply Finset.sum_bij
+        (fun (o : Option (Fin n)) (_ : o ∈ Finset.univ) ↦
+          o.elim ∅ fun i ↦ {i})
+        (s := Finset.univ)
+        (t := Finset.univ.filter fun S : Finset (Fin n) ↦ S.card ≤ 1)
+      · intro o _
+        cases o <;> simp
+      · intro a _ b _ hab
+        cases a <;> cases b <;> simp_all
+      · intro S hS
+        have hcard := (Finset.mem_filter.mp hS).2
+        rcases S.eq_empty_or_nonempty with rfl | hne
+        · exact ⟨none, Finset.mem_univ _, rfl⟩
+        · obtain ⟨i, rfl⟩ := Finset.card_eq_one.mp
+            (Nat.le_antisymm hcard (Finset.one_le_card.mpr hne))
+          exact ⟨some i, Finset.mem_univ _, rfl⟩
+      · intro o _
+        cases o <;> rfl
+    _ = fourierCoeff f ∅ ^ 2 +
+        ∑ i : Fin n, fourierCoeff f {i} ^ 2 := by
+      rw [Fintype.sum_option]
+      rfl
+
 /-- Under full level-one weight, each singleton coefficient has square zero or one. -/
 theorem singletonCoeff_sq_eq_zero_or_one_of_fourierWeightAtLevel_one_eq_one
     (f : BooleanFunction n) (hweight : fourierWeightAtLevel 1 f.toReal = 1)

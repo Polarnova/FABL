@@ -581,9 +581,9 @@ theorem three_mul_variance_mul_rpow_le_totalStableInfluence_one_third
         ∑ S ∈ frequencies,
           weight S * Real.rpow (1 / 3 : ℝ) (S.card : ℝ) := by
     rw [← hweightedCard]
-    simpa only [smul_eq_mul] using
+    convert
       (convexOn_rpow_left (by norm_num : (0 : ℝ) < 1 / 3)).map_sum_le
-        hweight hweightSum (fun _ _ ↦ Set.mem_univ _)
+        hweight hweightSum (fun _ _ ↦ Set.mem_univ _) using 1 <;> try rfl
   rw [totalStableInfluence_eq_sum_card_mul_rho_pow_mul_sq_fourierCoeff]
   calc
     3 * variance f.toReal *

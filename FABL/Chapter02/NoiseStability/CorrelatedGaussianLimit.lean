@@ -344,7 +344,7 @@ theorem correlatedPairPMF_map_pairCoordinatesEquiv
     simp [hne]
 
 /-- The measure attached to a finite independent-product PMF is Mathlib's product measure. -/
-private theorem independentProductPMF_toMeasure {ι : Type*} [Fintype ι]
+theorem independentProductPMF_toMeasure {ι : Type*} [Fintype ι]
     {α : ι → Type*} [∀ i, Fintype (α i)] [∀ i, MeasurableSpace (α i)]
     [∀ i, MeasurableSingletonClass (α i)] (p : ∀ i, PMF (α i)) :
     (independentProductPMF p).toMeasure = Measure.pi fun i ↦ (p i).toMeasure := by

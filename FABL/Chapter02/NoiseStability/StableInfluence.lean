@@ -294,11 +294,10 @@ theorem stableInfluence_eq_noiseStability_discreteDerivative
       (∑ T with i ∉ T, ρ ^ T.card * fourierCoeff f (insert i T) ^ 2) =
         ∑ T : {T : Finset (Fin n) // i ∉ T.1},
           ρ ^ T.1.card * fourierCoeff f (insert i T.1) ^ 2 := by
-    symm
-    simpa using (Finset.sum_subtype_eq_sum_filter
-      (s := (Finset.univ : Finset (Finset (Fin n))))
-      (p := fun T : Finset (Fin n) ↦ i ∉ T)
-      (fun T ↦ ρ ^ T.card * fourierCoeff f (insert i T) ^ 2))
+    exact Finset.sum_subtype
+      ((Finset.univ : Finset (Finset (Fin n))).filter fun T ↦ i ∉ T)
+      (by simp)
+      (fun T ↦ ρ ^ T.card * fourierCoeff f (insert i T) ^ 2)
   rw [hleft, hright]
   apply Fintype.sum_equiv (eraseContainingEquiv i)
   intro S
@@ -478,14 +477,14 @@ stable influence at correlation `1 - 2δ`. -/
 theorem hasDerivAt_noiseSensitivityCurve (f : {−1,1}^[n] → ℝ) (δ : ℝ) :
     HasDerivAt (noiseSensitivityCurve f) (totalStableInfluence (1 - 2 * δ) f) δ := by
   have harg : HasDerivAt (fun t : ℝ ↦ 1 - 2 * t) (-2) δ := by
-    convert (hasDerivAt_const δ 1).sub
-      ((hasDerivAt_const δ 2).mul (hasDerivAt_id δ)) using 1
-    all_goals ring
+    simpa using ((hasDerivAt_id δ).const_mul 2).const_sub 1
   have hcomp := (hasDerivAt_stabilityCurve f (1 - 2 * δ)).comp δ harg
   have hresult := ((hasDerivAt_const δ 1).sub hcomp).div_const 2
   rw [← deriv_stabilityCurve_eq_totalStableInfluence (1 - 2 * δ) f,
     (hasDerivAt_stabilityCurve f (1 - 2 * δ)).deriv]
-  simpa [noiseSensitivityCurve] using hresult
+  change HasDerivAt (fun t : ℝ ↦ (1 - stabilityCurve f (1 - 2 * t)) / 2) _ δ
+  convert hresult using 1 <;> try rfl
+  ring
 
 /-- O'Donnell, Proposition 2.51: the derivative of noise sensitivity at zero is total
 influence. -/

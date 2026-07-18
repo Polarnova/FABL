@@ -49,8 +49,8 @@ $$`
 \deg(f)=\max\{|S|:S\subseteq[n],\ \widehat f(S)\ne0\}.
 `
 Equivalently, $`\deg(f)\le k` if and only if
-$`\widehat f(S)=0` whenever $`|S|>k`. FABL extends this definition to the
-zero function by the explicit convention $`\deg(0)=0`.
+$`\widehat f(S)=0` whenever $`|S|>k`. For the zero function, set
+$`\deg(0)=0`.
 :::
 
 :::lemma_ "support-exercise-1.11b-granularity" (lean := "FABL.IsFourierGranular, FABL.isFourierGranular_signValue_of_fourierDegree_le") (uses := "support-exercise-1.10-degree, theorem-1.1") (tags := "section-1-2, support, fidelity-generalized-degree-at-most")
@@ -59,7 +59,7 @@ $`f:\{-1,1\}^n\to\{-1,1\}` has $`\deg(f)=k\ge1`. Then the Fourier spectrum
 of $`f` is $`2^{1-k}`-granular: for every $`S\subseteq[n]` there is an
 integer $`z_S` such that $`\widehat f(S)=z_S\,2^{1-k}.`
 
-The Lean declaration proves the stronger monotone form: it is enough to assume
+The same conclusion holds under the weaker hypothesis
 $`\deg(f)\le k` with $`k\ge1`.
 :::
 

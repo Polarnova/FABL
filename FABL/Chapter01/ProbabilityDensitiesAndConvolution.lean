@@ -324,7 +324,6 @@ theorem convolution_assoc (f g h : 𝔽₂^[n] → ℝ) :
     (fun y ↦ f z * g (y + z) * h (x + y))
     (fun w ↦ f z * (g w * h (x + z + w))) (by
       intro w
-      dsimp only
       have hneg : -z = z := by
         funext i
         exact ZMod.neg_eq_self_mod_two (z i)
@@ -455,7 +454,6 @@ theorem convolution_probability_eq_add (φ ψ : ProbabilityDensity n) (A : Set �
         (fun x ↦ φ y * ψ (x - y) * setIndicator A x)
         (fun z ↦ φ y * ψ z * setIndicator A (y + z)) (by
           intro z
-          dsimp only
           rw [sub_eq_add_neg]
           have hneg : -y = y := by
             funext i
@@ -484,7 +482,6 @@ theorem binaryFourierCoeff_convolution (f g : 𝔽₂^[n] → ℝ) (S : Finset (
     (fun x ↦ (f y * g (x + y)) * χ S x)
     (fun z ↦ (f y * χ S y) * (g z * χ S z)) (by
       intro w
-      dsimp only
       have hneg : -y = y := by
         funext i
         exact ZMod.neg_eq_self_mod_two (y i)

@@ -216,7 +216,6 @@ theorem positive_familyBound_of_spectrum_concentrated
   have hone : (1 : ℝ) ≤ (ε.1 : ℝ) / 4 := by
     simpa [IsFourierSpectrumConcentratedOn, htotal] using hconcentration
   have hε := positiveLearningParameter_toReal_mem_Ioc ε
-  norm_num at hone
   nlinarith [hε.2]
 
 /-- Target-independent KM program for a stated family-size bound; the zero-bound branch is a

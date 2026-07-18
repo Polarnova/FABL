@@ -84,9 +84,17 @@ noncomputable def indexedWalshBasis (ι : Type*) [Fintype ι] [DecidableEq ι] :
   classical
   exact basisOfLinearIndependentOfCardEqFinrank (b := fun S ↦ indexedMonomial S)
     (by
-      simpa [Function.comp_def, indexedSignMonomialChar] using
-        ((AddChar.linearIndependent (Additive (IndexedSignCube ι)) ℝ).comp
-          indexedSignMonomialChar indexedSignMonomialChar_injective))
+      let e : (Additive (IndexedSignCube ι) → ℝ) ≃ₗ[ℝ] (IndexedSignCube ι → ℝ) :=
+        { toFun := fun f x ↦ f (Additive.ofMul x)
+          invFun := fun f x ↦ f (Additive.toMul x)
+          left_inv := by intro f; ext x; rfl
+          right_inv := by intro f; ext x; rfl
+          map_add' := by intros; rfl
+          map_smul' := by intros; rfl }
+      simpa [e, Function.comp_def, indexedSignMonomialChar] using
+        (((AddChar.linearIndependent (Additive (IndexedSignCube ι)) ℝ).comp
+          indexedSignMonomialChar indexedSignMonomialChar_injective).map'
+            e.toLinearMap e.ker))
     (by
       simp [Module.finrank_fintype_fun_eq_card, Fintype.card_finset,
         Fintype.card_units_int])
@@ -747,7 +755,9 @@ theorem vectorFourierCoeff_domainTranslate {n : ℕ} (f : 𝔽₂^[n] → ℝ)
     (z γ : 𝔽₂^[n]) :
     vectorFourierCoeff (domainTranslate f z) γ =
       vectorWalshCharacter γ z * vectorFourierCoeff f γ := by
-  simpa [domainTranslate] using vectorFourierCoeff_translate_add f z γ
+  change vectorFourierCoeff (fun x ↦ f (x + z)) γ =
+    vectorWalshCharacter γ z * vectorFourierCoeff f γ
+  exact vectorFourierCoeff_translate_add f z γ
 
 /-- The dot-product form of the coefficient identity in O'Donnell, Fact 3.25. -/
 theorem vectorFourierCoeff_domainTranslate_eq_binarySign {n : ℕ}

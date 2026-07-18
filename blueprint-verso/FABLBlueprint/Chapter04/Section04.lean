@@ -33,9 +33,9 @@ $$`
 (d) Consequently
 $`\Pr[(\boldsymbol J\mid\boldsymbol z)\text{ is bad}]\le3\delta w`.
 
-Production implements this first-compatible-term extension map, proves its fiber bound, proves
-the exact ratio in (c), and transports the final estimate between the independent-coordinate and
-$`(\boldsymbol J\mid\boldsymbol z)` restriction models.
+The first-compatible-term extension map has the required fiber bound and the
+exact ratio in (c); summing over its fibers gives (d) in either restriction
+model.
 :::
 
 :::theorem "baby-switching-lemma" (lean := "FABL.babySwitchingLemma_dnf, FABL.switchingFailureProbability_booleanDual, FABL.babySwitchingLemma") (uses := "definition-4.3, definition-4.4, definition-4.15, support-exercise-4.19") (tags := "section-4-4, fidelity-exact")
@@ -46,9 +46,9 @@ $$`
 \Pr\bigl[f_{\boldsymbol J\mid\boldsymbol z}\text{ is not a constant function}\bigr]
 \le 5\delta w.
 `
-This is the $`k=1` case of Håstad's Switching Lemma. Production proves the
-size-independent constant $`5` for DNFs and transfers it to CNFs by Boolean
-duality.
+This is the $`k=1` case of Håstad's Switching Lemma. The same
+size-independent constant $`5` holds for DNFs and, by Boolean duality, for
+CNFs.
 :::
 
 :::theorem "hastads-switching-lemma" (lean := "FABL.hastadSwitchingLemma_dnf, FABL.hastadSwitchingLemma") (uses := "definition-4.3, definition-4.4, definition-4.15, definition-3.14") (tags := "section-4-4, fidelity-exact")
@@ -71,9 +71,8 @@ $`\epsilon=\Pr[\operatorname{DT}(f_{\boldsymbol J\mid\boldsymbol z})\ge k]`.
 Then the Fourier spectrum of $`f` is $`3\epsilon`-concentrated on degree up
 to $`3k/\delta`.
 
-Production uses the exact failure probability as $`\epsilon` and the exact real cutoff
-$`3k/\delta`; the interval condition $`\delta\le 1` is part of the random-restriction
-parameter domain.
+Here $`\epsilon` is the exact failure probability and $`3k/\delta` is the
+exact real cutoff, with $`0<\delta\le1`.
 :::
 
 :::theorem "theorem-4.22" (lean := "FABL.dnfSwitchingDepth, FABL.theorem4_22") (uses := "hastads-switching-lemma, lemma-4.21, definition-4.3") (tags := "section-4-4, fidelity-finite-explicit-asymptotic-bridge")
@@ -81,7 +80,7 @@ parameter domain.
 width $`w`. Then the Fourier spectrum of $`f` is $`\epsilon`-concentrated on
 degree up to $`O\bigl(w\log(1/\epsilon)\bigr)`.
 
-Production proves the explicit cutoff
+One may take the explicit cutoff
 $`30w\lceil\log_2(3/\epsilon)\rceil` for $`0<\epsilon\le1`, including the
 $`w=0` constant-function endpoint.
 :::
@@ -89,8 +88,9 @@ $`w=0` constant-function endpoint.
 :::lemma_ "support-exercise-4.11" (lean := "FABL.fourierCoeff_extendedSignRestriction_liftFree, FABL.fourierCoeff_extendedSignRestriction, FABL.sum_abs_ambientRestrictionFourierCoeff, FABL.exercise4_11_restriction") (uses := "proposition-3.16, proposition-4.17") (tags := "section-4-4, support, fidelity-exact")
 *Exercise 4.11.* Prove Lemma 4.23.
 
-Production supplies the proof route by combining the restriction/Fourier coefficient bridge with
-$`\|\widehat g\|_1\le2^{\operatorname{DT}(g)}` for each restricted Boolean function.
+Combine the restriction identity for Fourier coefficients with
+$`\|\widehat g\|_1\le2^{\operatorname{DT}(g)}` for each restricted Boolean
+function.
 :::
 
 :::lemma_ "lemma-4.23" (lean := "FABL.abs_expectRandomRestriction_le_expect_abs, FABL.sum_expectRandomRestriction, FABL.expectRandomRestriction_mono, FABL.lemma4_23") (uses := "support-exercise-4.11, definition-4.15, proposition-4.17") (tags := "section-4-4, fidelity-exact")
@@ -114,7 +114,7 @@ $$`
 
 The printed statement requires the endpoint condition $`w\ge1`: for $`w=0` and $`k>0`, a
 constant function has $`|\widehat f(\varnothing)|=1` while the displayed right-hand side is zero.
-Production proves the corrected positive-width form with the same constant.
+Thus the statement is understood with $`w\ge1`; the constant is unchanged.
 :::
 
 :::theorem "theorem-4.25" (lean := "FABL.dnfSpectralConcentrationDegree, FABL.dnfSpectralFamilySizeBound, FABL.theorem4_25") (uses := "theorem-4.22, theorem-4.24, support-exercise-3.16, support-exercise-3.17, definition-4.3") (tags := "section-4-4, fidelity-finite-explicit-asymptotic-bridge")
@@ -129,7 +129,7 @@ concentrated on a collection of cardinality $`n^{O(\log\log n)}`. Combined
 with Proposition 4.9 and Exercise 3.17, size-$`s` DNFs are
 $`\epsilon`-concentrated on a collection of cardinality at most
 $`(s/\epsilon)^{O(\log\log(s/\epsilon)\cdot\log(1/\epsilon))}`.
-Production replaces the asymptotic notation by the finite degree
+More precisely, one may take the finite degree
 $`30w\lceil\log_2(12/\epsilon)\rceil` and the explicit concentrating-family
 bound obtained from its low-degree Fourier one-norm estimate.
 :::

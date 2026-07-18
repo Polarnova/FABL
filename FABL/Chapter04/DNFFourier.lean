@@ -57,7 +57,8 @@ theorem fourierCoeff_extendedSignRestriction_liftFree
       apply Finset.expect_congr rfl
       intro x _
       have hfree : (fun i : J ↦ x (i : Fin n)) = (signCubeSplitEquiv J x).1 := by
-        simpa only [freePart] using freePart_eq_split J x
+        change freePart J x = (signCubeSplitEquiv J x).1
+        exact freePart_eq_split J x
       rw [hfree]
       rw [← monomial_liftFreeFrequency_combine S
         ((signCubeSplitEquiv J x).1) ((signCubeSplitEquiv J x).2)]
@@ -596,7 +597,15 @@ theorem fourierDegree_extendedSignRestriction_le_restrictedDecisionTreeDepth
       (F₂DecisionTree.computes_iff T _).1 hT]
     rfl
   have hdegree := fourierDegree_toReal_le_depth_of_decisionTree target R hR
-  simpa [target, R, F₂DecisionTree.depth_mapOutputs, hdepth] using hdegree
+  dsimp only [target, R] at hdegree
+  rw [F₂DecisionTree.depth_mapOutputs, hdepth] at hdegree
+  have htoReal :
+      BooleanFunction.toReal (extendedSignRestriction f J z) =
+        extendedSignRestriction f.toReal J z := by
+    funext x
+    rfl
+  rw [htoReal] at hdegree
+  exact hdegree
 
 /-- The high-degree Fourier weight of a restriction is bounded by the indicator that its
 decision-tree depth reaches `k`. -/
@@ -619,7 +628,13 @@ theorem restrictedFourierWeightAtLeast_le_switchingFailureIndicator
         · rw [if_neg hcard]
           positivity
       _ = 1 := by
-        simpa using sum_sq_fourierCoeff_eq_one (extendedSignRestriction f J z)
+        have htoReal :
+            BooleanFunction.toReal (extendedSignRestriction f J z) =
+              extendedSignRestriction f.toReal J z := by
+          funext x
+          rfl
+        rw [← htoReal]
+        exact sum_sq_fourierCoeff_eq_one (extendedSignRestriction f J z)
   · rw [if_neg hfailure]
     apply Finset.sum_nonpos
     intro S _
@@ -1168,8 +1183,7 @@ theorem isFourierSpectrumConcentratedOn_lowDegreeL1ConcentratingFourierFamily
   change IsFourierSpectrumConcentratedOn f ε
     (↑(l1ConcentratingFourierFamily (lowDegreePart k f) (ε / 4)) :
       Set (Finset (Fin n)))
-  convert htransfer using 1
-  ring
+  convert htransfer using 1 <;> first | rfl | ring
 
 /-- The explicit low-degree concentrating family inherits the standard Fourier one-norm cardinality
 bound. -/

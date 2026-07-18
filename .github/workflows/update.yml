@@ -1,4 +1,4 @@
-name: Update Dependencies
+name: Check Dependency Updates
 
 on:
   # schedule:             # Sets a schedule to trigger the workflow
@@ -6,36 +6,20 @@ on:
   workflow_dispatch:    # Allows the workflow to be triggered manually via the GitHub interface
 
 jobs:
-  check-for-updates: # Determines which updates to apply.
+  check-for-updates:
     runs-on: ubuntu-latest
-    outputs:
-      is-update-available: ${{ steps.check-for-updates.outputs.is-update-available }}
-      new-tags: ${{ steps.check-for-updates.outputs.new-tags }}
     steps:
       - name: Run the action
         id: check-for-updates
         uses: leanprover-community/mathlib-update-action@v1
-        # START CONFIGURATION BLOCK 1
-        # END CONFIGURATION BLOCK 1
-  do-update: # Runs the upgrade, tests it, and makes a PR/issue/commit.
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write      # Grants permission to push changes to the repository
-      issues: write        # Grants permission to create or update issues
-      pull-requests: write # Grants permission to create or update pull requests
-    needs: check-for-updates
-    if: ${{ needs.check-for-updates.outputs.is-update-available == 'true' }}
-    strategy: # Runs for each update discovered by the `check-for-updates` job.
-      max-parallel: 1 # Ensures that the PRs/issues are created in order.
-      matrix:
-        tag: ${{ fromJSON(needs.check-for-updates.outputs.new-tags) }}
-    steps:
-      - name: Run the action
-        id: update-the-repo
-        uses: leanprover-community/mathlib-update-action/do-update@v1
-        with:
-          tag: ${{ matrix.tag }}
-          # START CONFIGURATION BLOCK 2
-          on_update_succeeds: pr # Create a pull request if the update succeeds
-          on_update_fails: issue # Create an issue if the update fails
-          # END CONFIGURATION BLOCK 2
+      - name: Summarize available updates
+        env:
+          IS_UPDATE_AVAILABLE: ${{ steps.check-for-updates.outputs.is-update-available }}
+          NEW_TAGS: ${{ steps.check-for-updates.outputs.new-tags }}
+        run: |
+          if [[ "$IS_UPDATE_AVAILABLE" == "true" ]]; then
+            printf 'Mathlib updates are available: %s\n\n' "$NEW_TAGS" >> "$GITHUB_STEP_SUMMARY"
+            printf 'Update ProbabilityApproximation to a matching precompiled release before changing FABL.\n' >> "$GITHUB_STEP_SUMMARY"
+          else
+            printf 'No Mathlib update is available.\n' >> "$GITHUB_STEP_SUMMARY"
+          fi

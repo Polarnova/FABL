@@ -3,7 +3,7 @@
 ## Mission and sources of truth
 
 FABL formalizes the May 2021 arXiv edition of Ryan O'Donnell's *Analysis of Boolean Functions* in
-Lean 4 and Mathlib. Chapters 1--4 are complete. Open conjectures and non-dependency remarks are
+Lean 4 and Mathlib. Chapters 1--5 are complete. Open conjectures and non-dependency remarks are
 represented honestly as statement-only Blueprint nodes rather than placeholder Lean declarations;
 neither supplies an assumption to the production library. The project objective is complete
 coverage of every chapter.
@@ -46,6 +46,94 @@ part of the public formal API, in the production declaration's docstring.
   only when a real downstream theorem needs it; prefer the narrowest mathematically meaningful home.
 - `lean-booleanfun` is cited prior art and a search aid, not an upstream dependency. Do not import,
   vendor, or copy it. Validate every reuse idea against Mathlib and FABL.
+
+### Current module navigation
+
+The Blueprint follows the book's chapters and sections. A large book topic keeps a stable public
+aggregate while proof-bearing implementation files live in the matching directory:
+
+- Chapter 1 uses `FunctionsAsMultilinearPolynomials`, `ParityBasis`, `BasicFourierFormulas`,
+  `ProbabilityDensitiesAndConvolution`, and `BLR` for Sections 1.1--1.6.
+- Chapter 2 uses the section aggregates `SocialChoiceFunctions`, `InfluencesAndDerivatives`,
+  `TotalInfluence`, `NoiseStability`, and `Arrow`; `ArrowLevelOneBound` and `FKN` contain the
+  deferred proof dependencies used by Section 2.5.
+- Chapter 3 uses `LowDegreeSpectralConcentration`, `SubspacesAndDecisionTrees`, `Restrictions`, and
+  `LearningTheory` for Sections 3.1--3.4. Section 3.5 is divided by mathematical role:
+  `GoldreichLevin` contains the pure Fourier identities and estimator,
+  `GoldreichLevinAlgorithm` contains the adaptive query program, `QueryLearning` connects that
+  program to the finite-family learner, and `KushilevitzMansour` gives the final composition and
+  resource bounds.
+- Chapter 4 uses `DNFFormulas` and `Tribes` for Sections 4.1--4.2;
+  `RandomRestrictions` for Section 4.3; `Switching`, `HastadSwitching`, and `DNFFourier` for the
+  switching and Fourier results; and `Circuits`, `CircuitInfluence`, `Parity`, and `LMN` for the
+  bounded-depth circuit consequences. `KKL` owns the deferred KKL argument used in the chapter.
+- Chapter 5 is organized by book-facing theorem clusters. Its quantitative probability consumers
+  import the exact defining `ProbabilityApproximation` module locally:
+  `BerryEsseenIntervals` and `BerryEsseenRescaling` use uniform Berry--Esseen,
+  `RademacherFirstMoment` uses nonuniform Berry--Esseen, and
+  `RegularThresholdNoiseStability` uses Bentkus's convex-set theorem. Do not add a facade,
+  compatibility alias, or chapter-wide transitive probability import.
+
+Implementation splits do not create new book headings. Blueprint associations name the canonical
+production declarations, while stable aggregates preserve predictable imports and navigation.
+
+### Representation and reuse boundary
+
+`SignCube n = Fin n → ℤˣ` is the exact sign alphabet and `F₂Cube n = Fin n → ZMod 2` is the
+additive vector space. The BLR input and acceptance predicate remain in `F₂Cube`; its Fourier proof
+crosses through an explicit sign encoding. Never hide this or another representation change behind
+a global coercion or typeclass.
+
+The following infrastructure is owned by Mathlib and must not be reimplemented locally:
+
+| Book concept | Mathlib abstraction | Representative declarations |
+|---|---|---|
+| Uniform expectation | `Finset.expect` | `Fintype.expect_eq_sum_div_card`, `Fintype.expect_equiv` |
+| Normalized inner product | weighted inner product | `RCLike.wInner`, `RCLike.cWeight` |
+| Walsh characters | finite additive characters | `AddChar.zmodChar`, `AddChar.expect_eq_ite`, `AddChar.linearIndependent` |
+| Function-space bases | finite-dimensional bases | `basisOfLinearIndependentOfCardEqFinrank`, `Module.Basis.sum_repr` |
+| Multilinear interpolation | finite product expansion | `Fintype.prod_boole`, `Fintype.prod_add` |
+| Hamming distance | information theory | `hammingDist`, `hammingDist_triangle` |
+| Finite probability | probability mass functions | `PMF.ofFintype`, `PMF.uniformOfFintype`, `PMF.integral_eq_sum` |
+| Convolution | discrete convolution | `DiscreteConvolution.addConvolution`, `DiscreteConvolution.addConvolution_comm` |
+| Finite duality and extrema | linear duality and finite orders | `AddMonoidHom.toZModLinearMap`, `dotProductEquiv`, `Finite.exists_max` |
+
+FABL owns only book-facing finite-cube constructions and the narrow adapters that production
+theorems require: subset-indexed Walsh characters, explicit additive/sign-cube transport,
+normalization of raw convolution to expectation, conversion of a nonnegative density to `PMF`, and
+normalization of `hammingDist` to relative distance. Add an `lpNorm`, moment, or inverse `PMF`
+bridge only when a downstream book theorem needs it.
+
+Quantitative normal approximation is supplied by the pinned
+`Polarnova/ProbabilityApproximation` v0.9.5 release. Import an external theorem only in the
+book-facing module that applies it, using its defining external module and specializing the
+original declaration directly. Do not reexport it through a FABL facade or compatibility alias.
+The Bentkus and Berry--Esseen `.olean` files come from the matching GitHub release archive and must
+not be rebuilt locally. CI must verify and consume that release before building FABL; it must not
+compile the external Bentkus source.
+
+The audit of `roos-j/lean-booleanfun` established it as reference-only prior art. In particular,
+FABL uses Mathlib expectation, additive-character orthogonality, `hammingDist`, and probability
+semantics rather than copying that repository's custom helper layer or `ToMathlib` lemmas.
+
+### Computation and complexity boundary
+
+Chapter 3 formalizes the oracle model used by the book. Query and sample counts come from visible
+program constructors; finite bookkeeping is charged by explicit local-work nodes; probability is
+interpreted with `PMF`; and resource bounds hold pathwise for finite program outputs. These charges
+specify the mathematical oracle program, not Lean evaluator runtime.
+
+Mathlib supplies the finite probability, concentration, rational-arithmetic, combinatorial, and
+asymptotic infrastructure. A truth-table Turing-machine encoding is not an equivalent replacement:
+it changes a problem on `n` variables into an input of length `2^n`.
+
+The matching CSLib release and `complexitylib` were audited but are not Chapter 3 dependencies.
+Re-audit the then-pinned Mathlib, CSLib, and specialized complexity libraries before formalizing the
+first statement that genuinely quantifies over a machine model, complexity class, or reduction.
+Sections 7.3--7.4 are the first definite trigger because their approximation and hardness results
+use polynomial-time algorithms, NP-hardness, circuits, and reductions. Formalize their finite CSP
+mathematics independently, then connect book-facing hardness statements through one narrow adapter
+to the selected machine and reduction APIs.
 
 ### Module-size discipline
 
@@ -167,19 +255,25 @@ strict manifest expectations in `blueprint-verso/scripts/site.sh` in the same ch
 Chapter 1 baseline is 43 nodes (34 primary and 9 support), 111 associated Lean declarations, and 62
 reviewed dependency edges.
 
-The completed Chapter 2 baseline is 78 nodes (64 primary and 14 support), 240 associated Lean
-declarations, and 183 reviewed dependency edges across Sections 2.1--2.5. The aggregate Chapters
-1--2 baseline is 121 nodes, 351 unique declaration associations, and 245 edges.
+The completed Chapter 2 baseline is 79 nodes (64 primary and 15 support), 241 associated Lean
+declarations, and 185 reviewed dependency edges across Sections 2.1--2.5. The aggregate Chapters
+1--2 baseline is 122 nodes, 352 unique declaration associations, and 247 edges.
 
 The completed Chapter 3 baseline is 62 nodes (43 primary and 19 support), 399 associated Lean
 declarations, and 164 reviewed dependency edges across Sections 3.1--3.5. The aggregate Chapters
-1--3 baseline is 183 nodes, 750 declaration associations, and 409 edges.
+1--3 baseline is 184 nodes, 751 declaration associations, and 411 edges.
 
 The Chapter 4 inventory baseline is 45 nodes (37 primary and 8 support), 360 associated Lean
 declarations (Sections 4.1--4.5 production), and 111 reviewed dependency edges across Sections
 4.1--4.5. Mansour's Conjecture and the non-dependency bibliographic note in Remark 4.29 have no Lean
 association and supply no assumptions to the production library. The aggregate Chapters 1--4
-baseline is 228 nodes, 1110 declaration associations, and 520 edges.
+baseline is 229 nodes, 1111 declaration associations, and 522 edges.
+
+The completed Chapter 5 baseline is 108 nodes (49 primary and 59 support), 502 associated Lean
+declarations, and 259 reviewed dependency edges across Sections 5.1--5.6. Open conjectures,
+external results, non-dependency remarks, and results whose proofs the book defers to later chapters
+remain visible statement-only nodes and supply no assumptions to the production library. The
+aggregate Chapters 1--5 baseline is 337 nodes, 1613 declaration associations, and 781 edges.
 
 Include every inventoried chapter in `Blueprint.lean` and `Book.lean` throughout its active proof
 phase so the official diagram exposes unfinished nodes and their formalization status. Keep the
@@ -201,10 +295,16 @@ Run dependency setup only after the first clone or an intentional toolchain/depe
 ```bash
 lake update
 lake exe cache get
+lake build @ProbabilityApproximation:release
+./scripts/verify_probability_approximation_release.sh
 cd blueprint-verso
 lake update
 lake exe cache get
 ```
+
+The `@ProbabilityApproximation:release` facet downloads the pinned precompiled archive. It is not
+authorization to build the dependency's source, and the Bentkus module must never be compiled
+locally or in CI.
 
 During proof development, build the narrowest affected production module:
 

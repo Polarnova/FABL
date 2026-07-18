@@ -215,7 +215,7 @@ theorem runWithCost_queriedFiniteFamilyFourierEstimatorProgramWithSamples_unifor
         queriedFiniteFamilyFourierEstimatorCost (n := n) 𝓕 m))
     (map_uniformPMF_finiteFamilyLinearToMatrixEquiv (n := n) 𝓕 m)
   rw [PMF.map_comp] at h
-  simpa only [queriedFiniteFamilyFourierEstimatorOutput, Function.comp_apply] using h
+  simpa only [queriedFiniteFamilyFourierEstimatorOutput, Function.comp_def] using h
 
 /-! ## Configurable-confidence finite-family query learner -/
 

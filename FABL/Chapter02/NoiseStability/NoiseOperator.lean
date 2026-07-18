@@ -379,12 +379,6 @@ theorem arcsin_sub_self_mem_Icc_two_mul_cube
   · rcases hx.1.eq_or_lt with rfl | hxpos
     · simp
     · have hypos : 0 < Real.arcsin x := Real.arcsin_pos.mpr hxpos
-      have hy_one : Real.arcsin x ≤ 1 := by
-        calc
-          Real.arcsin x ≤ Real.arcsin (1 / 2 : ℝ) :=
-            Real.arcsin_le_arcsin hx.2
-          _ = Real.pi / 6 := arcsin_one_half
-          _ ≤ 1 := by nlinarith [Real.pi_lt_four]
       have hjordan : (2 / Real.pi) * Real.arcsin x ≤ x := by
         simpa [hsin] using
           Real.mul_le_sin hy₀ (Real.arcsin_le_pi_div_two x)
@@ -399,7 +393,7 @@ theorem arcsin_sub_self_mem_Icc_two_mul_cube
         have hpimul : x * Real.pi ≤ x * 4 :=
           mul_le_mul_of_nonneg_left Real.pi_lt_four.le hx.1
         linarith
-      have hcubic := Real.sin_gt_sub_cube hypos hy_one
+      have hcubic := Real.sin_gt_sub_cube hypos
       rw [hsin] at hcubic
       calc
         Real.arcsin x - x ≤ Real.arcsin x ^ 3 / 4 := by linarith
@@ -449,7 +443,7 @@ theorem majorityNoiseSensitivityLimit_sub_two_div_pi_mul_sqrt_isBigO :
       2 / Real.pi * Real.sqrt δ) =O[𝓝[≥] 0]
         (fun δ : ℝ ↦ δ ^ (3 / 2 : ℝ)) := by
   convert arccos_one_sub_two_mul_sub_two_mul_sqrt_isBigO.const_mul_left
-    (1 / Real.pi) using 1
+    (1 / Real.pi) using 1 <;> try rfl
   funext δ
   ring
 

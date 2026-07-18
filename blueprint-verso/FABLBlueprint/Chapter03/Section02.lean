@@ -117,8 +117,8 @@ A=\{x\in\mathbb F_2^n:
   \text{ for every }\gamma\in H^\perp\}.
 `
 When the displayed parity conditions specialize to coordinate equations
-$`x_i=a_i`, their solution set is a *subcube*; the Lean declaration identifies
-this coordinate subcube with the corresponding affine subspace.
+$`x_i=a_i`, their solution set is a *subcube*, namely the corresponding
+affine subspace.
 :::
 
 :::lemma_ "support-exercise-3.11" (lean := "FABL.setIndicator_binaryAffineSubspace_apply, FABL.affineSubspaceUniformProbability_eq_inversePerpendicularCard, FABL.vectorFourierCoeff_setIndicator_binaryAffineSubspace_ne_zero_iff, FABL.abs_vectorFourierCoeff_setIndicator_binaryAffineSubspace_of_mem, FABL.abs_vectorFourierCoeff_setIndicator_binaryAffineSubspace_of_not_mem, FABL.sum_abs_vectorFourierCoeff_setIndicator_binaryAffineSubspace") (uses := "definition-3.8, definition-3.9, definition-3.10, proposition-3.11, support-affine-subspaces-and-subcubes") (tags := "section-3-2, support, fidelity-exact")
@@ -263,11 +263,10 @@ $$`
 [T'(\boldsymbol x)\ne f(\boldsymbol x)]\le\epsilon.
 `
 The Hamming-distance conclusion holds for any choice of the new sign labels.
-For the Fourier-tail estimate used in Proposition 3.17, the production proof
-separately truncates the real-valued tree with new leaves labelled $`0` and
-applies Parseval to its squared approximation error. The book writes
-$`\log(s/\epsilon)` and suppresses the integer rounding; the displayed
-base-two ceiling is the exact convention used by the Lean declaration.
+For the Fourier-tail estimate in Proposition 3.17, instead label the new
+leaves of the real-valued truncated tree by $`0` and apply Parseval's Theorem
+to the squared approximation error. The displayed cutoff makes explicit that
+the logarithm is base $`2` and that the depth is rounded up to an integer.
 :::
 
 :::proposition "proposition-3.17" (lean := "FABL.F₂DecisionTree.vectorFourierWeightAbove, FABL.F₂DecisionTree.vectorFourierWeightAbove_le_expect_sq_sub_of_degree_le, FABL.F₂DecisionTree.vectorFourierWeightAbove_eval_le_leafCount_mul_inverseTwoPow, FABL.F₂DecisionTree.vectorFourierWeightAbove_decisionTreeTruncationDegree_le, FABL.F₂DecisionTree.isFourierSpectrumConcentratedUpTo_of_decisionTree") (uses := "definition-3.1, parseval, proposition-3.16, support-exercise-3.22") (tags := "section-3-2, fidelity-log-base-two-and-ceiling-explicit")

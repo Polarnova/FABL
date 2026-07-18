@@ -20,9 +20,35 @@ jobs:
             exit 1
           fi
       - uses: leanprover/lean-action@v1
+        with:
+          auto-config: false
+          build: false
+          test: false
+          lint: false
+          use-github-cache: false
+          use-mathlib-cache: true
+      - name: Require precompiled ProbabilityApproximation release
+        run: |
+          lake build @ProbabilityApproximation:release
+          ./scripts/verify_probability_approximation_release.sh
+          lake --quiet --no-build build \
+            @ProbabilityApproximation/+ProbabilityApproximation.ChenShao.UniformBerryEsseen:olean \
+            @ProbabilityApproximation/+ProbabilityApproximation.ChenShao.NonuniformBerryEsseen:olean \
+            @ProbabilityApproximation/+ProbabilityApproximation.Bentkus.Induction:olean
+      - name: Build FABL
+        run: lake build FABL
       - name: Fetch Mathlib cache for Blueprint
         working-directory: blueprint-verso
         run: lake exe cache get
+      - name: Require precompiled ProbabilityApproximation release for Blueprint
+        working-directory: blueprint-verso
+        run: |
+          lake build @ProbabilityApproximation:release
+          ../scripts/verify_probability_approximation_release.sh
+          lake --quiet --no-build build \
+            @ProbabilityApproximation/+ProbabilityApproximation.ChenShao.UniformBerryEsseen:olean \
+            @ProbabilityApproximation/+ProbabilityApproximation.ChenShao.NonuniformBerryEsseen:olean \
+            @ProbabilityApproximation/+ProbabilityApproximation.Bentkus.Induction:olean
       - name: Build and validate Verso Blueprint
         working-directory: blueprint-verso
         run: ./scripts/site.sh build

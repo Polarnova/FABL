@@ -390,7 +390,9 @@ theorem wellFormed_queryCoordinates (coordinates : List (Fin n))
     (hfinish : ∀ x, (finish x).WellFormed (available \ coordinates.toFinset)) :
     (queryCoordinates coordinates seed finish).WellFormed available := by
   induction coordinates generalizing seed available with
-  | nil => simpa using hfinish seed
+  | nil =>
+      change (finish seed).WellFormed available
+      simpa using hfinish seed
   | cons coordinate coordinates ih =>
       rw [queryCoordinates, WellFormed]
       have hcoord : coordinate ∈ available := hsubset coordinate (by simp)
@@ -532,7 +534,9 @@ theorem DNFFormula.eval_canonicalBlockTreeAux (φ : DNFFormula n)
   | zero =>
       have hfree : CoordRestriction.freeCoordinates ρ = ∅ :=
         Finset.card_eq_zero.mp (Nat.eq_zero_of_le_zero hfuel)
-      simpa [DNFFormula.canonicalBlockTreeAux] using congr_arg φ.eval
+      change φ.eval (CoordRestriction.complete ρ 0) =
+        φ.eval (CoordRestriction.complete ρ x)
+      exact congr_arg φ.eval
         (CoordRestriction.complete_eq_of_freeCoordinates_eq_empty ρ hfree 0 x)
   | succ fuel ih =>
       rw [DNFFormula.canonicalBlockTreeAux]
@@ -819,7 +823,9 @@ noncomputable def fullOfSizeEquiv (w i : ℕ) :
     ⟨ofPositionBits p.1.1 p.2.1,
       canonical_ofPositionBits p.1.1 p.2.1,
       p.1.2,
-      (nonzero_iff_restrictBits_ne_zero _).2 (by simpa using p.2.2)⟩
+      (nonzero_iff_restrictBits_ne_zero _).2 (by
+        rw [restrictBits_ofPositionBits]
+        exact p.2.2)⟩
   left_inv B := by
     apply Subtype.ext
     exact ofPositionBits_restrictBits B.1 B.2.1
@@ -1913,7 +1919,9 @@ theorem DNFFormula.nonempty_switchingTrace_of_depth_canonicalBlockTreeAux
           · obtain ⟨selected, hselected, hcard⟩ :=
               Finset.exists_subset_card_eq hwithin
             exact ⟨DNFFormula.SwitchingTrace.final hcompat selected
-              (by simpa [DNFFormula.canonicalTerm, T, positions] using hselected) hcard⟩
+              (by
+                change selected ⊆ positions
+                exact hselected) hcard⟩
           · have hlength : coordinates.length < k + 1 := by
               simpa [coordinates, DNFTerm.coordinatesAtPositions] using
                 (lt_of_not_ge hwithin)

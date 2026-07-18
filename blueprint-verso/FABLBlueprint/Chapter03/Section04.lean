@@ -72,7 +72,7 @@ examples, $`A` can output, with probability at least $`9/10`, a finite circuit
 representation of a hypothesis $`h` satisfying
 $`\operatorname{dist}(f,h)\le\epsilon`.
 
-For nonempty $`\mathcal F`, the associated procedure estimates every
+For nonempty $`\mathcal F`, the procedure estimates every
 $`\widehat f(S)`, $`S\in\mathcal F`, to accuracy
 $`|\widetilde f(S)-\widehat f(S)|\le \frac{\sqrt\epsilon}{2\sqrt{|\mathcal F|}}`
 with per-coefficient failure probability at most
@@ -92,12 +92,13 @@ $$`
 \le\epsilon.
 `
 
-The finite Lean oracle-program learner avoids an irrational square-root scheduler input by using
-the stronger rational per-coefficient accuracy $`\epsilon/(2|\mathcal F|)`. For
+One may instead use the rational per-coefficient accuracy
+$`\epsilon/(2|\mathcal F|)`. For
 $`0<\epsilon\le1/2` and nonempty $`\mathcal F`, this is no larger than the
-book's displayed $`\sqrt\epsilon/(2\sqrt{|\mathcal F|})` budget, so it proves the same theorem with
-a conservative polynomial sample bound. The empty-family premise is impossible for a Boolean
-target in this parameter range because its total Fourier weight is $`1`.
+displayed $`\sqrt\epsilon/(2\sqrt{|\mathcal F|})` budget and therefore gives
+the same conclusion with a conservative polynomial sample bound. The
+empty-family premise is impossible for a Boolean target in this parameter
+range because its total Fourier weight is $`1`.
 :::
 
 :::proposition "proposition-3.30" (lean := "FABL.PositiveLearningParameter, FABL.fourierEstimatorFailureBits, FABL.fourierEstimatorSampleCount, FABL.fourierEstimatorSampleCount_cast_le, FABL.rationalFourierObservation, FABL.empiricalFourierCoeff, FABL.finiteUniformEmpiricalMean, FABL.measure_finiteUniformEmpiricalMean_sub_expect_ge_le, FABL.fourierCoeffEstimatorProgram, FABL.scheduledFourierCoeffEstimatorProgram, FABL.runWithCost_scheduledFourierCoeffEstimatorProgram, FABL.scheduledFourierCoeffEstimatorProgram_cost_eq, FABL.scheduledFourierCoeffEstimatorProgram_failureProbability_le") (uses := "notation-1.4, proposition-1.8") (tags := "section-3-4, fidelity-exact")
@@ -199,9 +200,8 @@ In particular, this class contains all functions computed by decision trees
 of depth at most $`k`. The learner outputs a finite sparse Fourier circuit
 which computes the target exactly on every input.
 
-The production learner uses a positive rational accuracy scheduler. If
-$`m_{n,k}` is its number of samples per coefficient, Lean proves the exact
-pathwise cost
+Using a positive rational accuracy schedule, let $`m_{n,k}` be the number of
+samples per coefficient. The exact pathwise cost is
 $$`
 \left(
   |\mathcal F_k|m_{n,k},\ 0,\

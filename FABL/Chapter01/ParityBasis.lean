@@ -80,9 +80,16 @@ noncomputable def walshBasis (n : ℕ) :
   classical
   exact basisOfLinearIndependentOfCardEqFinrank (b := fun S ↦ monomial S)
     (by
-      simpa [Function.comp_def, signMonomialChar] using
-        ((AddChar.linearIndependent (Additive ({−1,1}^[n])) ℝ).comp signMonomialChar
-          signMonomialChar_injective))
+      let e : (Additive ({−1,1}^[n]) → ℝ) ≃ₗ[ℝ] ({−1,1}^[n] → ℝ) :=
+        { toFun := fun f x ↦ f (Additive.ofMul x)
+          invFun := fun f x ↦ f (Additive.toMul x)
+          left_inv := by intro f; ext x; rfl
+          right_inv := by intro f; ext x; rfl
+          map_add' := by intros; rfl
+          map_smul' := by intros; rfl }
+      simpa [e, Function.comp_def, signMonomialChar] using
+        (((AddChar.linearIndependent (Additive ({−1,1}^[n])) ℝ).comp signMonomialChar
+          signMonomialChar_injective).map' e.toLinearMap e.ker))
     (by
       simp [Module.finrank_fintype_fun_eq_card, Fintype.card_finset,
         Fintype.card_units_int])

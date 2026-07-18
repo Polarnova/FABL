@@ -442,8 +442,9 @@ theorem runWithCost_restrictedFourierWeightEstimatorProgram_uniformProduct
       (restrictedFourierWeightEstimatorOutput target J S m
         inputs.1 inputs.2.1 inputs.2.2,
       restrictedFourierWeightEstimatorCost J S m)) h
-  simpa only [PMF.map_bind, PMF.map_comp, Function.comp_apply,
-    PMF.pure_map, PMF.bind_pure_comp] using hmap
+  simp only [PMF.map_bind, PMF.map_comp, Function.comp_def] at hmap
+  convert hmap using 1
+  rfl
 
 /-- Every execution path of the finite restricted-weight estimator has the same exact cost. -/
 theorem restrictedFourierWeightEstimatorProgram_cost_eq

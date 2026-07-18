@@ -29,9 +29,8 @@ $$`
 such that $`1-(1-2^{-w})^s\le 1/2`. Writing $`n=n_w=sw`, define
 $`\operatorname{Tribes}_n:\{-1,1\}^n\to\{-1,1\}` to be
 $`\operatorname{Tribes}_{w,s}`. This is defined only for certain
-$`n`: $`1,4,15,40,\ldots`. Production code implements the largest-integer
-choice by a search up to $`2^{w+2}`; Proposition 4.12 proves that for every
-$`w>0` this equals the floor of the unrestricted real threshold.
+$`n`: $`1,4,15,40,\ldots`. The largest integer $`s_w` is the floor of the
+corresponding real threshold.
 :::
 
 :::proposition "proposition-4.12" (lean := "FABL.tribesCriticalThreshold, FABL.tribesCriticalSize_eq_floor_threshold, FABL.tribesCriticalSizeError, FABL.tribesCriticalSize_eq_main_sub_error, FABL.tribesCriticalSizeError_mem_Icc, FABL.tribesCriticalSizeError_isTheta_one, FABL.tribesCriticalDimensionError, FABL.tribesCriticalDimension_eq_main_sub_error, FABL.tribesCriticalDimensionError_eq, FABL.tribesCriticalDimensionError_isTheta_natCast, FABL.tribesCriticalSizeError_isLittleO_two_pow, FABL.tribesCriticalDimension_isEquivalent_main, FABL.tendsto_tribesCriticalDimension_succ_div, FABL.tribesCriticalWidthError, FABL.tribesCriticalWidth_eq_log_sub_loglog_add_error, FABL.tendsto_log_tribesCriticalDimension_div_width, FABL.tribesCriticalWidthError_isLittleO_one, FABL.tendsto_tribesCriticalDimension_atTop, FABL.tendsto_two_pow_mul_log_tribesCriticalDimension_div, FABL.tribesCriticalPowerRelativeError, FABL.tribesCriticalPowerRelativeError_isLittleO_one, FABL.eventually_two_pow_eq_dimension_div_log_mul_one_add_error, FABL.tribesCriticalProbabilityDeficit, FABL.tribesCritical_neg_one_probability_eq_half_sub_deficit, FABL.tribesCriticalProbabilityDeficit_eq_pow, FABL.tribesCriticalProbabilityDeficit_mem_Icc, FABL.tribesCriticalProbabilityDeficit_isBigO_log_dimension_div_dimension") (uses := "definition-4.11, fact-4.10") (tags := "section-4-2, fidelity-exact")
@@ -42,11 +41,9 @@ Definition 4.11 one has:
 - $`w=\log n-\log\ln n+o_n(1)` and $`2^w=\frac{n}{\ln n}(1+o_n(1))`;
 - $`\Pr[\operatorname{Tribes}_n=-1]=\frac12-O\bigl(\frac{\log n}{n}\bigr)`.
 
-Lean indexes these limits by $`w`. It also proves $`n_w\to\infty`, so the
-$`o_n(1)` notation is interpreted along exactly the input-length sequence from
-Definition 4.11. The probability $`O` term is represented by a nonnegative
-deficit from $`1/2`; its Lean bound uses $`\ln n/n`, which differs from the
-book's base-$`2` $`\log n/n` only by a fixed positive factor.
+These limits are taken as $`w\to\infty`, equivalently along the sequence
+$`n=n_w\to\infty`. In the final estimate, using $`\ln n/n` instead of the
+book's base-$`2` expression changes only the absolute constant.
 :::
 
 :::proposition "proposition-4.13" (lean := "FABL.tribesCoord, FABL.TribesRestTrue, FABL.TribesOthersFalse, FABL.isPivotal_tribes_iff, FABL.card_andFunction_eq_one, FABL.booleanInfluence_tribes, FABL.totalInfluence_tribes, FABL.tribesCriticalSize_pos, FABL.tribesCriticalCoordinateInfluence, FABL.booleanInfluence_tribesCritical, FABL.totalInfluence_tribesCritical, FABL.tendsto_tribesCriticalCoordinateInfluence_mul_dimension_div_log, FABL.tribesCriticalCoordinateInfluenceRelativeError, FABL.tribesCriticalCoordinateInfluenceRelativeError_isLittleO_one, FABL.eventually_booleanInfluence_tribesCritical_eq_log_dimension_div_mul_one_add_error, FABL.eventually_totalInfluence_tribesCritical_eq_log_dimension_mul_one_add_error") (uses := "definition-4.11, fact-4.10, proposition-4.12, definition-2.13, definition-2.27") (tags := "section-4-2, fidelity-exact")
@@ -57,7 +54,7 @@ $$`
 `
 and therefore
 $`\mathbf I[\operatorname{Tribes}_n]=(\ln n)(1\pm o(1))`.
-Production first proves the exact formula for every $`w,s\ge 1` and every coordinate
+For every $`w,s\ge 1` and every coordinate
 $`i\in[sw]`:
 $$`
 \operatorname{Inf}_i[\operatorname{Tribes}_{w,s}]
@@ -65,13 +62,11 @@ $$`
 `
 hence
 $`\mathbf I[\operatorname{Tribes}_{w,s}]=sw\cdot 2^{-(w-1)}(1-2^{-w})^{s-1}`,
-via the pivotality characterization (rest of the home tribe True and every other
-tribe False). Specializing to $`s_w`, Lean proves that the common coordinate
-influence times $`n_w/\ln n_w` tends to $`1`. It packages this as one relative
-error $`\varepsilon_w=o(1)`, uniform in every dependent coordinate
-$`i:\operatorname{Fin}(n_w)`, and reuses the same error in the total-influence
-identity. Thus both displayed book conclusions are represented literally along
-the sequence $`n=n_w\to\infty`.
+because a coordinate is pivotal exactly when the other variables in its tribe
+are True and every other tribe is False. Specializing to $`s_w`, the common
+coordinate influence times $`n_w/\ln n_w` tends to $`1`. Hence one relative
+error $`\varepsilon_w=o(1)`, uniform in the coordinate, gives both displayed
+conclusions along $`n=n_w\to\infty`.
 :::
 
 :::theorem "kkl-theorem" (lean := "FABL.maximumInfluence, FABL.exists_booleanInfluence_eq_maximumInfluence, FABL.edgeKKL, FABL.kkl") (uses := "definition-2.13, proposition-1.13") (tags := "section-4-2, fidelity-exact-with-explicit-constant, proof-from-chapter-9")
@@ -84,15 +79,13 @@ $$`
 \operatorname{Var}[f]\cdot\Omega\Bigl(\frac{\log n}{n}\Bigr).
 `
 The book states KKL in Section 4.2 and defers the proof to Section 9.6.
-Production keeps the canonical public declaration here and proves the uniform,
-full-dimensional estimate
+The proof there gives the explicit estimate
 $$`
 \operatorname{MaxInf}[f]
 \ge \operatorname{Var}[f]\frac{\ln n}{100n}.
 `
-For $`n>0`, a coordinate is proved to attain `MaxInf`; dimension zero is assigned
-the empty maximum $`0`. The displayed bound is therefore literal for every
-$`n`, including $`n=0,1` where its right-hand side is $`0`. The proof also exposes
+For $`n\ge1`, some coordinate attains $`\operatorname{MaxInf}[f]`; in
+dimension zero the empty maximum is $`0`. The proof also gives
 the exact Edge-KKL estimate from Theorem 9.24,
 $`\operatorname{MaxInf}[f]\ge 9\,9^{-K}/K^2` for
 $`K=\mathbf I[f]/\operatorname{Var}[f]`, and derives the stated constant using
@@ -115,7 +108,6 @@ $$`
 & \text{if }k=\#\{i:T_i\neq\emptyset\}>0.
 \end{cases}
 `
-Production proves both cases by reindexing the cube into independent tribes,
-factoring the block expectations, and reducing each factor to the complete Fourier
-expansion of $`\mathrm{AND}_w`.
+Reindexing the cube into independent tribes factors the block expectations;
+the complete Fourier expansion of $`\mathrm{AND}_w` then gives both cases.
 :::

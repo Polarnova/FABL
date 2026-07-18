@@ -66,8 +66,8 @@ theorem totalInfluence_evenMajority_eq_predecessor
   rcases even_iff_exists_two_mul.mp hn with ⟨k, rfl⟩
   have hk : 0 < k := by omega
   obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hk.ne'
-  simpa only [Nat.mul_add, Nat.mul_one, Nat.add_sub_cancel] using
-    totalInfluence_evenMajority_eq_oddMajority m f hf
+  convert totalInfluence_evenMajority_eq_oddMajority m f hf using 1
+  congr 3
 
 /-- The signed remainder when an even-arity majority function is expanded using `sqrt(n)` rather
 than `sqrt(n-1)`. -/

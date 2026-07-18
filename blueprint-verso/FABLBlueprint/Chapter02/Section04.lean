@@ -166,6 +166,14 @@ $$`
 \tag{2.7}`
 :::
 
+:::lemma_ "support-exercise-2.42" (lean := "FABL.noiseSensitivity_le_delta_mul_totalInfluence") (uses := "definition-2.27, theorem-2.49") (tags := "section-2-4, support, fidelity-exact")
+*Exercise 2.42.* For every
+$`f:\{-1,1\}^n\to\{-1,1\}` and every $`\delta\in[0,1]`,
+$$`
+\operatorname{NS}_\delta[f]\le\delta\mathbf I[f].
+`
+:::
+
 :::proposition "proposition-2.50" (lean := "FABL.noiseStability_le_rho_of_balanced, FABL.noiseStability_eq_rho_iff_signed_dictator") (uses := "definition-1.11, theorem-2.49, support-exercise-1.19ab, parseval") (tags := "section-2-4, fidelity-exact")
 *Proposition 2.50.* Let $`\rho\in(0,1)`. If
 $`f:\{-1,1\}^n\to\{-1,1\}` is unbiased, then

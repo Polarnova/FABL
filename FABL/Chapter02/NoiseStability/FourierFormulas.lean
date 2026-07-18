@@ -10,7 +10,7 @@ public import FABL.Chapter02.NoiseStability.NoiseOperator
 /-!
 # Fourier formulas for noise stability
 
-Book items: Example 2.44, Proposition 2.47, Theorem 2.49.
+Book items: Example 2.44, Proposition 2.47, Theorem 2.49, Exercise 2.42.
 
 The Fourier and spectral-moment formulas for noise stability and noise sensitivity from Section 2.4
 of O'Donnell's *Analysis of Boolean Functions*.
@@ -198,6 +198,38 @@ theorem noiseSensitivity_eq_sum_level
       intro k _
       ring
 
+/-- O'Donnell, Exercise 2.42: noise sensitivity is at most the noise rate times total
+influence. -/
+theorem noiseSensitivity_le_delta_mul_totalInfluence
+    (δ : ℝ) (hδ : δ ∈ Set.Icc (0 : ℝ) 1) (f : BooleanFunction n) :
+    noiseSensitivity δ hδ f ≤ δ * totalInfluence f.toReal := by
+  have hcoefficient (k : ℕ) :
+      1 - (1 - 2 * δ) ^ k ≤ 2 * δ * k := by
+    have hbernoulli :=
+      one_add_mul_le_pow
+        (a := -(2 * δ)) (by linarith [hδ.2] : (-2 : ℝ) ≤ -(2 * δ)) k
+    calc
+      1 - (1 - 2 * δ) ^ k ≤
+          1 - (1 + (k : ℝ) * (-(2 * δ))) :=
+        sub_le_sub_left hbernoulli 1
+      _ = 2 * δ * k := by ring
+  rw [noiseSensitivity_eq_sum_level,
+    totalInfluence_eq_sum_level_mul_fourierWeight]
+  rw [Finset.mul_sum, Finset.mul_sum]
+  apply Finset.sum_le_sum
+  intro k _
+  have hweight : 0 ≤ fourierWeightAtLevel k f.toReal := by
+    unfold fourierWeightAtLevel fourierWeight
+    positivity
+  calc
+    (1 / 2 : ℝ) *
+        ((1 - (1 - 2 * δ) ^ k) * fourierWeightAtLevel k f.toReal) ≤
+      (1 / 2 : ℝ) *
+        ((2 * δ * k) * fourierWeightAtLevel k f.toReal) := by
+      gcongr
+      exact hcoefficient k
+    _ = δ * ((k : ℝ) * fourierWeightAtLevel k f.toReal) := by ring
+
 /-- O'Donnell, Theorem 1.5: the Fourier coefficient of a Walsh monomial is its Kronecker delta. -/
 theorem fourierCoeff_monomial (S T : Finset (Fin n)) :
     fourierCoeff (monomial S) T = if S = T then 1 else 0 := by
@@ -216,7 +248,10 @@ theorem noiseStability_monomial
 theorem noiseStability_const_one
     (ρ : ℝ) (hρ : ρ ∈ Set.Icc (-1 : ℝ) 1) :
     noiseStability (n := n) ρ hρ (fun _ ↦ 1) = 1 := by
-  simpa [monomial] using noiseStability_monomial (n := n) ρ hρ ∅
+  rw [show (fun _ : {−1,1}^[n] ↦ (1 : ℝ)) = monomial ∅ by
+    funext x
+    simp [monomial]]
+  exact noiseStability_monomial (n := n) ρ hρ ∅
 
 /-- O'Donnell, Example 2.44: the constant `-1` function has stability one. -/
 theorem noiseStability_const_neg_one

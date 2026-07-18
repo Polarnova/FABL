@@ -66,7 +66,7 @@ theorem mem_perpendicularSubspace_iff (A : Submodule 𝔽₂ 𝔽₂^[n]) (γ : 
   constructor
   · intro h x hx
     have hxy : f₂DotProduct x γ = 0 := by
-      simpa [LinearMap.BilinForm.IsOrtho] using h x hx
+      simpa using h x hx
     simpa [f₂DotProduct, dotProduct_comm] using hxy
   · intro h x hx
     change f₂DotProduct x γ = 0

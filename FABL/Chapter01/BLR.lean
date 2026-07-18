@@ -299,7 +299,8 @@ theorem two_mul_blrAcceptanceProbability_sub_one_eq_sum_cube_fourierCoeff
       intro x _
       apply Finset.expect_congr rfl
       intro y _
-      simpa [blrAccepts] using two_mul_blrIndicator_sub_one (f x) (f y) (f (x + y))
+      simpa [blrAccepts, realSignEncodedFunction, signEncodedFunction] using
+        two_mul_blrIndicator_sub_one (f x) (f y) (f (x + y))
     _ = 𝔼 x, realSignEncodedFunction f x *
         (𝔼 y, realSignEncodedFunction f y * realSignEncodedFunction f (x + y)) := by
       apply Finset.expect_congr rfl
@@ -411,7 +412,6 @@ theorem localCorrection_successProbability (f : 𝔽₂^[n] → Sign) (S : Finse
               (fun y ↦ if f (x + y) ≠ binaryParitySign S (x + y) then (1 : ℝ) else 0)
               (fun y ↦ if f y ≠ binaryParitySign S y then (1 : ℝ) else 0) (by
                 intro y
-                dsimp only
                 have he : (Equiv.addRight x) y = y + x := rfl
                 rw [he, add_comm x y])
       _ ≤ ε := hbad

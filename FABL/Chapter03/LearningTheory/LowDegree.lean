@@ -411,11 +411,13 @@ theorem exactDegreeFourierEstimatorOutput_coefficient_cast_eq
     ((exactDegreeFourierEstimatorOutput target k sampleInputs).coefficient S : ℝ) =
       fourierCoeff target.toReal S.1 := by
   have hgranular := isFourierGranular_signValue_of_fourierDegree_le target hk (by
-    simpa [BooleanFunction.toReal] using hdegree)
+    rw [show (fun x ↦ signValue (target x)) = target.toReal by rfl]
+    exact hdegree)
   obtain ⟨z, hz⟩ := hgranular S.1
   have hz' : fourierCoeff target.toReal S.1 =
       (z : ℝ) * (2 * (2 : ℝ)⁻¹ ^ k) := by
-    simpa [BooleanFunction.toReal] using hz
+    rw [show target.toReal = (fun x ↦ signValue (target x)) by rfl]
+    exact hz
   have hgoodS := hgood S
   change ¬((degreeFourierCoefficientAccuracy k).1 : ℝ) ≤
     |realEmpiricalFourierCoeff target S.1 (sampleInputs S) -

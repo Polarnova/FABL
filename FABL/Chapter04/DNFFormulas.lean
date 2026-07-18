@@ -1084,7 +1084,8 @@ noncomputable def toDNFTerm (path : Path n Sign) : DNFTerm n where
 noncomputable def toCNFClause (path : Path n Sign) : DNFTerm n where
   literals := path.toLiterals.map Literal.negate
   nodupIndices := by
-    simpa [List.map_map, Literal.negate] using path.toLiterals_nodupIndices
+    simpa [List.map_map, Function.comp_def, Literal.negate] using
+      path.toLiterals_nodupIndices
 
 theorem width_toDNFTerm (path : Path n Sign) :
     path.toDNFTerm.width = path.length := by

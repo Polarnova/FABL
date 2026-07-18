@@ -22,8 +22,8 @@ logical negation $`\overline{x_i}`. No term contains both a variable and its
 negation. The number of literals in a term is its *width*. A DNF formula is
 often identified with the Boolean function $`f:\{0,1\}^n\to\{0,1\}` (or, in
 $`\pm1` notation, $`f:\{-1,1\}^n\to\{-1,1\}`) that it computes.
-Production declarations store each literal as a coordinate together with a
-required sign on the cube $`\{-1,1\}^n`, with $`-1` representing logical True.
+In $`\pm1` notation, a literal is a coordinate together with its required
+sign, with $`-1` representing logical True.
 :::
 
 :::lemma_ "example-4.2" (lean := "FABL.signToBit, FABL.sort3, FABL.sort3ReducedDNF, FABL.sort3DNF, FABL.sort3ReducedDNF_toBooleanFunction, FABL.sort3DNF_toBooleanFunction, FABL.size_sort3ReducedDNF, FABL.width_sort3ReducedDNF, FABL.size_sort3DNF, FABL.width_sort3DNF") (uses := "definition-4.1") (tags := "section-4-1, fidelity-exact-canonical-sign-bridge-with-redundancy-note")
@@ -42,7 +42,7 @@ $$`
 `
 The displayed formula has four terms, with its last term redundant; deleting it
 gives the size-$`3`, width-$`2` formula asserted in the following paragraph of
-the book. Production proves that both formulas compute $`\operatorname{Sort}_3`.
+the book. Both formulas compute $`\operatorname{Sort}_3`.
 :::
 
 :::lemma_ "support-exercise-4.1" (lean := "FABL.DNFTerm.minterm, FABL.DNFTerm.width_minterm, FABL.DNFTerm.eval_minterm_eq_neg_one_iff, FABL.mintermDNF, FABL.size_mintermDNF_le, FABL.width_mintermDNF_le, FABL.mintermDNF_toBooleanFunction, FABL.exists_DNFFormula_size_width_bound, FABL.hasDNFSizeLE_two_pow, FABL.hasDNFWidthLE_dimension") (uses := "definition-4.1") (tags := "section-4-1, support, fidelity-exact")
@@ -77,9 +77,10 @@ $`f^\dagger(x)=-f(-x)`.
 *Proposition 4.5.* Let $`f:\{0,1\}^n\to\{0,1\}` be computable by a decision
 tree $`T` of size $`s` and depth $`k`. Then $`f` is computable by a DNF (and
 also by a CNF) of size at most $`s` and width at most $`k`.
-Production builds one DNF term per True leaf path and a clause that excludes
-each False leaf path under the standard $`\mathbb F_2\leftrightarrow\{\pm1\}`
-cube bridge; both constructions carry exact evaluation theorems.
+Take one DNF term for each True leaf path and one clause excluding each False
+leaf path. Under the standard
+$`\mathbb F_2\leftrightarrow\{\pm1\}` correspondence, these formulas compute
+$`f` and have the asserted size and width.
 :::
 
 :::lemma_ "example-4.6" (lean := "FABL.sort3DecisionTreeDNFPrefix, FABL.sort3DecisionTreeDNFPrinted, FABL.size_sort3DecisionTreeDNFPrinted, FABL.width_sort3DecisionTreeDNFPrinted, FABL.sort3DecisionTreeDNFPrinted_counterexample, FABL.sort3DecisionTreeDNF, FABL.size_sort3DecisionTreeDNF, FABL.width_sort3DecisionTreeDNF, FABL.sort3DecisionTreeDNF_toBooleanFunction") (uses := "example-4.2, proposition-4.5, definition-3.13") (tags := "section-4-1, fidelity-book-erratum")
@@ -93,9 +94,8 @@ $$`
 `
 It has size $`4` (at most the tree size $`6`) and width $`3` (at most the tree
 depth $`3`). In the May 2021 edition the printed formula is not equivalent to
-$`\operatorname{Sort}_3`: on the sorted input $`110` it is False. Production
-records this counterexample and proves that the minimally corrected formula,
-obtained by replacing the last term by $`x_1\wedge x_2`, computes
+$`\operatorname{Sort}_3`: on the sorted input $`110` it is False. Replacing
+the last term by $`x_1\wedge x_2` gives a formula that computes
 $`\operatorname{Sort}_3` with the same size and width.
 :::
 
@@ -132,8 +132,8 @@ CNF) of size $`s` and let $`\epsilon\in(0,1]`. Then $`f` is $`\epsilon`-close
 width $`\log(s/\epsilon)`.
 
 The May 2021 text prints “DNF” in the conclusion even for the parenthetical CNF input, then says
-that the analogous proof works for CNFs. Production formalizes the intended respective forms:
-DNF input gives DNF output and CNF input gives CNF output, both with the natural cutoff
+that the analogous proof works for CNFs. Thus a DNF input gives a DNF output
+and a CNF input gives a CNF output, both with the natural cutoff
 $`\lceil\log_2(s/\epsilon)\rceil`.
 :::
 
@@ -155,6 +155,5 @@ collection $`\mathcal F` with $`|\mathcal F|\le s^{O(\log(1/\epsilon))}`.
 *Weaker form.* If $`s\le\operatorname{poly}(n)` and $`\epsilon>0` is any fixed
 constant, then one may take $`|\mathcal F|\le\operatorname{poly}(n)`.
 
-This is an open conjecture; the Blueprint records the book statement only and
-associates no Lean proof obligation.
+This conjecture remains open.
 :::

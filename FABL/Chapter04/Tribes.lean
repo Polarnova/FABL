@@ -1187,9 +1187,11 @@ theorem tribesCriticalDimensionError_isTheta_natCast :
     tribesCriticalDimensionError =Θ[Filter.atTop] (fun w : ℕ ↦ (w : ℝ)) := by
   have h := (Asymptotics.isTheta_refl (fun w : ℕ ↦ (w : ℝ)) Filter.atTop).mul
     tribesCriticalSizeError_isTheta_one
-  convert h using 1 <;> funext w
-  · exact tribesCriticalDimensionError_eq w
-  · simp
+  convert h using 1 <;> try rfl
+  · funext w
+    exact tribesCriticalDimensionError_eq w
+  · funext w
+    simp
 
 /-- The bounded size remainder is negligible compared with `2^w`. -/
 theorem tribesCriticalSizeError_isLittleO_two_pow :
@@ -1209,10 +1211,12 @@ theorem tribesCriticalDimension_isEquivalent_main :
   have herr' := (Asymptotics.IsLittleO.const_mul_right
     (ne_of_gt (Real.log_pos (by norm_num : (1 : ℝ) < 2))) herr).neg_left
   rw [Asymptotics.IsEquivalent]
-  convert herr' using 1 <;> funext w
-  · simp [tribesCriticalDimension, tribesCriticalSizeError]
+  convert herr' using 1 <;> try rfl
+  · funext w
+    simp [tribesCriticalDimension, tribesCriticalSizeError]
     ring
-  · ring
+  · funext w
+    ring
 
 /-- Proposition 4.12's `n_{w+1} = (2 + o(1)) n_w` conclusion. -/
 theorem tendsto_tribesCriticalDimension_succ_div :
@@ -1229,7 +1233,7 @@ theorem tendsto_tribesCriticalDimension_succ_div :
     hDM.comp_tendsto (Filter.tendsto_add_atTop_nat 1)
   have hratio : Asymptotics.IsEquivalent Filter.atTop
       (fun w ↦ D (w + 1) / D w) (fun w ↦ M (w + 1) / M w) := by
-    simpa only [Function.comp_apply] using hshift.div hDM
+    convert hshift.div hDM using 1 <;> rfl
   have hinv : Filter.Tendsto (fun w : ℕ ↦ ((w : ℝ))⁻¹) Filter.atTop (nhds 0) :=
     tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop
   have hsimple : Filter.Tendsto (fun w : ℕ ↦ 2 * (1 + ((w : ℝ))⁻¹))
@@ -1296,8 +1300,8 @@ private theorem tribesCriticalLogLimits :
       (tendsto_natCast_atTop_atTop (R := ℝ)).const_mul_atTop hlog2
   have hlogSmall :
       (fun w : ℕ ↦ Real.log (w : ℝ)) =o[Filter.atTop] (fun w ↦ (w : ℝ)) := by
-    simpa only [Function.comp_apply, id_eq] using
-      Real.isLittleO_log_id_atTop.comp_tendsto (tendsto_natCast_atTop_atTop (R := ℝ))
+    convert Real.isLittleO_log_id_atTop.comp_tendsto
+      (tendsto_natCast_atTop_atTop (R := ℝ)) using 1 <;> rfl
   have hlogDiv : Filter.Tendsto
       (fun w : ℕ ↦ Real.log (w : ℝ) / ((w : ℝ) * Real.log 2))
       Filter.atTop (nhds 0) := by
@@ -1443,7 +1447,12 @@ theorem tribesCriticalPowerRelativeError_isLittleO_one :
   rw [Asymptotics.isLittleO_one_iff]
   have h := tendsto_two_pow_mul_log_tribesCriticalDimension_div.sub
     (tendsto_const_nhds (x := (1 : ℝ)))
-  simpa [tribesCriticalPowerRelativeError] using h
+  change Filter.Tendsto
+    (fun w : ℕ ↦
+      (2 : ℝ) ^ w * Real.log (tribesCriticalDimension w) /
+        tribesCriticalDimension w - 1)
+    Filter.atTop (nhds 0)
+  simpa using h
 
 /-- The multiplicative decomposition holds once `n_w > 1`, hence eventually. -/
 theorem eventually_two_pow_eq_dimension_div_log_mul_one_add_error :
@@ -1701,7 +1710,12 @@ theorem tribesCriticalCoordinateInfluenceRelativeError_isLittleO_one :
   rw [Asymptotics.isLittleO_one_iff]
   have h := tendsto_tribesCriticalCoordinateInfluence_mul_dimension_div_log.sub
     (tendsto_const_nhds (x := (1 : ℝ)))
-  simpa [tribesCriticalCoordinateInfluenceRelativeError] using h
+  change Filter.Tendsto
+    (fun w : ℕ ↦
+      tribesCriticalCoordinateInfluence w * tribesCriticalDimension w /
+        Real.log (tribesCriticalDimension w) - 1)
+    Filter.atTop (nhds 0)
+  simpa using h
 
 /-- Proposition 4.13's per-coordinate asymptotic, with one uniform error for all coordinates. -/
 theorem eventually_booleanInfluence_tribesCritical_eq_log_dimension_div_mul_one_add_error :

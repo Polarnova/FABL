@@ -61,8 +61,10 @@ theorem correlationKeepProbability_le_one
 with probability `(1 + ρ) / 2` and reverses it with probability `(1 - ρ) / 2`. -/
 noncomputable def coordinateNoisePMF (ρ : ℝ) (hρ : ρ ∈ Set.Icc (-1 : ℝ) 1)
     (x : Sign) : PMF Sign :=
-  (PMF.bernoulli (correlationKeepProbability ρ hρ)
-    (correlationKeepProbability_le_one ρ hρ)).map fun keep ↦ if keep then x else -x
+  let p := correlationKeepProbability ρ hρ
+  let hp : p ≤ 1 := correlationKeepProbability_le_one ρ hρ
+  (PMF.ofFintype (fun b : Bool ↦ cond b p (1 - p)) (by simp [hp])).map fun keep ↦
+    if keep then x else -x
 
 /-- O'Donnell, Definition 2.40: for nonnegative correlation, the probability with which the
 first construction retains the original coordinate. -/
@@ -80,8 +82,9 @@ theorem nonnegativeCorrelationProbability_le_one
 otherwise replace it by an independent uniform sign. -/
 noncomputable def coordinateResamplingNoisePMF
     (ρ : ℝ) (hρ : ρ ∈ Set.Icc (0 : ℝ) 1) (x : Sign) : PMF Sign :=
-  (PMF.bernoulli (nonnegativeCorrelationProbability ρ hρ)
-    (nonnegativeCorrelationProbability_le_one ρ hρ)).bind fun retain ↦
+  let p := nonnegativeCorrelationProbability ρ hρ
+  let hp : p ≤ 1 := nonnegativeCorrelationProbability_le_one ρ hρ
+  (PMF.ofFintype (fun b : Bool ↦ cond b p (1 - p)) (by simp [hp])).bind fun retain ↦
       if retain then PMF.pure x else uniformPMF Sign
 
 /-- O'Donnell, Definition 2.40: on `ρ ∈ [0,1]`, retaining with probability `ρ` and otherwise
@@ -113,17 +116,17 @@ theorem coordinateResamplingNoisePMF_eq_coordinateNoisePMF
     ring
   have hsame : (p : ENNReal) + (1 - (p : ENNReal)) * 2⁻¹ = (q : ENNReal) := by
     simpa only [ENNReal.coe_add, ENNReal.coe_mul, ENNReal.coe_sub,
-      ENNReal.coe_inv_two] using congrArg ((↑) : NNReal → ENNReal) hsameNN
+      ENNReal.coe_inv_two, ENNReal.coe_one] using congrArg ((↑) : NNReal → ENNReal) hsameNN
   have hflip : (1 - (p : ENNReal)) * 2⁻¹ = 1 - (q : ENNReal) := by
-    simpa only [ENNReal.coe_mul, ENNReal.coe_sub, ENNReal.coe_inv_two] using
+    simpa only [ENNReal.coe_mul, ENNReal.coe_sub, ENNReal.coe_inv_two, ENNReal.coe_one] using
       congrArg ((↑) : NNReal → ENNReal) hflipNN
   ext y
   rcases Int.units_eq_one_or x with rfl | rfl <;>
     rcases Int.units_eq_one_or y with rfl | rfl <;>
     simp only [coordinateResamplingNoisePMF, coordinateNoisePMF,
-      PMF.bind_apply, PMF.map_apply, uniformPMF, PMF.bernoulli_apply,
+      PMF.bind_apply, PMF.map_apply, PMF.ofFintype_apply, uniformPMF,
       PMF.pure_apply, tsum_bool, Bool.cond_false,
-      Bool.cond_true, if_true, neg_neg, ENNReal.coe_sub] <;>
+      Bool.cond_true, if_true, neg_neg] <;>
     norm_num <;>
     first | simpa only [p, q, add_comm] using hsame | simpa only [p, q] using hflip
 
@@ -377,14 +380,15 @@ theorem pmfExpectation_coordinateNoisePMF_signValue
     pmfExpectation (coordinateNoisePMF ρ hρ x) signValue = ρ * signValue x := by
   let p := correlationKeepProbability ρ hρ
   have hp : p ≤ 1 := correlationKeepProbability_le_one ρ hρ
+  have hpENN : (p : ENNReal) ≤ 1 := by exact_mod_cast hp
   have hpcoe : (p : ℝ) = (1 + ρ) / 2 := rfl
-  have hsubcoe : ((1 - p : NNReal) : ℝ) = 1 - (p : ℝ) := NNReal.coe_sub hp
   rw [coordinateNoisePMF, pmfExpectation_map]
-  change pmfExpectation (PMF.bernoulli p hp)
+  change pmfExpectation (PMF.ofFintype (fun b : Bool ↦ cond b p (1 - p)) (by simp [hp]))
     (fun keep ↦ signValue (if keep then x else -x)) = _
-  simp only [pmfExpectation, PMF.bernoulli_apply, Fintype.sum_bool,
-    Bool.cond_false, Bool.cond_true, ENNReal.coe_toReal, ↓reduceIte]
-  rw [hsubcoe, hpcoe]
+  simp only [pmfExpectation, PMF.ofFintype_apply, Fintype.sum_bool,
+    Bool.cond_false, Bool.cond_true, Bool.apply_cond, ENNReal.coe_toReal, ↓reduceIte]
+  rw [ENNReal.toReal_sub_of_le hpENN (by simp), ENNReal.toReal_one,
+    ENNReal.coe_toReal, hpcoe]
   rcases Int.units_eq_one_or x with rfl | rfl <;> norm_num <;> ring
 
 /-- Expectations of coordinatewise products factor under an independent product PMF. -/
@@ -511,8 +515,8 @@ theorem correlatedSignPairPMF_expect_signValue_fst
     pmfExpectation (correlatedSignPairPMF ρ hρ)
       (fun xy ↦ signValue xy.1) = 0 := by
   rw [← correlatedPairPMF_one_map_signPairCubeOneEquiv ρ hρ, pmfExpectation_map]
-  simpa [signPairCubeOneEquiv, signCubeOneEquiv] using
-    correlatedPairPMF_expect_signValue_fst (n := 1) ρ hρ (0 : Fin 1)
+  change pmfExpectation (correlatedPairPMF ρ hρ) (fun xy ↦ signValue (xy.1 0)) = 0
+  exact correlatedPairPMF_expect_signValue_fst (n := 1) ρ hρ (0 : Fin 1)
 
 /-- The second sign in the one-coordinate correlated law has mean zero. -/
 theorem correlatedSignPairPMF_expect_signValue_snd
@@ -520,8 +524,8 @@ theorem correlatedSignPairPMF_expect_signValue_snd
     pmfExpectation (correlatedSignPairPMF ρ hρ)
       (fun xy ↦ signValue xy.2) = 0 := by
   rw [← correlatedPairPMF_one_map_signPairCubeOneEquiv ρ hρ, pmfExpectation_map]
-  simpa [signPairCubeOneEquiv, signCubeOneEquiv] using
-    correlatedPairPMF_expect_signValue_snd (n := 1) ρ hρ (0 : Fin 1)
+  change pmfExpectation (correlatedPairPMF ρ hρ) (fun xy ↦ signValue (xy.2 0)) = 0
+  exact correlatedPairPMF_expect_signValue_snd (n := 1) ρ hρ (0 : Fin 1)
 
 /-- The product of the two signs in the one-coordinate correlated law has expectation `ρ`. -/
 theorem correlatedSignPairPMF_expect_signValue_mul
@@ -529,8 +533,9 @@ theorem correlatedSignPairPMF_expect_signValue_mul
     pmfExpectation (correlatedSignPairPMF ρ hρ)
       (fun xy ↦ signValue xy.1 * signValue xy.2) = ρ := by
   rw [← correlatedPairPMF_one_map_signPairCubeOneEquiv ρ hρ, pmfExpectation_map]
-  simpa [signPairCubeOneEquiv, signCubeOneEquiv] using
-    correlatedPairPMF_expect_signValue_mul (n := 1) ρ hρ (0 : Fin 1)
+  change pmfExpectation (correlatedPairPMF ρ hρ)
+    (fun xy ↦ signValue (xy.1 0) * signValue (xy.2 0)) = ρ
+  exact correlatedPairPMF_expect_signValue_mul (n := 1) ρ hρ (0 : Fin 1)
 
 
 end FABL

@@ -198,7 +198,7 @@ theorem uniformPMF_bind_bind_map_triple {α : Type*} [Fintype α] [Nonempty α] 
           uniformPMF (α × α) := by
       exact uniformPMF_bind_map_pair
     have hmap := congrArg (PMF.map fun bc : α × α ↦ (a, bc)) hpair
-    simpa only [PMF.map_bind, PMF.map_comp, Function.comp_apply] using hmap
+    simpa only [PMF.map_bind, PMF.map_comp, Function.comp_def] using hmap
   calc
     (uniformPMF α).bind (fun a ↦
         (uniformPMF α).bind (fun b ↦

@@ -650,13 +650,15 @@ theorem correlatedGaussianMeasure_coordinateAxes_null
       (correlationFirstCoordinate ⁻¹' ({0} : Set ℝ)) = 0
     rw [← Measure.map_apply continuous_correlationFirstCoordinate.measurable
       (measurableSet_singleton 0), correlatedGaussianMeasure_map_firstCoordinate]
-    haveI : NoAtoms (gaussianReal 0 1) := noAtoms_gaussianReal (by norm_num)
+    haveI : NullSingletonClass (gaussianReal 0 1) :=
+      nullSingletonClass_gaussianReal (by norm_num)
     exact measure_singleton 0
   · change (correlatedGaussianMeasure ρ : Measure CorrelationPlane)
       (correlationSecondCoordinate ⁻¹' ({0} : Set ℝ)) = 0
     rw [← Measure.map_apply continuous_correlationSecondCoordinate.measurable
       (measurableSet_singleton 0), correlatedGaussianMeasure_map_secondCoordinate ρ hρ]
-    haveI : NoAtoms (gaussianReal 0 1) := noAtoms_gaussianReal (by norm_num)
+    haveI : NullSingletonClass (gaussianReal 0 1) :=
+      nullSingletonClass_gaussianReal (by norm_num)
     exact measure_singleton 0
 
 /-- The limiting Gaussian gives zero mass to the boundary of the disagreement region. -/

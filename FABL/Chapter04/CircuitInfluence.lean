@@ -368,8 +368,10 @@ theorem CircuitGate.hasWidthLE_extendedSignRestriction_max
     (extendedSignRestriction (values i) J z)
   change gate.HasWidthLE (extendedSignRestriction (values i) J z)
     (restrictedDecisionTreeDepth (values i) J z)
-  simpa [restrictedDecisionTreeDepth, restrictedBinaryFunction,
-    binaryOfBooleanFunction] using h
+  change gate.HasWidthLE (extendedSignRestriction (values i) J z)
+    (F₂DecisionTree.decisionTreeDepth
+      (binaryOfBooleanFunction (extendedSignRestriction (values i) J z)))
+  exact h
 
 /-- The exponential of a finite supremum is bounded by one plus the sum of exponentials. -/
 theorem two_pow_sup_le_one_add_sum {ι : Type*}
@@ -807,8 +809,9 @@ def freeRestriction (T : DNFTerm n)
     (ρ : Fin n → CoordRestriction) : DNFTerm n where
   literals := T.literals.filter fun ℓ ↦ decide (ρ ℓ.index = .free)
   nodupIndices := by
-    simpa [List.filter_map] using
-      T.nodupIndices.filter fun i ↦ decide (ρ i = .free)
+    have h := T.nodupIndices.filter fun i ↦ decide (ρ i = .free)
+    rw [List.filter_map] at h
+    simpa only [Function.comp_def] using h
 
 /-- The one-term DNF left by a restriction, or False when the term is falsified. -/
 def restrictionFormula (T : DNFTerm n)
@@ -945,10 +948,15 @@ theorem CircuitGate.hasWidthLE_restrictSign_evalTerm (gate : CircuitGate)
       (CoordRestriction.restrictSign (gate.evalTerm T) ρ)
       (T.restrictedGateWidth gate ρ) := by
   cases gate with
-  | and => simpa [CircuitGate.evalTerm, DNFTerm.restrictedGateWidth] using
-      T.hasDNFWidthLE_restrictSign ρ
-  | or => simpa [CircuitGate.evalTerm, DNFTerm.restrictedGateWidth] using
-      T.hasCNFWidthLE_restrictSign_clause ρ
+  | and =>
+      change HasDNFWidthLE (CoordRestriction.restrictSign T.eval ρ)
+        (T.restrictedWidthOf ρ)
+      exact T.hasDNFWidthLE_restrictSign ρ
+  | or =>
+      change HasCNFWidthLE
+        (CoordRestriction.restrictSign (CNFFormula.clauseEval T) ρ)
+        (T.restrictedWidthOf (CoordRestriction.negateAssignment ρ))
+      exact T.hasCNFWidthLE_restrictSign_clause ρ
 
 namespace DepthCircuit
 
@@ -975,9 +983,13 @@ theorem layer1Function_hasWidthLE_extendedSignRestriction_max
   apply C.layer1Gate.dual.hasWidthLE_mono
     (C.layer1RestrictedWidth_le_max (coordRestrictionOf J z) i)
   rw [← CoordRestriction.restrictSign_coordRestrictionOf]
-  simpa [layer1Function, evalLayer1] using
-    C.layer1Gate.hasWidthLE_restrictSign_evalTerm
-      (C.layer1.get i) (coordRestrictionOf J z)
+  have hlayer : C.layer1Function i =
+      C.layer1Gate.evalTerm (C.layer1.get i) := by
+    funext x
+    rfl
+  rw [hlayer]
+  exact C.layer1Gate.hasWidthLE_restrictSign_evalTerm
+    (C.layer1.get i) (coordRestrictionOf J z)
 
 end DepthCircuit
 
@@ -1313,6 +1325,13 @@ theorem exercise4_20b_of_quarterSwitching
     have hcount := C.tail.one_le_layerCount
     simp only [DepthCircuit.depth] at hdepth
     have hexponent : C.tail.layerCount - 1 = d - 2 := by omega
+    have hreal :
+        BooleanFunction.toReal
+            (extendedSignRestriction C.toBooleanFunction J z) =
+          extendedSignRestriction C.toBooleanFunction.toReal J z := by
+      funext x
+      rfl
+    rw [← hreal]
     simpa [power, hexponent] using hbound
   have hexpect :
       expectRandomRestriction n (1 / 2) (fun J z ↦

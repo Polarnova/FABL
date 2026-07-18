@@ -22,11 +22,11 @@ with probability at least $`9/10`, outputs a duplicate-free finite list
 $`L=\{U_1,\ldots,U_\ell\}` of subsets of $`[n]` such that
 $`|\widehat f(U)|\ge\tau` implies $`U\in L`, while $`U\in L` implies
 $`|\widehat f(U)|\ge\tau/2`. Consequently, Parseval's Theorem gives
-$`|L|\le\frac4{\tau^2}`. The formal witness uses
+$`|L|\le\frac4{\tau^2}`. One may take
 $`K=\left\lceil\frac4{\tau^2}\right\rceil` and
 $`\delta_{\mathrm{call}}=\frac1{40(n+1)(K+1)}`.
-It explicitly aborts before expanding an active family larger than $`K`;
-the verified invariant proves that this branch is unreachable whenever all
+The algorithm aborts before expanding an active family larger than $`K`;
+the invariant shows that this branch is unreachable whenever all
 queried estimates are accurate. If Proposition 3.40 schedules $`m` samples
 per bucket, every execution uses at most $`n(2K)(2m)` membership queries and
 at most
@@ -34,10 +34,9 @@ $`n\left(16(n+1)^2(K+1)^2+(2K)\,8(m+1)(n+1)\right)` charged local work. In
 this explicit oracle/charged-work cost model these are bounded respectively
 by $`\frac{2^{21}n(n+1)}{\tau^8}` and
 $`\frac{2^{25}n(n+1)^2}{\tau^8}`,
-so the advertised polynomial bound is a proved consequence rather than an
-informal complexity annotation. The adaptive union bound is at most $`1/20`,
+which gives the asserted polynomial bound. The adaptive union bound is at most $`1/20`,
 which is stronger than the theorem's required failure probability $`1/10`.
-The formal soundness conclusion is the stronger strict inequality
+The soundness conclusion may be strengthened to the strict inequality
 $`|\widehat f(U)|>\tau/2`.
 :::
 
@@ -110,8 +109,8 @@ $`f(y,z)\chi_S(y)\,f(y',z)\chi_S(y')`. The empirical estimator uses
 $`m=O\!\left(\frac{\log(1/\delta)}{\epsilon^2}\right)` independent samples,
 makes exactly $`2m` membership queries, and estimates
 the expectation in Equation (3.5) to the claimed accuracy and confidence.
-For arbitrary positive real $`\epsilon,\delta`, the formal theorem chooses
-positive rational scheduler inputs $`\epsilon',\delta'` satisfying
+For arbitrary positive real $`\epsilon,\delta`, choose positive rational
+parameters $`\epsilon',\delta'` satisfying
 $$`
 \frac{\min(\epsilon,1/2)}2<\epsilon'<\min(\epsilon,1/2),
 \qquad
@@ -124,7 +123,8 @@ E=\min(\epsilon,1/2),
 \qquad
 B=\left\lceil\log_2\left\lceil\frac{4}{\min(\delta,1/2)}\right\rceil\right\rceil.
 `
-The formal scheduler uses at most $`16B/E^2` samples. Every execution path
+A scheduler using these parameters needs at most $`16B/E^2` samples. Every
+execution path
 makes at most $`32B/E^2` membership queries and incurs at most
 $`256B(n+1)/E^2` charged local work, which proves the stated polynomial and
 logarithmic resource dependence.
@@ -157,10 +157,9 @@ Fourier weight, and then implement Theorem 3.29 using only membership
 queries to produce a finite sparse Fourier circuit $`h` satisfying
 $`\operatorname{dist}(f,h)\le\epsilon`. The complete construction must run
 in $`\operatorname{poly}(M,n,1/\epsilon)` time and succeed with probability
-at least $`9/10`. The finite Lean oracle-program witness uses the smaller rational threshold
-$`\tau=\epsilon/(4M)` so that all scheduler inputs remain finite rational
-data; this preserves the stated conclusion and polynomial resource bound.
-The two randomized stages each receive failure budget $`1/20`. The formal
-wrapper also proves that the concentration premise rules out $`M=0` in the
-nontrivial accuracy range.
+at least $`9/10`. It is enough to use the smaller rational threshold
+$`\tau=\epsilon/(4M)`; this preserves the conclusion and the polynomial
+resource bound. Give each randomized stage failure budget $`1/20`. In the
+nontrivial accuracy range, the concentration premise itself rules out
+$`M=0`.
 :::

@@ -133,7 +133,7 @@ theorem expect_sq_mul_sq_sq_le (d e : {−1,1}^[n] → ℝ) :
   have h := Finset.expect_mul_sq_le_sq_mul_sq
     (Finset.univ : Finset ({−1,1}^[n])) (fun x ↦ d x ^ 2) (fun x ↦ e x ^ 2)
   convert h using 1
-  all_goals ring_nf
+  all_goals first | rfl | ring_nf
 
 private theorem expect_sq_nonneg (f : {−1,1}^[n] → ℝ) :
     0 ≤ 𝔼 x, f x ^ 2 := by
@@ -507,8 +507,7 @@ theorem one_div_144_le_uniformProbability_four_mul_sq_ge_secondMoment
     have h := Finset.expect_mul_sq_le_sq_mul_sq
       (Finset.univ : Finset Ω) (fun x ↦ g x ^ 2) indicator
     change r ^ 2 ≤ q * p
-    convert h using 1
-    dsimp [q, p]
+    convert h using 1 <;> try rfl
     apply congrArg₂ (fun u v : ℝ ↦ u * v)
     · apply Finset.expect_congr rfl
       intro x _

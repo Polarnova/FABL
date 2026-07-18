@@ -730,7 +730,7 @@ theorem two_thirds_div_nat_isLittleO_one :
     (fun n : ℕ ↦ (2 / 3 : ℝ) / n) =o[atTop]
       (fun _n : ℕ ↦ (1 : ℝ)) := by
   have hscaled := three_div_nat_isLittleO_one.const_mul_left (2 / 9 : ℝ)
-  convert hscaled using 1
+  convert hscaled using 1 <;> try rfl
   funext n
   ring
 

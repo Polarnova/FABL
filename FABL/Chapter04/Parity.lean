@@ -946,7 +946,8 @@ theorem eval_parityOutputInputs (r : ℕ) (gate : CircuitGate)
             simp only [i, Equiv.apply_symm_apply]
             intro heq
             apply hproduct
-            simpa [g] using heq
+            change parityBlockProduct (actual ⟨0, by simp⟩) = -1 at heq
+            exact heq
           have hvalue := hall i hi
           have hmismatch := (parityLayerValues_or_eq_neg_one_iff r 0 actual i).mp hvalue
           exact hmismatch (by simp only [i, Equiv.apply_symm_apply])
@@ -1281,7 +1282,9 @@ theorem eval_parityDepthCircuitFromBlocks (n r q : ℕ) (x : {−1,1}^[n]) :
   convert parityPaddedTail_eval n r q x using 1
   apply congrArg ((parityPaddedTail n r q).eval .or)
   funext i
-  simpa only using eval_parityFirstLayer n r (q + 1) x i
+  change CircuitGate.and.evalTerm
+    ((parityFirstLayer n r (q + 1)).get (Fin.cast _ i)) x = _
+  exact eval_parityFirstLayer n r (q + 1) x i
 
 /-! ## Identification with full parity -/
 
@@ -1359,7 +1362,8 @@ theorem size_parityDepthCircuitFromBlocks_le (n r q : ℕ) (hr : 1 ≤ r) :
     (parityDepthCircuitFromBlocks n r q).size ≤
       (q + 2) * r ^ (q + 1) * 2 ^ r := by
   rw [size_parityDepthCircuitFromBlocks]
-  simpa only [Nat.add_sub_cancel] using sum_parityLayerSize_le r (q + 2) hr (by omega)
+  have hsub : q + 2 - 1 = q + 1 := by omega
+  simpa only [hsub] using sum_parityLayerSize_le r (q + 2) hr (by omega)
 
 /-- Real `h`th root used by the canonical block decomposition. -/
 noncomputable def parityRealRoot (n h : ℕ) : ℝ :=

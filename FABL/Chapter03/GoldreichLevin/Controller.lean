@@ -375,7 +375,13 @@ theorem goldreichLevinOutput_sound_of_accurate
       subst U
       have hparseval := sum_sq_fourierCoeff_eq_one target
       have hsq : fourierCoeff target.toReal ∅ ^ 2 = 1 := by
-        simpa using hparseval
+        have huniv : (Finset.univ : Finset (Finset (Fin 0))) = {∅} := by
+          ext S
+          simp only [Finset.mem_univ, Finset.mem_singleton, true_iff]
+          ext i
+          exact Fin.elim0 i
+        rw [huniv, Finset.sum_singleton] at hparseval
+        exact hparseval
       have habs : |fourierCoeff target.toReal ∅| = 1 := by
         nlinarith [sq_abs (fourierCoeff target.toReal ∅),
           abs_nonneg (fourierCoeff target.toReal ∅)]

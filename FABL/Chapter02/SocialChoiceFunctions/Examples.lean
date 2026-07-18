@@ -113,13 +113,15 @@ theorem recursiveMajority_unanimous (n : ℕ) (hn : 0 < n) :
         rw [show (fun i ↦ recursiveMajority n d
             (recursiveInputBlock (fun _ ↦ 1) i)) = (fun _ ↦ 1) by
           funext i
-          simpa [recursiveInputBlock] using hp]
+          change recursiveMajority n d (fun _ ↦ 1) = 1
+          exact hp]
         exact (majority_unanimous n hn).1
       · simp only [recursiveMajority_succ]
         rw [show (fun i ↦ recursiveMajority n d
             (recursiveInputBlock (fun _ ↦ -1) i)) = (fun _ ↦ -1) by
           funext i
-          simpa [recursiveInputBlock] using hm]
+          change recursiveMajority n d (fun _ ↦ -1) = -1
+          exact hm]
         exact (majority_unanimous n hn).2
 
 /-- A dictator is monotone. -/
@@ -288,12 +290,14 @@ theorem tribes_unanimous (w s : ℕ) (hw : 0 < w) (hs : 0 < s) :
   · change orFunction s (fun i ↦ andFunction w (inputBlock (fun _ ↦ 1) i)) = 1
     rw [show (fun i ↦ andFunction w (inputBlock (fun _ ↦ 1) i)) = (fun _ ↦ 1) by
       funext i
-      simpa [inputBlock] using handPos]
+      change andFunction w (fun _ ↦ 1) = 1
+      exact handPos]
     exact horPos
   · change orFunction s (fun i ↦ andFunction w (inputBlock (fun _ ↦ -1) i)) = -1
     rw [show (fun i ↦ andFunction w (inputBlock (fun _ ↦ -1) i)) = (fun _ ↦ -1) by
       funext i
-      simpa [inputBlock] using handNeg]
+      change andFunction w (fun _ ↦ -1) = -1
+      exact handNeg]
     exact horNeg
 
 /-- Permute the blocks and, uniformly, the positions within each block. -/
