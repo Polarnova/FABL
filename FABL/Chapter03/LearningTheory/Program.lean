@@ -355,7 +355,7 @@ def addOutcomeCost {α : Type u} (extra : LearningCost) (outcome : α × Learnin
     α × LearningCost :=
   (outcome.1, extra + outcome.2)
 
-/-- Sequential composition of finite learning syntax without hiding any oracle node. -/
+/-- Sequential composition of finite learning syntax preserving every oracle node. -/
 def bind {access : LearningAccess} {α β : Type u}
     (next : α → LearningProgram n access β) :
     LearningProgram n access α → LearningProgram n access β

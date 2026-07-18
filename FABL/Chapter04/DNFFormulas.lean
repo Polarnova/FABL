@@ -19,8 +19,8 @@ and Exercise 3.17 support.
 Formalization of Section 4.1 of O'Donnell's *Analysis of Boolean Functions*.
 
 Representation note. The book introduces DNF syntax over `{0,1}` and then analyses
-functions on `{-1,1}` with `-1 = True`. Production declarations use the sign cube: a
-literal stores a required sign for a coordinate. Computed Boolean functions match the book.
+functions on `{-1,1}` with `-1 = True`. In the sign-cube formulation, a literal stores a
+required sign for a coordinate. The resulting Boolean functions match the book.
 -/
 
 open Finset

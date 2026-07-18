@@ -1021,10 +1021,9 @@ theorem lowDegreeFourierEstimatorProgram_cost_le_workBound
   simp only [lowDegreeLearnerWorkCost]
   omega
 
-/-- Exact finite form of O'Donnell's Theorem 4.31.  The concentration premise is the output of
-the LMN theorem at the requested learning error divided by two.  Its explicit cutoff determines a
-real random-example program; a separately verified work bound records the asymptotic arithmetic
-without weakening the requested error. -/
+/-- Exact finite form of O'Donnell's Theorem 4.31. The concentration premise is the output of
+the LMN theorem at half the requested learning error. Its explicit cutoff determines a
+random-example program, and a separate work bound records the asymptotic arithmetic. -/
 theorem theorem4_31_of_lowDegreeConcentration
     (d size degree workBound : ℕ) (ε : PositiveLearningParameter)
     (hconcentration : ∀ target ∈ depthSizeCircuitClass n d size,

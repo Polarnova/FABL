@@ -1221,7 +1221,7 @@ theorem exists_majorityFourierConcentrationCutoff
       (limiting_tail_sub_finite_tail_mem_Icc hn ⟨q, rfl⟩ hnk).1
     exact (by linarith : fourierWeightAbove k (majority n).toReal ≤ ε)
 
-/-- Corollary 5.23, collecting the two family asymptotics without weakening either error term. -/
+/-- Corollary 5.23, collecting the two family asymptotics with their respective error terms. -/
 theorem corollary5_23
     (n : {k : ℕ // Odd k} → ℕ)
     (hnOdd : ∀ k : {k : ℕ // Odd k}, Odd (n k))

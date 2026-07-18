@@ -1565,8 +1565,8 @@ theorem DNFTerm.assignmentOfBlock_blockCode_literal
   unfold DNFTerm.relativeBit
   rw [add_assoc, CharTwo.add_self_eq_zero, add_zero]
 
-/-- Read a block's selected literal coordinates without exposing a term-length-dependent type to
-the decoder. -/
+/-- Read a block's selected literal coordinates in the list representation accepted by the
+decoder. -/
 noncomputable def SwitchingBlockCode.termCoordinates (B : SwitchingBlockCode w)
     (T : DNFTerm n) : List (Fin n) :=
   T.coordinatesAtPositions <|

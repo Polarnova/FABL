@@ -17,9 +17,9 @@ public import FABL.Chapter04.RandomRestrictions
 
 Book items: Exercise 4.20 and Theorem 4.30.
 
-The proof follows the book's random-restriction induction.  Its pure core works directly with
+The proof follows the book's random-restriction induction. Its core works directly with
 the semantic evaluation of a `CircuitTail`: switching a whole layer supplies bounded-width
-descriptions for the next tail without constructing a second circuit syntax.
+descriptions directly to the next tail.
 -/
 
 open Finset

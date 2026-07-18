@@ -762,8 +762,8 @@ theorem lemma4_21 (f : BooleanFunction n) {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ 
         exact mul_nonneg (deltaRandomIntersectionTail_nonneg hδ0.le hδ1 U k) (sq_nonneg _)
   nlinarith
 
-/-- Exact quantitative implication behind Theorem 4.22, parameterized by any independently
-proved switching bound rather than assuming a particular Håstad declaration. -/
+/-- Exact quantitative implication behind Theorem 4.22, parameterized by an independently proved
+switching bound. -/
 theorem theorem4_22_of_switchingFailureProbability_le
     (f : BooleanFunction n) {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ ≤ 1)
     {k : ℕ} (hk : 0 < k) {ε : ℝ}

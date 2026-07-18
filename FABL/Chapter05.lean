@@ -70,9 +70,9 @@ import FABL.Chapter05.PrescribedFourierSupport
 /-!
 # Chapter 5: Majority and threshold functions
 
-Chapter 5 is complete. Every result proved within the chapter's formalization boundary is associated
-with compiled production declarations. Open conjectures, external results, and arguments deferred
-by the book to later chapters remain explicit statement-only Blueprint nodes.
+Chapter 5 is complete. Every chapter-local result is associated with a proved Lean declaration.
+Open conjectures, external results, and arguments deferred by the book to later chapters remain
+explicit statement-only Blueprint nodes.
 
 This file is the public import surface for Chapter 5.
 -/

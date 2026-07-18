@@ -158,13 +158,13 @@ noncomputable def queriedFiniteFamilyFourierEstimatorProgramWithSamples
   .uniformInputBatch (𝓕.card * m) fun inputs ↦
     queriedFiniteFamilyFourierEstimatorFromInputs 𝓕 m inputs
 
-/-- Full exact cost of the query implementation, including uniform input generation. -/
+/-- Full exact cost of the query learner, including uniform input generation. -/
 def queriedFiniteFamilyFourierEstimatorCost
     (𝓕 : Finset (Finset (Fin n))) (m : ℕ) : LearningCost :=
   ⟨0, 𝓕.card * m,
     𝓕.card * m * n + 𝓕.card * m + 𝓕.card * m * (n + 1)⟩
 
-/-- Exact output distribution and pathwise cost of the query implementation. -/
+/-- Exact output distribution and pathwise cost of the query learner. -/
 theorem runWithCost_queriedFiniteFamilyFourierEstimatorProgramWithSamples
     (target : BooleanFunction n) (𝓕 : Finset (Finset (Fin n))) (m : ℕ) :
     LearningProgram.runWithCost target
@@ -199,8 +199,7 @@ theorem map_uniformPMF_finiteFamilyLinearToMatrixEquiv
       uniformPMF (𝓕 → Fin m → {−1,1}^[n])
     := map_uniformPMF_equiv (finiteFamilyLinearToMatrixEquiv 𝓕 m {−1,1}^[n])
 
-/-- Reshaping exposes exactly the uniform matrix law and the existing deterministic estimator
-output, so all downstream concentration lemmas can be reused without a new analytic proof. -/
+/-- Reshaping identifies the uniform matrix law with the deterministic estimator output. -/
 theorem runWithCost_queriedFiniteFamilyFourierEstimatorProgramWithSamples_uniformMatrix
     (target : BooleanFunction n) (𝓕 : Finset (Finset (Fin n))) (m : ℕ) :
     LearningProgram.runWithCost target

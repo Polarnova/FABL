@@ -14,8 +14,7 @@ Book items: Definition 1.2, Theorem 1.1, Exercise 1.10, Exercise 1.11(b).
 
 Formalization of Sections 1.1 and 1.2 of O'Donnell's *Analysis of Boolean Functions*.
 
-The section-specific representation of the domain will be introduced with the first mathematical
-definition. FABL does not impose a project-wide cube representation in advance.
+Each section uses the cube representation appropriate to its mathematical statements.
 -/
 
 open scoped BigOperators

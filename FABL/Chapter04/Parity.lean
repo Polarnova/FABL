@@ -1491,8 +1491,8 @@ theorem hasDepthCircuit_parity_depth_two (n : ℕ) :
   · rw [DepthCircuit.toBooleanFunction_ofDNF]
     exact parityDNF_toBooleanFunction n
 
-/-- Exercise 4.12(d) with the book's full range `d ≥ 2`, without weakening its parity target
-or changing the layered alternating circuit model. -/
+/-- Exercise 4.12(d) with the book's full range `d ≥ 2`, parity target, and layered alternating
+circuit model. -/
 theorem hasDepthCircuit_parity_general (n d : ℕ) (hd : 2 ≤ d) :
     DepthCircuit.HasDepthCircuit (parityFunction (Finset.univ : Finset (Fin n))) d
       ((d - 1) * parityBlockSide n (d - 1) ^ (d - 2) *

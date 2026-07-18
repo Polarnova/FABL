@@ -112,8 +112,7 @@ theorem not_isFourierSpectrumConcentratedOn_empty
   rcases positiveLearningParameter_toReal_mem_Ioc ε with ⟨hεpos, hεle⟩
   nlinarith
 
-/-- Hence every finite family satisfying Theorem 3.29's concentration premise is automatically
-nonempty; this discharges the theorem's empty-family branch without a fictitious estimator. -/
+/-- Every finite family satisfying Theorem 3.29's concentration premise is nonempty. -/
 theorem finiteFamily_nonempty_of_spectrum_concentrated
     (target : BooleanFunction n) (𝓕 : Finset (Finset (Fin n)))
     (ε : PositiveLearningParameter)

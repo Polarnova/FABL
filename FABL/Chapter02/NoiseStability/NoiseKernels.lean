@@ -25,8 +25,8 @@ namespace FABL
 
 variable {n : ℕ}
 
-/-- O'Donnell, Definition 2.40 implementation: the independent product of a finite family of
-probability mass functions. -/
+/-- O'Donnell, Definition 2.40: the independent product of a finite family of probability mass
+functions. -/
 noncomputable def independentProductPMF {ι : Type*} [Fintype ι]
     {α : ι → Type*} [∀ i, Fintype (α i)] (p : ∀ i, PMF (α i)) :
     PMF (∀ i, α i) := by
@@ -272,8 +272,8 @@ theorem correlatedPairPMF_one_map_signPairCubeOneEquiv
       simpa using h.symm
     simp [hne]
 
-/-- O'Donnell, Definitions 2.40--2.43 implementation: finite expectation with respect to a
-probability mass function. -/
+/-- O'Donnell, Definitions 2.40--2.43: finite expectation with respect to a probability mass
+function. -/
 noncomputable def pmfExpectation {Ω : Type*} [Fintype Ω] (p : PMF Ω)
     (f : Ω → ℝ) : ℝ :=
   ∑ x, (p x).toReal * f x

@@ -74,8 +74,7 @@ cutoff of the displayed asymptotic order.
 *Remark 4.29.* Håstad has slightly sharpened the degree bound in the LMN
 Theorem to
 $`O\bigl(\log(s/\epsilon)\bigr)^{d-2}\cdot\log s\cdot\log(1/\epsilon)`.
-This strengthening requires Håstad's sharper argument and does not follow
-from the ordinary switching-lemma proof of LMN.
+This strengthening uses Håstad's sharper switching argument.
 :::
 
 :::lemma_ "support-exercise-4.20" (lean := "FABL.DepthCircuit.HasDepthWidthTailSizeCircuit, FABL.DepthCircuit.exercise4_20, FABL.DepthCircuit.HasDepthSizeCircuit, FABL.DepthCircuit.exercise4_20b") (uses := "theorem-4.20, definition-4.26, definition-4.27, lemma-4.19") (tags := "section-4-5, support, fidelity-finite-explicit-asymptotic-bridge")

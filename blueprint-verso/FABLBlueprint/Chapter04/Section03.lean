@@ -95,6 +95,5 @@ $$`
 which implies the stated $`O(\log s)` claim. Select one satisfied
 term on every true input, bound the number of negative pivotal coordinates by that
 term's width, prove the tail estimate
-$`\Pr[\operatorname{width}\ge k]\le s2^{-k}`, and sum the tails. This is a direct
-proof of the same claim; unlike the book's proof, it does not use random restrictions.
+$`\Pr[\operatorname{width}\ge k]\le s2^{-k}`, and sum the tails.
 :::

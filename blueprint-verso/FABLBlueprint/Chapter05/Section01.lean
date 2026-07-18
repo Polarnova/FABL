@@ -197,8 +197,7 @@ $$`
 \lVert p\rVert_2
 \le \exp\bigl(k(2/r-1)\bigr)\lVert p\rVert_r.
 `
-The proof is deferred to Chapter 9. The full range $`1\le r\le2` is needed
-below; a weaker local estimate does not suffice.
+The proof is given in Chapter 9.
 :::
 
 :::theorem "theorem-5.9" (uses := "definition-1.19, definition-5.4, plancherel, post-theorem-9.22") (tags := "section-5-1, deferred, later-chapter-dependency")
