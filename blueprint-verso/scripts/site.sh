@@ -104,31 +104,31 @@ validate_site() {
       and (($graph.groups
         | map({key: .label, value: (.children | length)})
         | from_entries) == {
-          "fabl-chapter-1": 43,
-          "fabl-chapter-2": 79,
-          "fabl-chapter-3": 62,
-          "fabl-chapter-4": 45,
-          "fabl-chapter-5": 108
+          "«fabl-chapter-1»": 43,
+          "«fabl-chapter-2»": 79,
+          "«fabl-chapter-3»": 62,
+          "«fabl-chapter-4»": 45,
+          "«fabl-chapter-5»": 108
         })
       and (all($graph.groups[]; .declared == true))
       and (([$graph.nodes[].parent]
         | group_by(.)
         | map({key: .[0], value: length})
         | from_entries) == {
-          "fabl-chapter-1": 43,
-          "fabl-chapter-2": 79,
-          "fabl-chapter-3": 62,
-          "fabl-chapter-4": 45,
-          "fabl-chapter-5": 108
+          "«fabl-chapter-1»": 43,
+          "«fabl-chapter-2»": 79,
+          "«fabl-chapter-3»": 62,
+          "«fabl-chapter-4»": 45,
+          "«fabl-chapter-5»": 108
         })
       and (([$graph.variants[].key] | sort) == [
         "full",
         "group",
-        "parent:fabl-chapter-1",
-        "parent:fabl-chapter-2",
-        "parent:fabl-chapter-3",
-        "parent:fabl-chapter-4",
-        "parent:fabl-chapter-5"
+        "parent:«fabl-chapter-1»",
+        "parent:«fabl-chapter-2»",
+        "parent:«fabl-chapter-3»",
+        "parent:«fabl-chapter-4»",
+        "parent:«fabl-chapter-5»"
       ])
       and (all($graph.variants[]; .options.direction == "LR"))
       and (all($graph.edges[]; .axes == ["statement"]))
