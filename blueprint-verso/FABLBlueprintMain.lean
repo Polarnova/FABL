@@ -64,7 +64,7 @@ a.bp_external_decl_source_path {
 }
 "#⟩
 
-private def blueprintReaderJsTemplate : String := r#"
+private def blueprintReaderJsTemplate : String := r##"
 (function () {
   "use strict";
 
@@ -248,7 +248,7 @@ private def blueprintReaderJsTemplate : String := r#"
     installFidelityControlWhenReady();
   });
 })();
-"#
+"##
 
 private def blueprintReaderJs
     (fablRevision probabilityRevision mathlibRevision : String) : JS :=
@@ -272,8 +272,8 @@ def fablRenderConfig (readerJs : JS) : RenderConfig :=
     }
   }
 
-private def sourceRevision (variable fallback : String) : IO String := do
-  return (← IO.getEnv variable).getD fallback
+private def sourceRevision (name fallback : String) : IO String := do
+  return (← IO.getEnv name).getD fallback
 
 def main (args : List String) : IO UInt32 := do
   let fablRevision ← sourceRevision "FABL_SOURCE_REVISION" "main"
