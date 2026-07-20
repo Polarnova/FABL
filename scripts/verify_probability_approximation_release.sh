@@ -4,17 +4,17 @@ set -euo pipefail
 
 workspace=${1:-.}
 package="$workspace/.lake/packages/ProbabilityApproximation"
-release_tag=v0.9.5
-release_commit=26e5a4aff0f117eb5b2ad97d13224fb38dc2f417
+release_tag=v0.9.6
+release_commit=c89fba908a33ba741836407f43c67609e2d05279
 
 case "$(uname -s):$(uname -m)" in
   Darwin:arm64)
     archive=ProbabilityApproximation-arm64-apple-darwin24.6.0.tar.gz
-    expected_sha256=06c11571bca3937868a1ca29c374c86c392e906b03dda8e50a16ba592ceb7c08
+    expected_sha256=a22c7da332c174d739f33e90e68f48a79fbec65b0cde1673776993c4260cc918
     ;;
   Linux:x86_64)
     archive=ProbabilityApproximation-x86_64-unknown-linux-gnu.tar.gz
-    expected_sha256=ca68954269ae380ef33df181fc2a4e81d2e95c20a9fd859209561ccd0d23ef2b
+    expected_sha256=ae9fe85ed1d8222c3b165e383279b05075974c43465ed352c56eb025e212dbc7
     ;;
   *)
     printf 'ProbabilityApproximation %s has no pinned release asset for %s/%s\n' \

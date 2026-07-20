@@ -21,7 +21,7 @@ rev = "v4.32.0"
 [[require]]
 name = "ProbabilityApproximation"
 git = "https://github.com/Polarnova/ProbabilityApproximation.git"
-rev = "v0.9.5"
+rev = "v0.9.6"
 
 [[lean_lib]]
 name = "FABL"

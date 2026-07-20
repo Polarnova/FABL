@@ -105,7 +105,7 @@ normalization of `hammingDist` to relative distance. Add an `lpNorm`, moment, or
 bridge only when a downstream book theorem needs it.
 
 Quantitative normal approximation is supplied by the pinned
-`Polarnova/ProbabilityApproximation` v0.9.5 release. Import an external theorem only in the
+`Polarnova/ProbabilityApproximation` v0.9.6 release. Import an external theorem only in the
 book-facing module that applies it, using its defining external module and specializing the
 original declaration directly. Do not reexport it through a FABL facade or compatibility alias.
 The Bentkus and Berry--Esseen `.olean` files come from the matching GitHub release archive and must
