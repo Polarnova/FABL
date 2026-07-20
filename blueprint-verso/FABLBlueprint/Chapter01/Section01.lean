@@ -14,7 +14,7 @@ open Informal
 
 #doc (Manual) "On analysis of Boolean functions" =>
 
-:::definition "support-hamming-cube" (lean := "FABL.SignCube, FABL.F₂Cube, hammingDist") (tags := "section-1-1, support")
+:::definition "support-hamming-cube" (parent := "fabl-chapter-1") (lean := "FABL.SignCube, FABL.F₂Cube, hammingDist") (tags := "section-1-1, support")
 *Section 1.1.* The sign representation of the Hamming cube is
 $`\{-1,1\}^n`, and its additive representation is $`\mathbb F_2^n`. For two
 strings $`x` and $`y` in a common product, their Hamming distance is

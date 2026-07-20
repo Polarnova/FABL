@@ -24,7 +24,7 @@ open Informal
 
 #doc (Manual) "Degree-1 weight" =>
 
-:::lemma_ "support-exercise-5.29" (lean := "FABL.abs_vectorFourierCoeff_setIndicator_coordinateSubcube, FABL.expect_setIndicator_coordinateSubcube, FABL.sum_sq_vectorFourierCoeff_support_card_one_setIndicator_coordinateSubcube") (uses := "definition-1.19, support-affine-subspaces-and-subcubes, support-exercise-3.11") (tags := "section-5-4, support, fidelity-generalized-zero-codimension")
+:::lemma_ "support-exercise-5.29" (parent := "fabl-chapter-5") (lean := "FABL.abs_vectorFourierCoeff_setIndicator_coordinateSubcube, FABL.expect_setIndicator_coordinateSubcube, FABL.sum_sq_vectorFourierCoeff_support_card_one_setIndicator_coordinateSubcube") (uses := "definition-1.19, support-affine-subspaces-and-subcubes, support-exercise-3.11") (tags := "section-5-4, support, fidelity-generalized-zero-codimension")
 *Exercise 5.29 (Fourier weight of a subcube).* Let
 $`J\subseteq[n]` have cardinality $`k\ge1`, fix values
 $`a_i\in\mathbb F_2` for $`i\in J`, and let
@@ -50,7 +50,7 @@ Thus $`\mathbb E[f]=2^{-k}` and
 $`\mathbf W^1[f]=k2^{-2k}`.
 :::
 
-:::proposition "proposition-5.24" (lean := "FABL.expectation_and_degreeOneWeight_setIndicator_coordinateSubcube") (uses := "support-exercise-5.29") (tags := "section-5-4, fidelity-exact")
+:::proposition "proposition-5.24" (parent := "fabl-chapter-5") (lean := "FABL.expectation_and_degreeOneWeight_setIndicator_coordinateSubcube") (uses := "support-exercise-5.29") (tags := "section-5-4, fidelity-exact")
 *Proposition 5.24.* Let $`f:\mathbb F_2^n\to\{0,1\}` be the indicator of a
 subcube of codimension $`k\ge1`, for example the $`\operatorname{AND}_k`
 function. Then
@@ -61,7 +61,7 @@ $$`
 `
 :::
 
-:::lemma_ "support-exercise-5.30" (lean := "FABL.normalizedRademacherSum, FABL.hammingUpperTailIndicator, FABL.hammingUpperTailIndicator_isSymmetric, FABL.fourierCoeff_hammingUpperTailIndicator_singleton, FABL.fourierWeightAtLevel_one_hammingUpperTailIndicator, FABL.abs_expect_hammingUpperTailIndicator_sub_standardGaussianUpperTail_le, FABL.tendsto_expect_hammingUpperTailIndicator, FABL.tendsto_expect_hammingUpperTailIndicator_mul_normalizedRademacherSum") (uses := "berry-esseen-theorem, definition-1.19, plancherel") (tags := "section-5-4, support, fidelity-exact")
+:::lemma_ "support-exercise-5.30" (parent := "fabl-chapter-5") (lean := "FABL.normalizedRademacherSum, FABL.hammingUpperTailIndicator, FABL.hammingUpperTailIndicator_isSymmetric, FABL.fourierCoeff_hammingUpperTailIndicator_singleton, FABL.fourierWeightAtLevel_one_hammingUpperTailIndicator, FABL.abs_expect_hammingUpperTailIndicator_sub_standardGaussianUpperTail_le, FABL.tendsto_expect_hammingUpperTailIndicator, FABL.tendsto_expect_hammingUpperTailIndicator_mul_normalizedRademacherSum") (uses := "berry-esseen-theorem, definition-1.19, plancherel") (tags := "section-5-4, support, fidelity-exact")
 *Exercise 5.30 (the Hamming-ball limit).* Fix $`t\in\mathbb R`, and for
 uniform $`x\in\{-1,1\}^n` write
 $$`
@@ -88,7 +88,7 @@ Consequently
 $`\mathbf W^1[f_n]\to\phi(t)^2`.
 :::
 
-:::proposition "proposition-5.25" (lean := "FABL.proposition5_25") (uses := "support-exercise-5.30") (tags := "section-5-4, fidelity-exact")
+:::proposition "proposition-5.25" (parent := "fabl-chapter-5") (lean := "FABL.proposition5_25") (uses := "support-exercise-5.30") (tags := "section-5-4, fidelity-exact")
 *Proposition 5.25.* Fix $`t\in\mathbb R`. For each $`n`, define the linear
 threshold function $`f_n:\{-1,1\}^n\to\{0,1\}` by
 $$`
@@ -110,7 +110,7 @@ $$`
 `
 :::
 
-:::definition "definition-5.26" (lean := "FABL.standardGaussianUpperTail, FABL.standardGaussianUpperTail_eq_measureReal_Ioi, FABL.standardGaussianUpperTail_pos, FABL.standardGaussianUpperTail_lt_one, FABL.standardGaussianUpperTail_strictAnti, FABL.continuous_standardGaussianUpperTail, FABL.tendsto_standardGaussianUpperTail_atTop, FABL.tendsto_standardGaussianUpperTail_atBot, FABL.standardGaussianUpperTail_neg, FABL.standardGaussianUpperTailOpen, FABL.strictMono_standardGaussianUpperTailOpen, FABL.surjective_standardGaussianUpperTailOpen, FABL.standardGaussianUpperTailOrderIso, FABL.standardGaussianUpperTailOrderIso_apply, FABL.standardGaussianUpperQuantile, FABL.standardGaussianUpperTail_quantile, FABL.standardGaussianUpperQuantile_upperTail, FABL.standardGaussianUpperQuantile_one_sub, FABL.gaussianIsoperimetric, FABL.gaussianIsoperimetric_zero, FABL.gaussianIsoperimetric_one, FABL.gaussianIsoperimetric_apply_of_mem_Ioo, FABL.gaussianIsoperimetric_mem_Icc, FABL.gaussianIsoperimetric_symm") (uses := "notation-5.14") (tags := "section-5-4, fidelity-exact")
+:::definition "definition-5.26" (parent := "fabl-chapter-5") (lean := "FABL.standardGaussianUpperTail, FABL.standardGaussianUpperTail_eq_measureReal_Ioi, FABL.standardGaussianUpperTail_pos, FABL.standardGaussianUpperTail_lt_one, FABL.standardGaussianUpperTail_strictAnti, FABL.continuous_standardGaussianUpperTail, FABL.tendsto_standardGaussianUpperTail_atTop, FABL.tendsto_standardGaussianUpperTail_atBot, FABL.standardGaussianUpperTail_neg, FABL.standardGaussianUpperTailOpen, FABL.strictMono_standardGaussianUpperTailOpen, FABL.surjective_standardGaussianUpperTailOpen, FABL.standardGaussianUpperTailOrderIso, FABL.standardGaussianUpperTailOrderIso_apply, FABL.standardGaussianUpperQuantile, FABL.standardGaussianUpperTail_quantile, FABL.standardGaussianUpperQuantile_upperTail, FABL.standardGaussianUpperQuantile_one_sub, FABL.gaussianIsoperimetric, FABL.gaussianIsoperimetric_zero, FABL.gaussianIsoperimetric_one, FABL.gaussianIsoperimetric_apply_of_mem_Ioo, FABL.gaussianIsoperimetric_mem_Icc, FABL.gaussianIsoperimetric_symm") (uses := "notation-5.14") (tags := "section-5-4, fidelity-exact")
 *Definition 5.26.* The *Gaussian isoperimetric function*
 $$`
 U:[0,1]\longrightarrow
@@ -134,7 +134,7 @@ U(\alpha)=U(1-\alpha).
 `
 :::
 
-:::lemma_ "support-standard-gaussian-mills-ratio" (lean := "FABL.standardGaussianUpperTail_eq_integral_density, FABL.standardGaussianUpperTail_le_density_div, FABL.density_mul_t_div_one_add_sq_le_standardGaussianUpperTail, FABL.tendsto_standardGaussianUpperTail_div_density_div, FABL.standardGaussianUpperTail_isEquivalent_density_div") (uses := "notation-5.14") (tags := "section-5-4, support, fidelity-exact")
+:::lemma_ "support-standard-gaussian-mills-ratio" (parent := "fabl-chapter-5") (lean := "FABL.standardGaussianUpperTail_eq_integral_density, FABL.standardGaussianUpperTail_le_density_div, FABL.density_mul_t_div_one_add_sq_le_standardGaussianUpperTail, FABL.tendsto_standardGaussianUpperTail_div_density_div, FABL.standardGaussianUpperTail_isEquivalent_density_div") (uses := "notation-5.14") (tags := "section-5-4, support, fidelity-exact")
 *Standard Gaussian Mills ratio.* For every $`t>0`,
 $$`
 \frac{t}{1+t^2}\phi(t)
@@ -148,7 +148,7 @@ $$`
 `
 :::
 
-:::proposition "proposition-5.27" (lean := "FABL.tendsto_standardGaussianUpperQuantile_atBot, FABL.log_inv_standardGaussianUpperTail_isEquivalent_sq, FABL.tendsto_sqrt_two_mul_log_inv_standardGaussianUpperTail_div, FABL.standardGaussianUpperQuantile_isEquivalent_sqrt_log_inv, FABL.gaussianIsoperimetric_isEquivalent_probability_mul_quantile, FABL.gaussianIsoperimetric_isEquivalent_atBot") (uses := "definition-5.26, support-standard-gaussian-mills-ratio") (tags := "section-5-4, fidelity-exact")
+:::proposition "proposition-5.27" (parent := "fabl-chapter-5") (lean := "FABL.tendsto_standardGaussianUpperQuantile_atBot, FABL.log_inv_standardGaussianUpperTail_isEquivalent_sq, FABL.tendsto_sqrt_two_mul_log_inv_standardGaussianUpperTail_div, FABL.standardGaussianUpperQuantile_isEquivalent_sqrt_log_inv, FABL.gaussianIsoperimetric_isEquivalent_probability_mul_quantile, FABL.gaussianIsoperimetric_isEquivalent_atBot") (uses := "definition-5.26, support-standard-gaussian-mills-ratio") (tags := "section-5-4, fidelity-exact")
 *Proposition 5.27.* As $`\alpha\to0^+`, the Gaussian isoperimetric function
 satisfies
 $$`
@@ -159,7 +159,7 @@ U(\alpha)
 Here $`\ln` denotes the natural logarithm.
 :::
 
-:::lemma_ "lemma-5.31" (lean := "FABL.expect_abs_linearForm_indicator_gt_le") (uses := "support-exercise-5.31") (tags := "section-5-4, fidelity-exact")
+:::lemma_ "lemma-5.31" (parent := "fabl-chapter-5") (lean := "FABL.expect_abs_linearForm_indicator_gt_le") (uses := "support-exercise-5.31") (tags := "section-5-4, fidelity-exact")
 *Lemma 5.31.* Let
 $$`
 \ell(x)=a_1x_1+\cdots+a_nx_n,
@@ -176,7 +176,7 @@ $$`
 `
 :::
 
-:::theorem "level-1-inequality" (lean := "FABL.fourierWeightAtLevel_one_eq_zero_of_zero_one_mean_eq_zero, FABL.exists_levelOneInequality_constant") (uses := "lemma-5.31, plancherel, definition-1.19") (tags := "section-5-4, fidelity-exact")
+:::theorem "level-1-inequality" (parent := "fabl-chapter-5") (lean := "FABL.fourierWeightAtLevel_one_eq_zero_of_zero_one_mean_eq_zero, FABL.exists_levelOneInequality_constant") (uses := "lemma-5.31, plancherel, definition-1.19") (tags := "section-5-4, fidelity-exact")
 *Level-1 Inequality.* There is a universal constant $`C` such that if
 $`f:\{-1,1\}^n\to\{0,1\}` has
 $$`
@@ -194,7 +194,7 @@ $`\alpha\ge1/2`, the corresponding small-set estimate is obtained by
 replacing $`f` with $`1-f`.
 :::
 
-:::lemma_ "remark-5.28" (lean := "FABL.sharpLevelOneInequality_eq_zero, FABL.sharpLevelOneInequality, FABL.sharpLevelOneSignedCounterexample, FABL.sharpLevelOneSignedCounterexample_mem_Icc, FABL.mean_abs_sharpLevelOneSignedCounterexample, FABL.fourierWeightAtLevel_one_sharpLevelOneSignedCounterexample, FABL.not_sharpLevelOneInequality_signed") (uses := "level-1-inequality") (tags := "section-5-4, erratum, fidelity-corrected-false-printed-codomain")
+:::lemma_ "remark-5.28" (parent := "fabl-chapter-5") (lean := "FABL.sharpLevelOneInequality_eq_zero, FABL.sharpLevelOneInequality, FABL.sharpLevelOneSignedCounterexample, FABL.sharpLevelOneSignedCounterexample_mem_Icc, FABL.mean_abs_sharpLevelOneSignedCounterexample, FABL.fourierWeightAtLevel_one_sharpLevelOneSignedCounterexample, FABL.not_sharpLevelOneInequality_signed") (uses := "level-1-inequality") (tags := "section-5-4, erratum, fidelity-corrected-false-printed-codomain")
 *Remark 5.28 (sharp Level-1 Inequality).* The Level-1 bound has the sharp
 form
 $$`
@@ -218,13 +218,13 @@ $`\mathbb E[|f|]=1/2` and $`\mathbf W^1[f]=1/2`, whereas the displayed
 right-hand side is $`(\ln 2)/2<1/2`.
 :::
 
-:::lemma_ "remark-5.29" (tags := "section-5-4, nondependency, bibliographic")
+:::lemma_ "remark-5.29" (parent := "fabl-chapter-5") (tags := "section-5-4, nondependency, bibliographic")
 *Remark 5.29.* The name “Level-1 Inequality” is not standard. In additive
 combinatorics the result is called *Chang's Inequality*. The terminology used
 here anticipates the Level-$`k` Inequalities of Chapter 9.5.
 :::
 
-:::theorem "two-div-pi-theorem" (lean := "FABL.exists_two_div_pi_constant") (uses := "theorem-5.16, berry-esseen-theorem, remark-5.15, support-exercise-5.16, plancherel, definition-1.19") (tags := "section-5-4, fidelity-exact")
+:::theorem "two-div-pi-theorem" (parent := "fabl-chapter-5") (lean := "FABL.exists_two_div_pi_constant") (uses := "theorem-5.16, berry-esseen-theorem, remark-5.15, support-exercise-5.16, plancherel, definition-1.19") (tags := "section-5-4, fidelity-exact")
 *The 2/$`\pi` Theorem.* There is a universal constant $`C` such that the
 following holds. Let $`0<\epsilon\le1` and let
 $`f:\{-1,1\}^n\to\{-1,1\}` satisfy
@@ -256,7 +256,7 @@ Thus a near-extremizer is $`O(\sqrt\epsilon)`-close to the linear threshold
 function $`\operatorname{sgn}(f^{=1})`.
 :::
 
-:::lemma_ "remark-5.30" (tags := "section-5-4, nondependency, explanatory")
+:::lemma_ "remark-5.30" (parent := "fabl-chapter-5") (tags := "section-5-4, nondependency, explanatory")
 *Remark 5.30.* For an unbiased Boolean function,
 $$`
 \operatorname{Stab}_\rho[f]
@@ -269,7 +269,7 @@ as $`\rho\to0^+`. Hence the 2/$`\pi` Theorem is the
 $`\rho\to0^+` limiting case of the Majority Is Stablest Theorem.
 :::
 
-:::lemma_ "support-exercise-5.37" (lean := "FABL.nearlyConstantMinorityIndicator, FABL.nearlyConstantMinorityIndicator_mem_Icc, FABL.mean_nearlyConstantMinorityIndicator, FABL.mean_nearlyConstantMinorityIndicator_nonneg, FABL.mean_nearlyConstantMinorityIndicator_le, FABL.fourierCoeff_nearlyConstantMinorityIndicator_singleton, FABL.fourierWeightAtLevel_one_eq_four_mul_nearlyConstantMinorityIndicator") (uses := "remark-5.28, definition-1.19") (tags := "section-5-4, support, fidelity-exact")
+:::lemma_ "support-exercise-5.37" (parent := "fabl-chapter-5") (lean := "FABL.nearlyConstantMinorityIndicator, FABL.nearlyConstantMinorityIndicator_mem_Icc, FABL.mean_nearlyConstantMinorityIndicator, FABL.mean_nearlyConstantMinorityIndicator_nonneg, FABL.mean_nearlyConstantMinorityIndicator_le, FABL.fourierCoeff_nearlyConstantMinorityIndicator_singleton, FABL.fourierWeightAtLevel_one_eq_four_mul_nearlyConstantMinorityIndicator") (uses := "remark-5.28, definition-1.19") (tags := "section-5-4, support, fidelity-exact")
 *Exercise 5.37 (nearly constant functions).* Let
 $`f:\{-1,1\}^n\to\{-1,1\}` satisfy
 $$`
@@ -293,7 +293,7 @@ The case $`\delta=0` is interpreted by the conclusion
 $`\mathbf W^1[f]=0`.
 :::
 
-:::corollary "corollary-5.32" (lean := "FABL.fourierWeightAtLevel_one_le_of_abs_mean_ge") (uses := "support-exercise-5.37") (tags := "section-5-4, fidelity-exact")
+:::corollary "corollary-5.32" (parent := "fabl-chapter-5") (lean := "FABL.fourierWeightAtLevel_one_le_of_abs_mean_ge") (uses := "support-exercise-5.37") (tags := "section-5-4, fidelity-exact")
 *Corollary 5.32.* Let
 $`f:\{-1,1\}^n\to\{-1,1\}` satisfy
 $$`
@@ -306,7 +306,7 @@ $$`
 For $`\delta=0`, the right-hand side is understood as $`0`.
 :::
 
-:::lemma_ "support-exercise-2.49" (lean := "FABL.balancedFKNLift, FABL.balancedFKNLift_fin_cons_one, FABL.balancedFKNLift_fin_cons_neg_one, FABL.mean_balancedFKNLift, FABL.fourierWeightAtLevel_one_balancedFKNLift, FABL.exists_isKJunta_one_relativeHammingDist_le_of_fourierWeightAtMost_one") (uses := "fkn-theorem, definition-1.19") (tags := "section-5-4, support, fidelity-exact")
+:::lemma_ "support-exercise-2.49" (parent := "fabl-chapter-5") (lean := "FABL.balancedFKNLift, FABL.balancedFKNLift_fin_cons_one, FABL.balancedFKNLift_fin_cons_neg_one, FABL.mean_balancedFKNLift, FABL.fourierWeightAtLevel_one_balancedFKNLift, FABL.exists_isKJunta_one_relativeHammingDist_le_of_fourierWeightAtMost_one") (uses := "fkn-theorem, definition-1.19") (tags := "section-5-4, support, fidelity-exact")
 *Exercise 2.49 (balanced lift for FKN).* Suppose
 $`f:\{-1,1\}^n\to\{-1,1\}` satisfies
 $$`
@@ -328,7 +328,7 @@ $`O(\delta)`-close to a $`1`-junta. The same construction preserves the
 chosen FKN closeness constant.
 :::
 
-:::lemma_ "support-exercise-5.38" (lean := "FABL.fknImprovementEta, FABL.exercise5_38a, FABL.exercise5_38b, FABL.exercise5_38_nonnegative_lower_bound, FABL.exercise5_38_sqrt_lower_bound") (tags := "section-5-4, support, fidelity-exact")
+:::lemma_ "support-exercise-5.38" (parent := "fabl-chapter-5") (lean := "FABL.fknImprovementEta, FABL.exercise5_38a, FABL.exercise5_38b, FABL.exercise5_38_nonnegative_lower_bound, FABL.exercise5_38_sqrt_lower_bound") (tags := "section-5-4, support, fidelity-exact")
 *Exercise 5.38 (numerical details for Theorem 5.33).* Let $`C\ge1`,
 $`\delta>0`, and
 $$`
@@ -354,7 +354,7 @@ Consequently, any nonnegative number whose square is at least the left-hand
 side in (b) is at least $`1-\delta/2-2\eta`.
 :::
 
-:::theorem "theorem-5.33" (lean := "FABL.improvedFKN") (uses := "fkn-theorem, support-exercise-2.49, corollary-5.32, corollary-3.22, support-exercise-5.38") (tags := "section-5-4, fidelity-explicit-positive-arity")
+:::theorem "theorem-5.33" (parent := "fabl-chapter-5") (lean := "FABL.improvedFKN") (uses := "fkn-theorem, support-exercise-2.49, corollary-5.32, corollary-3.22, support-exercise-5.38") (tags := "section-5-4, fidelity-explicit-positive-arity")
 *Theorem 5.33.* Let $`n\ge1`. Suppose the FKN Theorem holds with closeness bound
 $`C\delta`, where $`C\ge1` is a universal constant: whenever
 $`f:\{-1,1\}^n\to\{-1,1\}` satisfies

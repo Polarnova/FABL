@@ -21,7 +21,7 @@ open Informal
 
 #doc (Manual) "Majority, and the Central Limit Theorem" =>
 
-:::definition "notation-5.14" (lean := "ProbabilityTheory.gaussianPDFReal, ProbabilityTheory.gaussianReal, ProbabilityTheory.cdf, ProbabilityTheory.stdGaussian, ProbabilityTheory.multivariateGaussian") (tags := "section-5-2, fidelity-direct-mathlib")
+:::definition "notation-5.14" (parent := "fabl-chapter-5") (lean := "ProbabilityTheory.gaussianPDFReal, ProbabilityTheory.gaussianReal, ProbabilityTheory.cdf, ProbabilityTheory.stdGaussian, ProbabilityTheory.multivariateGaussian") (tags := "section-5-2, fidelity-direct-mathlib")
 *Notation 5.14.* We write $`Z\sim N(0,1)` when $`Z` is a standard Gaussian
 random variable. Its probability density function, cumulative distribution
 function, and complementary cumulative distribution function are denoted by
@@ -38,7 +38,7 @@ $`Z\sim N(\mu,\Sigma)` means that $`Z` is a $`d`-dimensional Gaussian random
 vector with mean $`\mu` and covariance matrix $`\Sigma`.
 :::
 
-:::theorem "berry-esseen-theorem" (lean := "ProbabilityTheory.uniformBerryEsseen_thirdMoment") (uses := "notation-5.14") (tags := "section-5-2, external-probability-dependency, fidelity-explicit-universal-constant")
+:::theorem "berry-esseen-theorem" (parent := "fabl-chapter-5") (lean := "ProbabilityTheory.uniformBerryEsseen_thirdMoment") (uses := "notation-5.14") (tags := "section-5-2, external-probability-dependency, fidelity-explicit-universal-constant")
 *Berry--Esseen (Central Limit) Theorem.* Let
 $`X_1,\ldots,X_n` be independent real-valued random variables satisfying
 $$`
@@ -61,7 +61,7 @@ where $`c` is a universal constant. For definiteness, the book permits
 $`c=.56`.
 :::
 
-:::lemma_ "remark-5.15" (lean := "FABL.sum_integral_abs_cube_le_of_ae_abs_le") (uses := "berry-esseen-theorem") (tags := "section-5-2")
+:::lemma_ "remark-5.15" (parent := "fabl-chapter-5") (lean := "FABL.sum_integral_abs_cube_le_of_ae_abs_le") (uses := "berry-esseen-theorem") (tags := "section-5-2")
 *Remark 5.15.* In the setting of the Berry--Esseen Theorem, suppose in
 addition that $`|X_i|\le\epsilon` with probability $`1` for every $`i`.
 Then
@@ -76,7 +76,7 @@ $$`
 `
 :::
 
-:::lemma_ "support-exercise-5.16" (lean := "FABL.RealInterval, FABL.RealInterval.toSet, FABL.exercise5_16_strict, FABL.exercise5_16_interval") (uses := "berry-esseen-theorem") (tags := "section-5-2, support, external-probability-dependency, fidelity-exact")
+:::lemma_ "support-exercise-5.16" (parent := "fabl-chapter-5") (lean := "FABL.RealInterval, FABL.RealInterval.toSet, FABL.exercise5_16_strict, FABL.exercise5_16_interval") (uses := "berry-esseen-theorem") (tags := "section-5-2, support, external-probability-dependency, fidelity-exact")
 *Exercise 5.16 (strict inequalities and intervals).* Under the assumptions
 and notation of the Berry--Esseen Theorem:
 
@@ -94,7 +94,7 @@ $$`
 `
 :::
 
-:::lemma_ "support-exercise-5.17" (lean := "FABL.exercise5_17") (uses := "berry-esseen-theorem") (tags := "section-5-2, support, external-probability-dependency, fidelity-exact")
+:::lemma_ "support-exercise-5.17" (parent := "fabl-chapter-5") (lean := "FABL.exercise5_17") (uses := "berry-esseen-theorem") (tags := "section-5-2, support, external-probability-dependency, fidelity-exact")
 *Exercise 5.17 (centering and rescaling Berry--Esseen).* Let
 $`X_1,\ldots,X_n` be independent real-valued random variables with finite
 means and variances. Write
@@ -118,7 +118,7 @@ $$`
 where $`c` is the same universal constant as in the Berry--Esseen Theorem.
 :::
 
-:::lemma_ "support-exercise-5.31" (lean := "FABL.exercise5_31a, FABL.exercise5_31b, FABL.exercise5_31c, FABL.exercise5_31d") (uses := "berry-esseen-theorem, remark-5.15, support-exercise-5.16") (tags := "section-5-2, support, external-probability-dependency, fidelity-explicit-small-parameter-range")
+:::lemma_ "support-exercise-5.31" (parent := "fabl-chapter-5") (lean := "FABL.exercise5_31a, FABL.exercise5_31b, FABL.exercise5_31c, FABL.exercise5_31d") (uses := "berry-esseen-theorem, remark-5.15, support-exercise-5.16") (tags := "section-5-2, support, external-probability-dependency, fidelity-explicit-small-parameter-range")
 *Exercise 5.31 (absolute first moments).* Let
 $`a_1,\ldots,a_n\in\mathbb R` satisfy
 $`\sum_{i=1}^na_i^2=1` and $`|a_i|\le\epsilon` for every $`i`. For uniformly
@@ -168,7 +168,7 @@ the displayed $`O(\epsilon\sqrt{\log(1/\epsilon)})` as a uniform bound all
 the way to $`\epsilon=1` would be false.
 :::
 
-:::theorem "theorem-5.16" (lean := "FABL.exists_expect_abs_linearForm_sub_sqrt_two_div_pi_le_of_regular") (uses := "support-exercise-5.31") (tags := "section-5-2, fidelity-exact")
+:::theorem "theorem-5.16" (parent := "fabl-chapter-5") (lean := "FABL.exists_expect_abs_linearForm_sub_sqrt_two_div_pi_le_of_regular") (uses := "support-exercise-5.31") (tags := "section-5-2, fidelity-exact")
 *Theorem 5.16.* There is a universal constant $`C` such that the following
 holds. If $`a_1,\ldots,a_n\in\mathbb R` satisfy
 $$`
@@ -187,7 +187,7 @@ $$`
 `
 :::
 
-:::lemma_ "support-exercise-5.19" (lean := "FABL.exercise5_19, FABL.normalizedCorrelatedPairSum_projection_mean, FABL.normalizedCorrelatedPairSum_projection_secondMoment") (uses := "definition-2.41") (tags := "section-5-2, support, fidelity-exact")
+:::lemma_ "support-exercise-5.19" (parent := "fabl-chapter-5") (lean := "FABL.exercise5_19, FABL.normalizedCorrelatedPairSum_projection_mean, FABL.normalizedCorrelatedPairSum_projection_secondMoment") (uses := "definition-2.41") (tags := "section-5-2, support, fidelity-exact")
 *Exercise 5.19 (covariance of the correlated sum).* Let
 $`\rho\in[-1,1]`, let $`(x,y)` be a $`\rho`-correlated pair of uniformly
 random strings in $`\{-1,1\}^n`, and define the random vector
@@ -218,7 +218,7 @@ $$`
 `
 :::
 
-:::theorem "sheppards-formula" (lean := "FABL.sheppardsFormula") (uses := "notation-5.14") (tags := "section-5-2, fidelity-exact-canonical-law")
+:::theorem "sheppards-formula" (parent := "fabl-chapter-5") (lean := "FABL.sheppardsFormula") (uses := "notation-5.14") (tags := "section-5-2, fidelity-exact-canonical-law")
 *Sheppard's Formula.* Let $`z_1,z_2` be standard Gaussian random variables
 with correlation
 $`\mathbb E[z_1z_2]=\rho\in[-1,1]`. Then
@@ -231,7 +231,7 @@ Alternatively, the formula follows directly from the Gaussian-disagreement
 identity in Theorem 2.45.
 :::
 
-:::theorem "theorem-5.38" (lean := "ProbabilityTheory.exists_bentkus_convex_set_constant") (uses := "notation-5.14") (tags := "section-5-2, external-probability-dependency, fidelity-positive-definite-specialization")
+:::theorem "theorem-5.38" (parent := "fabl-chapter-5") (lean := "ProbabilityTheory.exists_bentkus_convex_set_constant") (uses := "notation-5.14") (tags := "section-5-2, external-probability-dependency, fidelity-positive-definite-specialization")
 *Theorem 5.38 (multidimensional Berry--Esseen).* There is a universal
 constant $`C` with the following property. Let
 $`X_1,\ldots,X_n` be independent $`\mathbb R^d`-valued random vectors, each
@@ -259,7 +259,7 @@ For a covariance matrix, invertibility is equivalent to positive
 definiteness, so the hypothesis may equivalently be written $`\Sigma\succ0`.
 :::
 
-:::lemma_ "support-exercise-5.33" (lean := "FABL.correlationMatrix, FABL.exercise5_33a, FABL.exercise5_33b_sameSigns, FABL.exercise5_33b_oppositeSigns, FABL.correlationMatrix_posDef, FABL.regularCorrelatedSignSummand, FABL.regularThresholdPairSummand, FABL.regularThresholdPairSum, FABL.signQuadrant, FABL.measurableSet_signQuadrant, FABL.isConvexSet_signQuadrant, FABL.exists_exercise5_33c_constant") (uses := "definition-2.42, sheppards-formula, support-exercise-5.19, theorem-5.38") (tags := "section-5-2, support, external-probability-dependency, fidelity-exact")
+:::lemma_ "support-exercise-5.33" (parent := "fabl-chapter-5") (lean := "FABL.correlationMatrix, FABL.exercise5_33a, FABL.exercise5_33b_sameSigns, FABL.exercise5_33b_oppositeSigns, FABL.correlationMatrix_posDef, FABL.regularCorrelatedSignSummand, FABL.regularThresholdPairSummand, FABL.regularThresholdPairSum, FABL.signQuadrant, FABL.measurableSet_signQuadrant, FABL.isConvexSet_signQuadrant, FABL.exists_exercise5_33c_constant") (uses := "definition-2.42, sheppards-formula, support-exercise-5.19, theorem-5.38") (tags := "section-5-2, support, external-probability-dependency, fidelity-exact")
 *Exercise 5.33 (the two-dimensional CLT calculation).* Use Theorem 5.38 to
 complete the proof of Theorem 5.17.
 
@@ -291,7 +291,7 @@ $$`
 use Sheppard's Formula, and complete the proof of Theorem 5.17.
 :::
 
-:::theorem "theorem-5.17" (lean := "FABL.exists_noiseStability_sub_arcsine_le_of_regular_homogeneous_threshold") (uses := "definition-2.5, definition-2.42, support-exercise-5.33") (tags := "section-5-2, fidelity-exact")
+:::theorem "theorem-5.17" (parent := "fabl-chapter-5") (lean := "FABL.exists_noiseStability_sub_arcsine_le_of_regular_homogeneous_threshold") (uses := "definition-2.5, definition-2.42, support-exercise-5.33") (tags := "section-5-2, fidelity-exact")
 *Theorem 5.17.* There is a universal constant $`C` such that the following
 holds. Let $`f:\{-1,1\}^n\to\{-1,1\}` be an unbiased homogeneous linear
 threshold function,
@@ -316,7 +316,7 @@ $$`
 `
 :::
 
-:::theorem "theorem-5.18" (lean := "FABL.exists_majorityNoiseStability_constant") (uses := "definition-2.1, definition-2.42, support-exercise-5.23") (tags := "section-5-2, fidelity-exact")
+:::theorem "theorem-5.18" (parent := "fabl-chapter-5") (lean := "FABL.exists_majorityNoiseStability_constant") (uses := "definition-2.1, definition-2.42, support-exercise-5.23") (tags := "section-5-2, fidelity-exact")
 *Theorem 5.18.* There is a universal constant $`C` such that for every
 $`\rho\in[0,1)`, the sequence
 $`\operatorname{Stab}_\rho[\operatorname{Maj}_n]` is decreasing as $`n`
@@ -332,7 +332,7 @@ $$`
 `
 :::
 
-:::theorem "majority-is-stablest-theorem" (uses := "definition-2.17, definition-2.42, sheppards-formula") (tags := "section-5-2, deferred, later-chapter-dependency")
+:::theorem "majority-is-stablest-theorem" (parent := "fabl-chapter-5") (uses := "definition-2.17, definition-2.42, sheppards-formula") (tags := "section-5-2, deferred, later-chapter-dependency")
 *Majority Is Stablest Theorem.* Fix $`\rho\in(0,1)`. If
 $`f:\{-1,1\}^n\to[-1,1]` satisfies
 $$`

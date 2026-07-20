@@ -54,7 +54,7 @@ the reviewed dependency graph. To build and serve it locally:
 ```bash
 cd blueprint-verso
 lake exe cache get
-./scripts/site.sh serve
+./scripts/site.sh serve dev
 ```
 
 Then open [http://localhost:8000/](http://localhost:8000/). Generate the printable book with:
@@ -64,7 +64,8 @@ Then open [http://localhost:8000/](http://localhost:8000/). Generate the printab
 ```
 
 The generated site, PDF, manifest, and graph live under `blueprint-verso/_out/`; they are build
-artifacts and are not committed.
+artifacts and are not committed. The `dev` HTML profile retains fidelity metadata for review;
+the default `release` profile omits those tags from the reader-facing pages.
 
 ## Contributing
 

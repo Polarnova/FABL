@@ -14,7 +14,7 @@ open Informal
 
 #doc (Manual) "Håstad's Switching Lemma and the spectrum of DNFs" =>
 
-:::lemma_ "support-exercise-4.19" (lean := "FABL.DNFTerm.Compatible, FABL.DNFFormula.IsBadRestriction, FABL.DNFFormula.badRestrictions, FABL.DNFFormula.badExtension, FABL.DNFFormula.badExtensionMap, FABL.DNFFormula.badExtensionFiber, FABL.DNFFormula.badExtensionFiber_card_le_width, FABL.DNFFormula.restrictionAssignmentWeightAt_badExtension_eq, FABL.DNFFormula.restrictionAssignmentWeightAt_badExtension_le, FABL.DNFFormula.badRestrictionWeight, FABL.exercise4_19, FABL.DNFFormula.badRestrictionWeight_eq_coordSwitchingFailureProbability, FABL.exercise4_19_switchingFailureProbability") (uses := "definition-4.1, definition-4.15") (tags := "section-4-4, support, fidelity-exact-coordinate-restriction-extension-counting")
+:::lemma_ "support-exercise-4.19" (parent := "fabl-chapter-4") (lean := "FABL.DNFTerm.Compatible, FABL.DNFFormula.IsBadRestriction, FABL.DNFFormula.badRestrictions, FABL.DNFFormula.badExtension, FABL.DNFFormula.badExtensionMap, FABL.DNFFormula.badExtensionFiber, FABL.DNFFormula.badExtensionFiber_card_le_width, FABL.DNFFormula.restrictionAssignmentWeightAt_badExtension_eq, FABL.DNFFormula.restrictionAssignmentWeightAt_badExtension_le, FABL.DNFFormula.badRestrictionWeight, FABL.exercise4_19, FABL.DNFFormula.badRestrictionWeight_eq_coordSwitchingFailureProbability, FABL.exercise4_19_switchingFailureProbability") (uses := "definition-4.1, definition-4.15") (tags := "section-4-4, support, fidelity-exact-coordinate-restriction-extension-counting")
 *Exercise 4.19 (Baby Switching Lemma with constant $`3`).* Let
 $`\varphi=T_1\vee\cdots\vee T_s` be a DNF of width $`w\ge1` and let
 $`(\boldsymbol J\mid\boldsymbol z)` be a $`\delta`-random restriction with
@@ -38,7 +38,7 @@ exact ratio in (c); summing over its fibers gives (d) in either restriction
 model.
 :::
 
-:::theorem "baby-switching-lemma" (lean := "FABL.babySwitchingLemma_dnf, FABL.switchingFailureProbability_booleanDual, FABL.babySwitchingLemma") (uses := "definition-4.3, definition-4.4, definition-4.15, support-exercise-4.19") (tags := "section-4-4, fidelity-exact")
+:::theorem "baby-switching-lemma" (parent := "fabl-chapter-4") (lean := "FABL.babySwitchingLemma_dnf, FABL.switchingFailureProbability_booleanDual, FABL.babySwitchingLemma") (uses := "definition-4.3, definition-4.4, definition-4.15, support-exercise-4.19") (tags := "section-4-4, fidelity-exact")
 *Baby Switching Lemma.* Let $`f:\{-1,1\}^n\to\{-1,1\}` be computable by a DNF
 or CNF of width at most $`w` and let $`(\boldsymbol J\mid\boldsymbol z)` be a
 $`\delta`-random restriction. Then
@@ -51,7 +51,7 @@ size-independent constant $`5` holds for DNFs and, by Boolean duality, for
 CNFs.
 :::
 
-:::theorem "hastads-switching-lemma" (lean := "FABL.hastadSwitchingLemma_dnf, FABL.hastadSwitchingLemma") (uses := "definition-4.3, definition-4.4, definition-4.15, definition-3.14") (tags := "section-4-4, fidelity-exact")
+:::theorem "hastads-switching-lemma" (parent := "fabl-chapter-4") (lean := "FABL.hastadSwitchingLemma_dnf, FABL.hastadSwitchingLemma") (uses := "definition-4.3, definition-4.4, definition-4.15, definition-3.14") (tags := "section-4-4, fidelity-exact")
 *Håstad's Switching Lemma.* Let $`f:\{-1,1\}^n\to\{-1,1\}` be computable by a
 DNF or CNF of width at most $`w` and let $`(\boldsymbol J\mid\boldsymbol z)` be a
 $`\delta`-random restriction. Then for every $`k\in\mathbb N`,
@@ -63,7 +63,7 @@ where $`\operatorname{DT}(g)` denotes the decision-tree depth of $`g`. The
 bound has no dependence on the DNF size or on $`n`.
 :::
 
-:::lemma_ "lemma-4.21" (lean := "FABL.lemma4_21") (uses := "definition-4.15, definition-4.16, definition-3.1, proposition-3.16, proposition-4.17") (tags := "section-4-4, fidelity-exact")
+:::lemma_ "lemma-4.21" (parent := "fabl-chapter-4") (lean := "FABL.lemma4_21") (uses := "definition-4.15, definition-4.16, definition-3.1, proposition-3.16, proposition-4.17") (tags := "section-4-4, fidelity-exact")
 *Lemma 4.21.* Let $`f:\{-1,1\}^n\to\{-1,1\}` and let
 $`(\boldsymbol J\mid\boldsymbol z)` be a $`\delta`-random restriction with
 $`\delta>0`. Fix $`k\in\mathbb N^+` and write
@@ -75,7 +75,7 @@ Here $`\epsilon` is the exact failure probability and $`3k/\delta` is the
 exact real cutoff, with $`0<\delta\le1`.
 :::
 
-:::theorem "theorem-4.22" (lean := "FABL.dnfSwitchingDepth, FABL.theorem4_22") (uses := "hastads-switching-lemma, lemma-4.21, definition-4.3") (tags := "section-4-4, fidelity-finite-explicit-asymptotic-bridge")
+:::theorem "theorem-4.22" (parent := "fabl-chapter-4") (lean := "FABL.dnfSwitchingDepth, FABL.theorem4_22") (uses := "hastads-switching-lemma, lemma-4.21, definition-4.3") (tags := "section-4-4, fidelity-finite-explicit-asymptotic-bridge")
 *Theorem 4.22.* Suppose $`f:\{-1,1\}^n\to\{-1,1\}` is computable by a DNF of
 width $`w`. Then the Fourier spectrum of $`f` is $`\epsilon`-concentrated on
 degree up to $`O\bigl(w\log(1/\epsilon)\bigr)`.
@@ -85,7 +85,7 @@ $`30w\lceil\log_2(3/\epsilon)\rceil` for $`0<\epsilon\le1`, including the
 $`w=0` constant-function endpoint.
 :::
 
-:::lemma_ "support-exercise-4.11" (lean := "FABL.fourierCoeff_extendedSignRestriction_liftFree, FABL.fourierCoeff_extendedSignRestriction, FABL.sum_abs_ambientRestrictionFourierCoeff, FABL.exercise4_11_restriction") (uses := "proposition-3.16, proposition-4.17") (tags := "section-4-4, support, fidelity-exact")
+:::lemma_ "support-exercise-4.11" (parent := "fabl-chapter-4") (lean := "FABL.fourierCoeff_extendedSignRestriction_liftFree, FABL.fourierCoeff_extendedSignRestriction, FABL.sum_abs_ambientRestrictionFourierCoeff, FABL.exercise4_11_restriction") (uses := "proposition-3.16, proposition-4.17") (tags := "section-4-4, support, fidelity-exact")
 *Exercise 4.11.* Prove Lemma 4.23.
 
 Combine the restriction identity for Fourier coefficients with
@@ -93,7 +93,7 @@ $`\|\widehat g\|_1\le2^{\operatorname{DT}(g)}` for each restricted Boolean
 function.
 :::
 
-:::lemma_ "lemma-4.23" (lean := "FABL.abs_expectRandomRestriction_le_expect_abs, FABL.sum_expectRandomRestriction, FABL.expectRandomRestriction_mono, FABL.lemma4_23") (uses := "support-exercise-4.11, definition-4.15, proposition-4.17") (tags := "section-4-4, fidelity-exact")
+:::lemma_ "lemma-4.23" (parent := "fabl-chapter-4") (lean := "FABL.abs_expectRandomRestriction_le_expect_abs, FABL.sum_expectRandomRestriction, FABL.expectRandomRestriction_mono, FABL.lemma4_23") (uses := "support-exercise-4.11, definition-4.15, proposition-4.17") (tags := "section-4-4, fidelity-exact")
 *Lemma 4.23.* Let $`f:\{-1,1\}^n\to\{-1,1\}` and let
 $`(\boldsymbol J\mid\boldsymbol z)` be a $`\delta`-random restriction. Then
 $$`
@@ -104,7 +104,7 @@ $$`
 `
 :::
 
-:::theorem "theorem-4.24" (lean := "FABL.lowDegreeFourierOneNorm_le_two_mul_inv_pow_of_expected_two_pow_le, FABL.theorem4_24_of_switchingFailureProbability_le_quarter, FABL.theorem4_24") (uses := "hastads-switching-lemma, lemma-4.23, definition-4.3") (tags := "section-4-4, fidelity-book-endpoint-corrected")
+:::theorem "theorem-4.24" (parent := "fabl-chapter-4") (lean := "FABL.lowDegreeFourierOneNorm_le_two_mul_inv_pow_of_expected_two_pow_le, FABL.theorem4_24_of_switchingFailureProbability_le_quarter, FABL.theorem4_24") (uses := "hastads-switching-lemma, lemma-4.23, definition-4.3") (tags := "section-4-4, fidelity-book-endpoint-corrected")
 *Theorem 4.24.* Suppose $`f:\{-1,1\}^n\to\{-1,1\}` is computable by a DNF of
 width $`w`. Then for every $`k`,
 $$`
@@ -117,7 +117,7 @@ constant function has $`|\widehat f(\varnothing)|=1` while the displayed right-h
 Thus the statement is understood with $`w\ge1`; the constant is unchanged.
 :::
 
-:::theorem "theorem-4.25" (lean := "FABL.dnfSpectralConcentrationDegree, FABL.dnfSpectralFamilySizeBound, FABL.theorem4_25") (uses := "theorem-4.22, theorem-4.24, support-exercise-3.16, support-exercise-3.17, definition-4.3") (tags := "section-4-4, fidelity-finite-explicit-asymptotic-bridge")
+:::theorem "theorem-4.25" (parent := "fabl-chapter-4") (lean := "FABL.dnfSpectralConcentrationDegree, FABL.dnfSpectralFamilySizeBound, FABL.theorem4_25") (uses := "theorem-4.22, theorem-4.24, support-exercise-3.16, support-exercise-3.17, definition-4.3") (tags := "section-4-4, fidelity-finite-explicit-asymptotic-bridge")
 *Theorem 4.25.* Let $`f:\{-1,1\}^n\to\{-1,1\}` be computable by a DNF of width
 $`w\ge2`. Then for every $`\epsilon\in(0,1/2]`, the Fourier spectrum of $`f` is
 $`\epsilon`-concentrated on a collection $`\mathcal F` with

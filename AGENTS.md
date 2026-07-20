@@ -250,8 +250,8 @@ and default `blueprint` theme. Project CSS may join the statement and generated 
 panel into one visual card, but must not replace or duplicate official tags, declaration status,
 `uses`/`used by`, summary, or graph controls.
 Published HTML folds Lean code panels by default, suppresses redundant successful-declaration
-labels, and hides `fidelity-*` tags behind a reader-controlled switch while retaining them in the
-document and manifest for audits. Every displayed declaration source path links to the corresponding
+labels, and includes `fidelity-*` tags only in the shell-selected `dev` profile while retaining them
+in the manifest for audits. Every displayed declaration source path links to the corresponding
 repository at the exact revision used to render the site.
 
 Never edit `blueprint-verso/_out/`. When adding a chapter, update its Verso aggregate imports and the
@@ -350,9 +350,11 @@ cd blueprint-verso
 ./scripts/site.sh build
 ```
 
-`site.sh build` already runs the strict manifest validator and `vbp check`. Run
-`./scripts/site.sh pdf` when book/PDF rendering changed, and inspect HTML through
-`./scripts/site.sh serve` rather than `file://` when browser behavior changed.
+`site.sh build release` already runs the strict manifest validator and `vbp check`. The release
+profile is the default and removes fidelity tags from reader-facing HTML while preserving them in
+the validated manifest; `site.sh build dev` and `site.sh serve dev` retain them for formalization
+review. Run `./scripts/site.sh pdf` when book/PDF rendering changed, and inspect HTML through the
+local server rather than `file://` when browser behavior changed.
 
 Lake builds are incremental. The reported job count is the checked dependency-graph size, not the
 number of modules recompiled. Verso 4.30 still performs a complete site traversal when HTML is

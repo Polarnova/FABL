@@ -15,7 +15,7 @@ open Informal
 
 #doc (Manual) "Tribes" =>
 
-:::lemma_ "fact-4.10" (lean := "FABL.uniformProbability_andFunction_eq_neg_one, FABL.uniformProbability_andFunction_eq_one, FABL.tribes_zero, FABL.tribes_neg_one_probability_zero, FABL.tribes_neg_one_probability") (uses := "definition-2.7") (tags := "section-4-2, fidelity-exact")
+:::lemma_ "fact-4.10" (parent := "fabl-chapter-4") (lean := "FABL.uniformProbability_andFunction_eq_neg_one, FABL.uniformProbability_andFunction_eq_one, FABL.tribes_zero, FABL.tribes_neg_one_probability_zero, FABL.tribes_neg_one_probability") (uses := "definition-2.7") (tags := "section-4-2, fidelity-exact")
 *Fact 4.10.* For the tribes function
 $`\operatorname{Tribes}_{w,s}:\{-1,1\}^{sw}\to\{-1,1\}` of Definition 2.7,
 $$`
@@ -24,7 +24,7 @@ $$`
 `
 :::
 
-:::definition "definition-4.11" (lean := "FABL.IsTribesCriticalSizeCandidate, FABL.tribesCriticalSize, FABL.tribesCriticalDimension, FABL.tribesCritical, FABL.tribesCriticalSize_spec") (uses := "definition-2.7, fact-4.10") (tags := "section-4-2, fidelity-exact-with-verified-search-bound")
+:::definition "definition-4.11" (parent := "fabl-chapter-4") (lean := "FABL.IsTribesCriticalSizeCandidate, FABL.tribesCriticalSize, FABL.tribesCriticalDimension, FABL.tribesCritical, FABL.tribesCriticalSize_spec") (uses := "definition-2.7, fact-4.10") (tags := "section-4-2, fidelity-exact-with-verified-search-bound")
 *Definition 4.11.* For $`w\in\mathbb N^+`, let $`s=s_w` be the largest integer
 such that $`1-(1-2^{-w})^s\le 1/2`. Writing $`n=n_w=sw`, define
 $`\operatorname{Tribes}_n:\{-1,1\}^n\to\{-1,1\}` to be
@@ -33,7 +33,7 @@ $`n`: $`1,4,15,40,\ldots`. The largest integer $`s_w` is the floor of the
 corresponding real threshold.
 :::
 
-:::proposition "proposition-4.12" (lean := "FABL.tribesCriticalThreshold, FABL.tribesCriticalSize_eq_floor_threshold, FABL.tribesCriticalSizeError, FABL.tribesCriticalSize_eq_main_sub_error, FABL.tribesCriticalSizeError_mem_Icc, FABL.tribesCriticalSizeError_isTheta_one, FABL.tribesCriticalDimensionError, FABL.tribesCriticalDimension_eq_main_sub_error, FABL.tribesCriticalDimensionError_eq, FABL.tribesCriticalDimensionError_isTheta_natCast, FABL.tribesCriticalSizeError_isLittleO_two_pow, FABL.tribesCriticalDimension_isEquivalent_main, FABL.tendsto_tribesCriticalDimension_succ_div, FABL.tribesCriticalWidthError, FABL.tribesCriticalWidth_eq_log_sub_loglog_add_error, FABL.tendsto_log_tribesCriticalDimension_div_width, FABL.tribesCriticalWidthError_isLittleO_one, FABL.tendsto_tribesCriticalDimension_atTop, FABL.tendsto_two_pow_mul_log_tribesCriticalDimension_div, FABL.tribesCriticalPowerRelativeError, FABL.tribesCriticalPowerRelativeError_isLittleO_one, FABL.eventually_two_pow_eq_dimension_div_log_mul_one_add_error, FABL.tribesCriticalProbabilityDeficit, FABL.tribesCritical_neg_one_probability_eq_half_sub_deficit, FABL.tribesCriticalProbabilityDeficit_eq_pow, FABL.tribesCriticalProbabilityDeficit_mem_Icc, FABL.tribesCriticalProbabilityDeficit_isBigO_log_dimension_div_dimension") (uses := "definition-4.11, fact-4.10") (tags := "section-4-2, fidelity-exact")
+:::proposition "proposition-4.12" (parent := "fabl-chapter-4") (lean := "FABL.tribesCriticalThreshold, FABL.tribesCriticalSize_eq_floor_threshold, FABL.tribesCriticalSizeError, FABL.tribesCriticalSize_eq_main_sub_error, FABL.tribesCriticalSizeError_mem_Icc, FABL.tribesCriticalSizeError_isTheta_one, FABL.tribesCriticalDimensionError, FABL.tribesCriticalDimension_eq_main_sub_error, FABL.tribesCriticalDimensionError_eq, FABL.tribesCriticalDimensionError_isTheta_natCast, FABL.tribesCriticalSizeError_isLittleO_two_pow, FABL.tribesCriticalDimension_isEquivalent_main, FABL.tendsto_tribesCriticalDimension_succ_div, FABL.tribesCriticalWidthError, FABL.tribesCriticalWidth_eq_log_sub_loglog_add_error, FABL.tendsto_log_tribesCriticalDimension_div_width, FABL.tribesCriticalWidthError_isLittleO_one, FABL.tendsto_tribesCriticalDimension_atTop, FABL.tendsto_two_pow_mul_log_tribesCriticalDimension_div, FABL.tribesCriticalPowerRelativeError, FABL.tribesCriticalPowerRelativeError_isLittleO_one, FABL.eventually_two_pow_eq_dimension_div_log_mul_one_add_error, FABL.tribesCriticalProbabilityDeficit, FABL.tribesCritical_neg_one_probability_eq_half_sub_deficit, FABL.tribesCriticalProbabilityDeficit_eq_pow, FABL.tribesCriticalProbabilityDeficit_mem_Icc, FABL.tribesCriticalProbabilityDeficit_isBigO_log_dimension_div_dimension") (uses := "definition-4.11, fact-4.10") (tags := "section-4-2, fidelity-exact")
 *Proposition 4.12.* For the function $`\operatorname{Tribes}_n` of
 Definition 4.11 one has:
 - $`s=\ln(2)\,2^w-\Theta_w(1)`;
@@ -46,7 +46,7 @@ $`n=n_w\to\infty`. In the final estimate, using $`\ln n/n` instead of the
 book's base-$`2` expression changes only the absolute constant.
 :::
 
-:::proposition "proposition-4.13" (lean := "FABL.tribesCoord, FABL.TribesRestTrue, FABL.TribesOthersFalse, FABL.isPivotal_tribes_iff, FABL.card_andFunction_eq_one, FABL.booleanInfluence_tribes, FABL.totalInfluence_tribes, FABL.tribesCriticalSize_pos, FABL.tribesCriticalCoordinateInfluence, FABL.booleanInfluence_tribesCritical, FABL.totalInfluence_tribesCritical, FABL.tendsto_tribesCriticalCoordinateInfluence_mul_dimension_div_log, FABL.tribesCriticalCoordinateInfluenceRelativeError, FABL.tribesCriticalCoordinateInfluenceRelativeError_isLittleO_one, FABL.eventually_booleanInfluence_tribesCritical_eq_log_dimension_div_mul_one_add_error, FABL.eventually_totalInfluence_tribesCritical_eq_log_dimension_mul_one_add_error") (uses := "definition-4.11, fact-4.10, proposition-4.12, definition-2.13, definition-2.27") (tags := "section-4-2, fidelity-exact")
+:::proposition "proposition-4.13" (parent := "fabl-chapter-4") (lean := "FABL.tribesCoord, FABL.TribesRestTrue, FABL.TribesOthersFalse, FABL.isPivotal_tribes_iff, FABL.card_andFunction_eq_one, FABL.booleanInfluence_tribes, FABL.totalInfluence_tribes, FABL.tribesCriticalSize_pos, FABL.tribesCriticalCoordinateInfluence, FABL.booleanInfluence_tribesCritical, FABL.totalInfluence_tribesCritical, FABL.tendsto_tribesCriticalCoordinateInfluence_mul_dimension_div_log, FABL.tribesCriticalCoordinateInfluenceRelativeError, FABL.tribesCriticalCoordinateInfluenceRelativeError_isLittleO_one, FABL.eventually_booleanInfluence_tribesCritical_eq_log_dimension_div_mul_one_add_error, FABL.eventually_totalInfluence_tribesCritical_eq_log_dimension_mul_one_add_error") (uses := "definition-4.11, fact-4.10, proposition-4.12, definition-2.13, definition-2.27") (tags := "section-4-2, fidelity-exact")
 *Proposition 4.13.* For every coordinate $`i\in[n]`,
 $$`
 \operatorname{Inf}_i[\operatorname{Tribes}_n]
@@ -69,7 +69,7 @@ error $`\varepsilon_w=o(1)`, uniform in the coordinate, gives both displayed
 conclusions along $`n=n_w\to\infty`.
 :::
 
-:::theorem "kkl-theorem" (lean := "FABL.maximumInfluence, FABL.exists_booleanInfluence_eq_maximumInfluence, FABL.edgeKKL, FABL.kkl") (uses := "definition-2.13, proposition-1.13") (tags := "section-4-2, fidelity-exact-with-explicit-constant, proof-from-chapter-9")
+:::theorem "kkl-theorem" (parent := "fabl-chapter-4") (lean := "FABL.maximumInfluence, FABL.exists_booleanInfluence_eq_maximumInfluence, FABL.edgeKKL, FABL.kkl") (uses := "definition-2.13, proposition-1.13") (tags := "section-4-2, fidelity-exact-with-explicit-constant, proof-from-chapter-9")
 *Kahn–Kalai–Linial (KKL) Theorem.* For every
 $`f:\{-1,1\}^n\to\{-1,1\}`,
 $$`
@@ -93,7 +93,7 @@ the hypercontractive argument of Section 9.6. Natural logarithm differs from
 the book's base-$`2` logarithm by a fixed positive factor only.
 :::
 
-:::proposition "proposition-4.14" (lean := "FABL.mean_booleanFunction_eq_prob_one_sub_prob_neg_one, FABL.fourierCoeff_tribes_empty, FABL.signValue_andFunction, FABL.signValue_orFunction, FABL.tribeFrequencyPart, FABL.mem_tribeFrequencyPart, FABL.tribeFrequencySupportSize, FABL.tribes_toReal_eq, FABL.fourierCoeff_andFunction_empty, FABL.fourierCoeff_andFunction_of_ne_empty, FABL.fourierCoeff_andFunction, FABL.expect_one_add_andFunction_mul_monomial, FABL.tribesBlockEquiv, FABL.tribesBlockEquiv_apply, FABL.tribeOffsetEmbed, FABL.tribeFrequencyPart_biUnion, FABL.disjoint_tribeOffsetEmbed, FABL.card_tribeFrequencyPart_sum, FABL.monomial_eq_prod_tribeFrequencyPart, FABL.finArrowConsEquiv, FABL.expect_prod_finArrow, FABL.fourierCoeff_tribes_eq_prod, FABL.prod_expect_one_add_and_tribeFrequencyPart, FABL.fourierCoeff_tribes_of_ne_empty, FABL.fourierCoeff_tribes") (uses := "definition-2.7, fact-4.10") (tags := "section-4-2, fidelity-exact")
+:::proposition "proposition-4.14" (parent := "fabl-chapter-4") (lean := "FABL.mean_booleanFunction_eq_prob_one_sub_prob_neg_one, FABL.fourierCoeff_tribes_empty, FABL.signValue_andFunction, FABL.signValue_orFunction, FABL.tribeFrequencyPart, FABL.mem_tribeFrequencyPart, FABL.tribeFrequencySupportSize, FABL.tribes_toReal_eq, FABL.fourierCoeff_andFunction_empty, FABL.fourierCoeff_andFunction_of_ne_empty, FABL.fourierCoeff_andFunction, FABL.expect_one_add_andFunction_mul_monomial, FABL.tribesBlockEquiv, FABL.tribesBlockEquiv_apply, FABL.tribeOffsetEmbed, FABL.tribeFrequencyPart_biUnion, FABL.disjoint_tribeOffsetEmbed, FABL.card_tribeFrequencyPart_sum, FABL.monomial_eq_prod_tribeFrequencyPart, FABL.finArrowConsEquiv, FABL.expect_prod_finArrow, FABL.fourierCoeff_tribes_eq_prod, FABL.prod_expect_one_add_and_tribeFrequencyPart, FABL.fourierCoeff_tribes_of_ne_empty, FABL.fourierCoeff_tribes") (uses := "definition-2.7, fact-4.10") (tags := "section-4-2, fidelity-exact")
 *Proposition 4.14.* Index Fourier coefficients of
 $`\operatorname{Tribes}_{w,s}:\{-1,1\}^{sw}\to\{-1,1\}` by sets
 $`T=(T_1,\ldots,T_s)\subseteq[sw]`, where $`T_i` is the intersection of $`T`

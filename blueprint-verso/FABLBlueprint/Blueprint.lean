@@ -28,10 +28,30 @@ and uses its ordering and notation.
 The graph below records the mathematical dependencies among the definitions
 and results.
 
+:::group "fabl-chapter-1"
+Chapter 1: Boolean functions and the Fourier expansion
+:::
+
+:::group "fabl-chapter-2"
+Chapter 2: Influence and noise sensitivity
+:::
+
+:::group "fabl-chapter-3"
+Chapter 3: Spectral structure and learning
+:::
+
+:::group "fabl-chapter-4"
+Chapter 4: DNF formulas and small-depth circuits
+:::
+
+:::group "fabl-chapter-5"
+Chapter 5: Majority and threshold functions
+:::
+
 {include 0 FABLBlueprint.Chapter01}
 {include 0 FABLBlueprint.Chapter02}
 {include 0 FABLBlueprint.Chapter03}
 {include 0 FABLBlueprint.Chapter04}
 {include 0 FABLBlueprint.Chapter05}
 
-{blueprint_graph}
+{blueprint_graph (direction := LR)}

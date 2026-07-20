@@ -5,6 +5,18 @@ set -euo pipefail
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 output="$root/_out/site"
 book_output="$root/_out/book"
+profile="${2:-release}"
+
+case "$profile" in
+  dev|release)
+    ;;
+  *)
+    echo "invalid Blueprint profile '$profile'; expected dev or release" >&2
+    exit 2
+    ;;
+esac
+
+export BLUEPRINT_PROFILE="$profile"
 
 if command -v lake >/dev/null 2>&1; then
   lake_cmd="$(command -v lake)"
@@ -89,6 +101,36 @@ validate_site() {
       and (([$graph.nodes[].label] | unique | length) == 337)
       and (([$graph.nodes[].previewKey] | unique | length) == 337)
       and (($graph.edges | length) == 781)
+      and (($graph.groups
+        | map({key: .label, value: (.children | length)})
+        | from_entries) == {
+          "fabl-chapter-1": 43,
+          "fabl-chapter-2": 79,
+          "fabl-chapter-3": 62,
+          "fabl-chapter-4": 45,
+          "fabl-chapter-5": 108
+        })
+      and (all($graph.groups[]; .declared == true))
+      and (([$graph.nodes[].parent]
+        | group_by(.)
+        | map({key: .[0], value: length})
+        | from_entries) == {
+          "fabl-chapter-1": 43,
+          "fabl-chapter-2": 79,
+          "fabl-chapter-3": 62,
+          "fabl-chapter-4": 45,
+          "fabl-chapter-5": 108
+        })
+      and (([$graph.variants[].key] | sort) == [
+        "full",
+        "group",
+        "parent:fabl-chapter-1",
+        "parent:fabl-chapter-2",
+        "parent:fabl-chapter-3",
+        "parent:fabl-chapter-4",
+        "parent:fabl-chapter-5"
+      ])
+      and (all($graph.variants[]; .options.direction == "LR"))
       and (all($graph.edges[]; .axes == ["statement"]))
       and (all($graph.nodes[];
         .warnings.leanOnlyNoStatement == false
@@ -167,7 +209,7 @@ case "${1:-build}" in
     build_pdf
     ;;
   *)
-    echo "usage: $0 [build|serve|pdf]" >&2
+    echo "usage: $0 [build|serve|pdf] [release|dev]" >&2
     exit 2
     ;;
 esac
