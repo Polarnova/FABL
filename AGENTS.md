@@ -249,6 +249,10 @@ fidelity metadata, and reviewed `uses` dependencies. The site uses the official 
 and default `blueprint` theme. Project CSS may join the statement and generated Lean declaration
 panel into one visual card, but must not replace or duplicate official tags, declaration status,
 `uses`/`used by`, summary, or graph controls.
+Published HTML folds Lean code panels by default, suppresses redundant successful-declaration
+labels, and hides `fidelity-*` tags behind a reader-controlled switch while retaining them in the
+document and manifest for audits. Every displayed declaration source path links to the corresponding
+repository at the exact revision used to render the site.
 
 Never edit `blueprint-verso/_out/`. When adding a chapter, update its Verso aggregate imports and the
 strict manifest expectations in `blueprint-verso/scripts/site.sh` in the same change. The current

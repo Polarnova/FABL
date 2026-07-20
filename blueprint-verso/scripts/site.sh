@@ -131,6 +131,13 @@ build_site() {
   build_library
   echo "Rendering Blueprint HTML..."
   rm -rf -- "$output/html-multi"
+  export FABL_SOURCE_REVISION="${GITHUB_SHA:-$(git -C "$root/.." rev-parse HEAD)}"
+  export PROBABILITY_APPROXIMATION_SOURCE_REVISION="$(
+    git -C "$root/.lake/packages/ProbabilityApproximation" rev-parse HEAD
+  )"
+  export MATHLIB_SOURCE_REVISION="$(
+    git -C "$root/.lake/packages/mathlib" rev-parse HEAD
+  )"
   "$lake_cmd" lean FABLBlueprintMain.lean -- --run FABLBlueprintMain.lean --output "$output"
   test -f "$output/html-multi/index.html"
   test -f "$output/html-multi/-verso-data/blueprint-manifest.json"
