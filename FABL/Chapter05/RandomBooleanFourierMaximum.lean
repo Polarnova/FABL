@@ -113,14 +113,14 @@ private theorem measure_randomBooleanFunction_fourierCoeff_ge_le
   simpa [m, e, failure,
     finiteUniformEmpiricalMean_randomBooleanCoefficientSampleEquiv] using h
 
-private theorem randomBooleanFourierThreshold_nonneg (n : ℕ) :
+theorem randomBooleanFourierThreshold_nonneg (n : ℕ) :
     0 ≤ randomBooleanFourierThreshold n := by
   unfold randomBooleanFourierThreshold
   exact mul_nonneg
     (mul_nonneg (by norm_num) (Real.sqrt_nonneg _))
     (Real.rpow_nonneg (by norm_num) _)
 
-private theorem card_mul_randomBooleanFourierThreshold_sq_div_two
+theorem card_mul_randomBooleanFourierThreshold_sq_div_two
     (n : ℕ) :
     (Fintype.card ({−1,1}^[n]) : ℝ) *
         randomBooleanFourierThreshold n ^ 2 / 2 =
@@ -224,7 +224,7 @@ private theorem two_pow_two_mul_add_one_lt_exp_two_mul
       norm_num
       ring
 
-private theorem two_pow_mul_two_exp_neg_two_mul_le_rpow_neg
+theorem two_pow_mul_two_exp_neg_two_mul_le_rpow_neg
     {n : ℕ} (hn : 2 ≤ n) :
     (2 : ℝ) ^ n * (2 * Real.exp (-(2 * (n : ℝ)))) ≤
       (2 : ℝ) ^ (-(n : ℝ)) := by

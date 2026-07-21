@@ -7,17 +7,18 @@ normalizations, and hypotheses of the original statements.
 
 ## Status
 
-Chapters 1--5 are complete. The Blueprint includes open conjectures and non-dependency remarks as
+Chapters 1--6 are complete. The Blueprint includes open conjectures and non-dependency remarks as
 statement nodes. Every associated Lean declaration is proved and kernel-checked.
 
 | Chapter | Subject | Book items | Lean declarations | Dependency edges |
 |---|---|---:|---:|---:|
-| 1 | Boolean functions and Fourier expansion | 43 | 111 | 62 |
+| 1 | Boolean functions and Fourier expansion | 43 | 112 | 62 |
 | 2 | Influence and noise sensitivity | 79 | 241 | 185 |
-| 3 | Spectral structure and learning | 62 | 399 | 164 |
+| 3 | Spectral structure and learning | 64 | 419 | 172 |
 | 4 | DNF formulas and small-depth circuits | 45 | 360 | 111 |
 | 5 | Majority and threshold functions | 108 | 502 | 259 |
-| **Total** |  | **337** | **1613** | **781** |
+| 6 | Pseudorandomness and F₂-polynomials | 116 | 1022 | 314 |
+| **Total** |  | **455** | **2656** | **1103** |
 
 The project aims to formalize the complete book. Book-item totals count complete inventory nodes;
 declaration totals count their compiled Lean associations. Open or external statement-only nodes

@@ -7,6 +7,8 @@ import Verso
 import VersoManual
 import VersoBlueprint
 import FABL.Chapter03.KushilevitzMansour
+import FABL.Chapter03.LearningTheory.SparseSpectrum
+import FABL.Chapter06.LearningAndTesting.ExactSparseSpectrumLearning
 
 open Verso.Genre
 open Verso.Genre.Manual
@@ -63,6 +65,40 @@ probability at least $`9/10`, and running time
 $`\operatorname{poly}(n,s,1/\epsilon)`.
 In particular, Proposition 3.16 implies that this concept class contains every
 Boolean function computable by a decision tree of size at most $`s`.
+:::
+
+:::lemma_ "support-exercise-3.32" (parent := "fabl-chapter-3") (lean := "FABL.vectorDualEquiv, FABL.exists_nonzero_vectorFourierCoeff_subspaceRestriction_eq, FABL.exists_nonzero_vectorFourierCoeff_hyperplaneRestriction_eq, FABL.spectralSparsityGranularity, FABL.spectralSparsityGranularity_cast, FABL.isVectorFourierGranular_signValue_spectralSparsity, FABL.spectralSparsity_not_mem_exceptional") (uses := "definition-3.9, definition-3.10, definition-3.20, parseval") (tags := "section-3-5, support, fidelity-explicit-dual-hyperplane-bridge")
+*Exercise 3.32.*
+
+1. Suppose $`f:\mathbb F_2^n\to\mathbb R` has
+   $`\operatorname{sparsity}(\widehat f)<2^n`. For every
+   $`\gamma\in\operatorname{supp}(\widehat f)`, there is a nonzero
+   $`\beta\in\mathbb F_2^n` such that the restriction
+   $`f_{\beta^\perp}` has $`\widehat f(\gamma)` as one of its Fourier
+   coefficients.
+2. If $`f:\mathbb F_2^n\to\{-1,1\}` has
+   $`\operatorname{sparsity}(\widehat f)=s>1`, then $`\widehat f` is
+   $`2^{1-\lfloor\log_2 s\rfloor}`-granular.
+3. There is no Boolean function whose Fourier sparsity belongs to
+   $`\{2,3,5,6,7,9\}`.
+
+Lean identifies the book's vector $`\beta` with its dot-product functional
+through `vectorDualEquiv`; hence
+`ker (vectorDualEquiv n beta)` is exactly $`\beta^\perp`.  The public
+hyperplane theorem returns this vector $`\beta` directly.
+:::
+
+:::lemma_ "support-exercise-3.37c" (parent := "fabl-chapter-3") (lean := "FABL.exactSparseSpectrumSparsityBound, FABL.roundSparseSpectrumHypothesis, FABL.exactSparseSpectrumLearner, FABL.exactSparseSpectrumLearner_evaluate_eq, FABL.exactSparseSpectrumQueryBudget, FABL.exactSparseSpectrumWorkBudget, FABL.exactSparseSpectrumLearner_resource_bounds, FABL.exactSparseSpectrumRuntimeScale, FABL.exactSparseSpectrumPolynomialRuntimeBound, FABL.exactSparseSpectrumQueryBudget_cast_le_polynomialRuntimeBound, FABL.exactSparseSpectrumWorkBudget_cast_le_polynomialRuntimeBound, FABL.exactSparseSpectrumLearner_queries_polynomial_le, FABL.exactSparseSpectrumLearner_work_polynomial_le") (uses := "definition-3.9, definition-3.27, theorem-3.37, support-exercise-3.32") (tags := "section-3-5, support, fidelity-exact-query-model")
+*Exercise 3.37(c) (exact sparse-spectrum learning).* The class
+$$`
+\mathcal C
+=\left\{
+f:\{-1,1\}^n\to\{-1,1\}:
+\operatorname{sparsity}(\widehat f)\le2^{O(k)}
+\right\}
+`
+can be learned exactly from membership queries in
+$`\operatorname{poly}(n,2^k)` time.
 :::
 
 :::definition "definition-3.39" (parent := "fabl-chapter-3") (lean := "FABL.restrictedFourierWeight") (uses := "definition-1.17, proposition-1.8") (tags := "section-3-5, fidelity-exact")

@@ -3,7 +3,7 @@
 ## Mission and sources of truth
 
 FABL formalizes the May 2021 arXiv edition of Ryan O'Donnell's *Analysis of Boolean Functions* in
-Lean 4 and Mathlib. Chapters 1--5 are complete. Open conjectures and non-dependency remarks are
+Lean 4 and Mathlib. Chapters 1--6 are complete. Open conjectures and non-dependency remarks are
 represented honestly as statement-only Blueprint nodes rather than placeholder Lean declarations;
 neither supplies an assumption to the production library. The project objective is complete
 coverage of every chapter.
@@ -256,28 +256,34 @@ repository at the exact revision used to render the site.
 
 Never edit `blueprint-verso/_out/`. When adding a chapter, update its Verso aggregate imports and the
 strict manifest expectations in `blueprint-verso/scripts/site.sh` in the same change. The current
-Chapter 1 baseline is 43 nodes (34 primary and 9 support), 111 associated Lean declarations, and 62
+Chapter 1 baseline is 43 nodes (34 primary and 9 support), 112 associated Lean declarations, and 62
 reviewed dependency edges.
 
 The completed Chapter 2 baseline is 79 nodes (64 primary and 15 support), 241 associated Lean
 declarations, and 185 reviewed dependency edges across Sections 2.1--2.5. The aggregate Chapters
-1--2 baseline is 122 nodes, 352 unique declaration associations, and 247 edges.
+1--2 baseline is 122 nodes, 353 unique declaration associations, and 247 edges.
 
-The completed Chapter 3 baseline is 62 nodes (43 primary and 19 support), 399 associated Lean
-declarations, and 164 reviewed dependency edges across Sections 3.1--3.5. The aggregate Chapters
-1--3 baseline is 184 nodes, 751 declaration associations, and 411 edges.
+The completed Chapter 3 baseline is 64 nodes (43 primary and 21 support), 419 associated Lean
+declarations, and 172 reviewed dependency edges across Sections 3.1--3.5. The aggregate Chapters
+1--3 baseline is 186 nodes, 772 declaration associations, and 419 edges.
 
 The Chapter 4 inventory baseline is 45 nodes (37 primary and 8 support), 360 associated Lean
 declarations (Sections 4.1--4.5 production), and 111 reviewed dependency edges across Sections
 4.1--4.5. Mansour's Conjecture and the non-dependency bibliographic note in Remark 4.29 have no Lean
 association and supply no assumptions to the production library. The aggregate Chapters 1--4
-baseline is 229 nodes, 1111 declaration associations, and 522 edges.
+baseline is 231 nodes, 1132 declaration associations, and 530 edges.
 
 The completed Chapter 5 baseline is 108 nodes (49 primary and 59 support), 502 associated Lean
 declarations, and 259 reviewed dependency edges across Sections 5.1--5.6. Open conjectures,
 external results, non-dependency remarks, and results whose proofs the book defers to later chapters
 remain visible statement-only nodes and supply no assumptions to the production library. The
-aggregate Chapters 1--5 baseline is 337 nodes, 1613 declaration associations, and 781 edges.
+aggregate Chapters 1--5 baseline is 339 nodes, 1634 declaration associations, and 789 edges.
+
+The completed Chapter 6 baseline is 116 nodes (64 primary and 52 support), 1022 associated Lean
+declarations, and 314 reviewed dependency edges across Sections 6.1--6.6. Open conjectures,
+external complexity reductions, and non-dependency remarks remain visible statement-only nodes and
+supply no assumptions to the production library. The aggregate Chapters 1--6 baseline is 455
+nodes, 2656 declaration associations, and 1103 edges.
 
 Include every inventoried chapter in `Blueprint.lean` and `Book.lean` throughout its active proof
 phase so the official diagram exposes unfinished nodes and their formalization status. Keep the

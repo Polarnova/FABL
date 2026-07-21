@@ -53,7 +53,7 @@ $`\widehat f(S)=0` whenever $`|S|>k`. For the zero function, set
 $`\deg(0)=0`.
 :::
 
-:::lemma_ "support-exercise-1.11b-granularity" (parent := "fabl-chapter-1") (lean := "FABL.IsFourierGranular, FABL.isFourierGranular_signValue_of_fourierDegree_le") (uses := "support-exercise-1.10-degree, theorem-1.1") (tags := "section-1-2, support, fidelity-generalized-degree-at-most")
+:::lemma_ "support-exercise-1.11b-granularity" (parent := "fabl-chapter-1") (lean := "FABL.expect_sign_values_eq_int_mul_two_inv_pow, FABL.IsFourierGranular, FABL.isFourierGranular_signValue_of_fourierDegree_le") (uses := "support-exercise-1.10-degree, theorem-1.1") (tags := "section-1-2, support, fidelity-generalized-degree-at-most")
 *Exercise 1.11(b).* Suppose
 $`f:\{-1,1\}^n\to\{-1,1\}` has $`\deg(f)=k\ge1`. Then the Fourier spectrum
 of $`f` is $`2^{1-k}`-granular: for every $`S\subseteq[n]` there is an

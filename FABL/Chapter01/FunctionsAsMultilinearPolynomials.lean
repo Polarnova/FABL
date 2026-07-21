@@ -437,7 +437,9 @@ private theorem granularityRestrictionTopCoeff_eq_sum_supersets
           fourierCoeff (fun x ↦ signValue (f x)) U := by
       rw [Finset.sum_filter]
 
-private theorem expect_sign_values_eq_int_mul_two_inv_pow
+/-- The uniform average of `2^m` many sign values lies on the lattice
+`2 · 2⁻ᵐ · ℤ` when `m` is positive. -/
+theorem expect_sign_values_eq_int_mul_two_inv_pow
     {Ω : Type*} [Fintype Ω] [Nonempty Ω]
     (g : Ω → ℝ) (hg : ∀ x, g x = -1 ∨ g x = 1)
     {m : ℕ} (hm : 1 ≤ m) (hcard : Fintype.card Ω = 2 ^ m) :

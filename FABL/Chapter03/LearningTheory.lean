@@ -11,6 +11,7 @@ public import FABL.Chapter03.LearningTheory.FourierEstimation
 public import FABL.Chapter03.LearningTheory.LearningModel
 public import FABL.Chapter03.LearningTheory.FiniteFamily
 public import FABL.Chapter03.LearningTheory.LowDegree
+public import FABL.Chapter03.LearningTheory.SparseSpectrum
 
 /-!
 # Learning theory

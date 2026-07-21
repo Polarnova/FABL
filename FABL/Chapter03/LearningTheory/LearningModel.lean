@@ -291,7 +291,7 @@ def evaluationWork (hypothesis : SparseFourierHypothesis n) (_x : {−1,1}^[n]) 
 
 /-- Sparse rational Fourier hypotheses form an honest finite binary hypothesis language with a
 total executable evaluator. -/
-def finiteRepresentation : FiniteHypothesisRepresentation n where
+abbrev finiteRepresentation : FiniteHypothesisRepresentation n where
   Code := SparseFourierHypothesis n
   encode := encode
   decode := decode

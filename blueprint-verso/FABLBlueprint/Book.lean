@@ -11,6 +11,7 @@ import FABLBlueprint.Chapter02
 import FABLBlueprint.Chapter03
 import FABLBlueprint.Chapter04
 import FABLBlueprint.Chapter05
+import FABLBlueprint.Chapter06
 
 open Verso.Genre
 open Verso.Genre.Manual
@@ -29,3 +30,4 @@ and uses its ordering and notation.
 {include 0 FABLBlueprint.Chapter03}
 {include 0 FABLBlueprint.Chapter04}
 {include 0 FABLBlueprint.Chapter05}
+{include 0 FABLBlueprint.Chapter06}

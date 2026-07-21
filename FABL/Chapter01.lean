@@ -7,9 +7,11 @@ module
 
 public import FABL.Chapter01.BLR
 public import FABL.Chapter01.BasicFourierFormulas
+public import FABL.Chapter01.CubeCardinality
 public import FABL.Chapter01.FunctionsAsMultilinearPolynomials
 public import FABL.Chapter01.ParityBasis
 public import FABL.Chapter01.ProbabilityDensitiesAndConvolution
+public import FABL.Chapter01.ProbabilityDensityPushforward
 
 /-!
 # Chapter 1: Boolean functions and the Fourier expansion

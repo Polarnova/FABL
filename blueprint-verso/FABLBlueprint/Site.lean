@@ -378,6 +378,19 @@ private def readerJsTemplate : String := r##"
     }, 5000);
   }
 
+  function applyDependencyGraphDefaults() {
+    document.querySelectorAll(".bp_graph_fullwidth").forEach(function (graphBlock) {
+      const viewSelect = graphBlock.querySelector(".bp_graph_view_select");
+      if (!(viewSelect instanceof HTMLSelectElement)) return;
+      const hasGroupView = Array.from(viewSelect.options).some(function (option) {
+        return option.value === "group";
+      });
+      if (!hasGroupView) return;
+      viewSelect.value = "group";
+      viewSelect.dispatchEvent(new Event("change", { bubbles: true }));
+    });
+  }
+
   function applyFidelityProfile() {
     document.querySelectorAll(".bp_metadata_tag").forEach(function (tag) {
       if (!(tag.textContent || "").trim().startsWith("fidelity-")) return;
@@ -492,6 +505,7 @@ private def readerJsTemplate : String := r##"
   applyTheme(savedTheme(), false);
   document.addEventListener("DOMContentLoaded", function () {
     applyTheme(savedTheme(), false);
+    applyDependencyGraphDefaults();
     collapseCodePanels();
     applyFidelityProfile();
     installSourceLinks();

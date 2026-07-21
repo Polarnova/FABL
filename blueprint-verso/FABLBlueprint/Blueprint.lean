@@ -12,6 +12,7 @@ import FABLBlueprint.Chapter02
 import FABLBlueprint.Chapter03
 import FABLBlueprint.Chapter04
 import FABLBlueprint.Chapter05
+import FABLBlueprint.Chapter06
 
 open Verso.Genre
 open Verso.Genre.Manual
@@ -48,10 +49,15 @@ Chapter 4: DNF formulas and small-depth circuits
 Chapter 5: Majority and threshold functions
 :::
 
+:::group "fabl-chapter-6"
+Chapter 6: Pseudorandomness and F₂-polynomials
+:::
+
 {include 0 FABLBlueprint.Chapter01}
 {include 0 FABLBlueprint.Chapter02}
 {include 0 FABLBlueprint.Chapter03}
 {include 0 FABLBlueprint.Chapter04}
 {include 0 FABLBlueprint.Chapter05}
+{include 0 FABLBlueprint.Chapter06}
 
-{blueprint_graph (direction := LR)}
+{blueprint_graph (direction := LR) (preview := hover) (previewPlacement := anchored)}
