@@ -10,6 +10,11 @@ on:
         description: Existing version tag to publish
         required: true
         type: string
+      verify_only:
+        description: Verify an already-published immutable release without rebuilding or publishing
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -43,6 +48,7 @@ jobs:
 
   build:
     needs: prepare
+    if: github.event_name == 'push' || inputs.verify_only != true
     strategy:
       fail-fast: false
       matrix:
@@ -153,6 +159,13 @@ jobs:
     needs:
       - prepare
       - publish
+    if: >-
+      always() &&
+      needs.prepare.result == 'success' &&
+      (
+        needs.publish.result == 'success' ||
+        (github.event_name == 'workflow_dispatch' && inputs.verify_only)
+      )
     strategy:
       fail-fast: false
       matrix:
@@ -203,6 +216,11 @@ jobs:
             > "$consumer_dir/FABLReleaseConsumer.lean"
           lake -d="$consumer_dir" update
           lake -d="$consumer_dir" exe cache get
+          lake -d="$consumer_dir" build @ProbabilityApproximation:release
+          "$consumer_dir/.lake/packages/FABL/scripts/verify_probability_approximation_release.sh" \
+            "$consumer_dir"
+          lake --quiet --no-build -d="$consumer_dir" build \
+            @ProbabilityApproximation/ProbabilityApproximation
           lake -d="$consumer_dir" build @FABL:release
           "$consumer_dir/.lake/packages/FABL/scripts/verify_release.sh" "$consumer_dir"
           lake --quiet --no-build -d="$consumer_dir" build @FABL/FABL
