@@ -307,14 +307,17 @@ lake update
 lake exe cache get
 lake build @ProbabilityApproximation:release
 ./scripts/verify_probability_approximation_release.sh
+lake build :release
+./scripts/verify_release.sh
 cd blueprint-verso
 lake update
 lake exe cache get
 ```
 
-The `@ProbabilityApproximation:release` facet downloads the pinned precompiled archive. It is not
-authorization to build the dependency's source, and the Bentkus module must never be compiled
-locally or in CI.
+The release facets download the pinned precompiled FABL and ProbabilityApproximation archives.
+They are not authorization to build dependency source, and the Bentkus module must never be
+compiled locally or in CI. The root FABL release facet is available when `HEAD` is the published
+release commit; after source edits, build only the narrow affected module.
 
 During proof development, build the narrowest affected production module:
 
@@ -336,24 +339,27 @@ between green checkpoints: Lake correctly invalidates the dependency, and a fail
 the shared last `.olean`, blocking every other agent. Prefer isolated worktrees/build directories
 when parallel tasks cannot respect this checkpoint discipline.
 
-During Blueprint development, build the affected section before rendering the complete site:
+During Blueprint development, the narrow section build is optional local feedback after the root
+release artifacts are current:
 
 ```bash
 cd blueprint-verso
 lake build +FABLBlueprint.Chapter01.Section04
 ```
 
-Before a chapter handoff, run from the repository root:
+The Blueprint package shares the root `.lake/packages` directory. Its site driver first checks
+`@FABL/FABL` with `lake --no-build`; stale or missing production artifacts are an error and are
+never repaired by silently recompiling FABL inside the documentation step.
+
+Before a chapter handoff, run the lightweight local source gate and use the pull request's GitHub
+Actions result as the required full-library, Blueprint, and publication validation:
 
 ```bash
-lake build
 if rg -n --glob '*.lean' \
   '\b(sorry|admit|axiom|unsafe|native_decide)\b' FABL FABL.lean
 then
   exit 1
 fi
-cd blueprint-verso
-./scripts/site.sh build
 ```
 
 `site.sh build release` already runs the strict manifest validator and `vbp check`. The release
@@ -368,6 +374,17 @@ rendered; its generated preview cache is not an incremental build cache.
 
 The root `FABL.lean` must import every production module. A file unreachable from that root is not
 part of the verified library.
+
+## Release and dependency maintenance
+
+- FABL follows pre-1.0 semantic versioning. The current public release is `v0.5.6`.
+- Release tags and their GitHub assets are immutable. Downstream repositories pin an exact release
+  tag and may automate upgrades only through their complete checked build.
+- `.github/workflows/release.yml` validates the tag against `lakefile.toml`, builds and audits FABL
+  as a dependency, publishes Lake archives for Linux x86-64 and macOS arm64, and then verifies both
+  assets from fresh downstream consumers.
+- A Lean, Mathlib, or public-API change requires a new FABL version; never replace an existing
+  archive or move an existing release tag.
 
 ## Version-control boundaries
 

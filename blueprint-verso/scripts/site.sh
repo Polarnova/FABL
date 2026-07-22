@@ -3,6 +3,8 @@
 set -euo pipefail
 
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+packages_dir="$(jq -er '.packagesDir // ".lake/packages"' "$root/lake-manifest.json")"
+packages_root="$(cd "$root/$packages_dir" && pwd)"
 output="$root/_out/site"
 book_output="$root/_out/book"
 profile="${2:-release}"
@@ -29,8 +31,10 @@ fi
 
 build_library() {
   cd "$root"
-  echo "Checking compiled Blueprint modules with Lake..."
-  "$lake_cmd" build FABLBlueprint
+  echo "Reusing the checked production-library artifacts..."
+  "$lake_cmd" --no-build build @FABL/FABL
+  echo "Building the Blueprint modules..."
+  "$lake_cmd" build @/FABLBlueprint
 }
 
 validate_site() {
@@ -183,10 +187,10 @@ build_site() {
   rm -rf -- "$output/html-multi"
   export FABL_SOURCE_REVISION="${GITHUB_SHA:-$(git -C "$root/.." rev-parse HEAD)}"
   export PROBABILITY_APPROXIMATION_SOURCE_REVISION="$(
-    git -C "$root/.lake/packages/ProbabilityApproximation" rev-parse HEAD
+    git -C "$packages_root/ProbabilityApproximation" rev-parse HEAD
   )"
   export MATHLIB_SOURCE_REVISION="$(
-    git -C "$root/.lake/packages/mathlib" rev-parse HEAD
+    git -C "$packages_root/mathlib" rev-parse HEAD
   )"
   "$lake_cmd" lean FABLBlueprintMain.lean -- --run FABLBlueprintMain.lean --output "$output"
   test -f "$output/html-multi/index.html"

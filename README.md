@@ -1,5 +1,7 @@
 # FABL: Formal Analysis of Boolean Functions in Lean
 
+[![Release](https://img.shields.io/github/v/release/Polarnova/FABL)](https://github.com/Polarnova/FABL/releases)
+
 FABL is a Lean 4 and Mathlib formalization of Ryan O'Donnell's
 [*Analysis of Boolean Functions*](https://arxiv.org/abs/2105.10386), following the May 2021
 edition. It develops the book's results as a reusable theorem library while preserving the domains,
@@ -29,17 +31,42 @@ Chapter 5 uses the latest release of
 
 ## Using FABL
 
-The repository pins its Lean and Mathlib versions. After cloning, obtain the precompiled Mathlib
-cache, fetch and verify the pinned precompiled probability release, and build the library:
+The current release is `v0.5.6`, built with Lean and Mathlib `v4.32.0`. Downstream projects should
+pin the release tag:
+
+```toml
+[[require]]
+name = "FABL"
+git = "https://github.com/Polarnova/FABL.git"
+rev = "v0.5.6"
+```
+
+On Linux x86-64 and macOS arm64, require the matching precompiled dependency archives explicitly:
+
+```bash
+lake update
+lake exe cache get
+lake build @ProbabilityApproximation:release
+lake build @FABL:release
+```
+
+These explicit release targets fail if a verified platform asset is unavailable; they do not
+silently replace the download with a local source build.
+
+The repository pins its Lean and Mathlib versions. On the published release commit, obtain and
+cryptographically verify all precompiled artifacts without compiling source:
 
 ```bash
 lake exe cache get
 lake build @ProbabilityApproximation:release
 ./scripts/verify_probability_approximation_release.sh
-lake build
+lake build :release
+./scripts/verify_release.sh
 ```
 
-The `release` facet supplies the matching precompiled Bentkus and Berry--Esseen artifacts.
+The release facets supply the matching FABL, Bentkus, and Berry--Esseen artifacts. Source work may
+then compile only the narrow module affected by an edit; GitHub Actions owns the full library,
+Blueprint, and PDF validation.
 
 The root module imports every verified library module:
 
@@ -50,13 +77,17 @@ import FABL
 ## Book and dependency graph
 
 The Verso Blueprint presents the book-facing statements beside their Lean declarations and records
-the reviewed dependency graph. To build and serve it locally:
+the reviewed dependency graph. For an optional local preview after the release artifacts are
+current:
 
 ```bash
 cd blueprint-verso
 lake exe cache get
 ./scripts/site.sh serve dev
 ```
+
+The Blueprint workspace shares the root dependency directory and requires the root FABL artifacts
+to be current; it does not rebuild the production library during rendering.
 
 Then open [http://localhost:8000/](http://localhost:8000/). Generate the printable book with:
 
