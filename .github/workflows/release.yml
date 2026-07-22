@@ -83,16 +83,6 @@ jobs:
           lake -d="$consumer_dir" update
           lake -d="$consumer_dir" exe cache get
           lake -d="$consumer_dir" build @ProbabilityApproximation:release
-          if ! grep -Fq 'Authorization: Bearer' \
-            scripts/verify_probability_approximation_release.sh; then
-            curl() {
-              command curl \
-                -H "Accept: application/vnd.github+json" \
-                -H "Authorization: Bearer $GH_TOKEN" \
-                "$@"
-            }
-            export -f curl
-          fi
           ./scripts/verify_probability_approximation_release.sh "$consumer_dir"
           lake --quiet --no-build -d="$consumer_dir" build \
             @ProbabilityApproximation/ProbabilityApproximation
