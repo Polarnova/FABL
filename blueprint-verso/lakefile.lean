@@ -17,6 +17,3 @@ package FABLBlueprint where
 
 @[default_target]
 lean_lib FABLBlueprint where
-
-lean_exe «blueprint-gen» where
-  root := `FABLBlueprintMain

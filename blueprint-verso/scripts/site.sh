@@ -56,7 +56,7 @@ validate_site() {
     | [$blocks[] | .codeData.external.decls[]?] as $decls
     | [.previews[] | select(.targetKind == "leanDecl")] as $leanDecls
     | .graphs[0] as $graph
-    | (.vbpInternalSchemaVersion == 2)
+    | (.vbpInternalSchemaVersion == 3)
       and (($blocks | length) == 455)
       and (($chapter1 | length) == 43)
       and (($chapter2 | length) == 79)
