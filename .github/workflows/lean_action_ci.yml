@@ -41,6 +41,8 @@ jobs:
           restore-keys: |
             fabl-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
       - name: Require precompiled ProbabilityApproximation release
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           lake build @ProbabilityApproximation:release
           ./scripts/verify_probability_approximation_release.sh
@@ -81,6 +83,8 @@ jobs:
             fabl-blueprint-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('blueprint-verso/lean-toolchain', 'blueprint-verso/lake-manifest.json', 'lake-manifest.json') }}-
       - name: Require precompiled ProbabilityApproximation release for Blueprint
         working-directory: blueprint-verso
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           lake build @ProbabilityApproximation:release
           ../scripts/verify_probability_approximation_release.sh
