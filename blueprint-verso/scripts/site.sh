@@ -29,8 +29,10 @@ fi
 
 build_library() {
   cd "$root"
-  echo "Checking compiled Blueprint modules with Lake..."
-  "$lake_cmd" build FABLBlueprint
+  echo "Reusing the checked production-library artifacts..."
+  "$lake_cmd" --no-build build @FABL/FABL
+  echo "Building the Blueprint modules..."
+  "$lake_cmd" build @/FABLBlueprint
 }
 
 validate_site() {

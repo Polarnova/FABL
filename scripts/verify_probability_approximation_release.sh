@@ -2,8 +2,10 @@
 
 set -euo pipefail
 
-workspace=${1:-.}
-package="$workspace/.lake/packages/ProbabilityApproximation"
+workspace="$(cd "${1:-.}" && pwd)"
+manifest="$workspace/lake-manifest.json"
+packages_dir="$(jq -r '.packagesDir // ".lake/packages"' "$manifest")"
+package="$(cd "$workspace" && cd "$packages_dir/ProbabilityApproximation" && pwd)"
 release_tag=v0.9.6
 release_commit=c89fba908a33ba741836407f43c67609e2d05279
 

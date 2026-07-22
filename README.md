@@ -1,5 +1,7 @@
 # FABL: Formal Analysis of Boolean Functions in Lean
 
+[![Release](https://img.shields.io/github/v/release/Polarnova/FABL)](https://github.com/Polarnova/FABL/releases)
+
 FABL is a Lean 4 and Mathlib formalization of Ryan O'Donnell's
 [*Analysis of Boolean Functions*](https://arxiv.org/abs/2105.10386), following the May 2021
 edition. It develops the book's results as a reusable theorem library while preserving the domains,
@@ -29,6 +31,19 @@ Chapter 5 uses the latest release of
 
 ## Using FABL
 
+The current release is `v0.5.6`, built with Lean and Mathlib `v4.32.0`. Downstream projects should
+pin the release tag:
+
+```toml
+[[require]]
+name = "FABL"
+git = "https://github.com/Polarnova/FABL.git"
+rev = "v0.5.6"
+```
+
+On Linux x86-64 and macOS arm64, Lake downloads the matching precompiled FABL archive. If no asset
+matches the current platform, Lake falls back to the same tagged source.
+
 The repository pins its Lean and Mathlib versions. After cloning, obtain the precompiled Mathlib
 cache, fetch and verify the pinned precompiled probability release, and build the library:
 
@@ -50,13 +65,17 @@ import FABL
 ## Book and dependency graph
 
 The Verso Blueprint presents the book-facing statements beside their Lean declarations and records
-the reviewed dependency graph. To build and serve it locally:
+the reviewed dependency graph. Build FABL once, then build and serve the Blueprint:
 
 ```bash
+lake build
 cd blueprint-verso
 lake exe cache get
 ./scripts/site.sh serve dev
 ```
+
+The Blueprint workspace shares the root dependency directory and requires the root FABL artifacts
+to be current; it does not rebuild the production library during rendering.
 
 Then open [http://localhost:8000/](http://localhost:8000/). Generate the printable book with:
 

@@ -27,6 +27,13 @@ jobs:
           lint: false
           use-github-cache: false
           use-mathlib-cache: true
+      - name: Restore FABL build cache
+        uses: actions/cache@v4
+        with:
+          path: .lake/build
+          key: fabl-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: |
+            fabl-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
       - name: Require precompiled ProbabilityApproximation release
         run: |
           lake build @ProbabilityApproximation:release
@@ -40,6 +47,32 @@ jobs:
       - name: Fetch Mathlib cache for Blueprint
         working-directory: blueprint-verso
         run: lake exe cache get
+      - name: Restore Blueprint dependency build cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            .lake/packages/Cli/.lake/build
+            .lake/packages/LeanSearchClient/.lake/build
+            .lake/packages/MD4Lean/.lake/build
+            .lake/packages/Qq/.lake/build
+            .lake/packages/VersoBlueprint/.lake/build
+            .lake/packages/aesop/.lake/build
+            .lake/packages/batteries/.lake/build
+            .lake/packages/illuminate/.lake/build
+            .lake/packages/importGraph/.lake/build
+            .lake/packages/plausible/.lake/build
+            .lake/packages/proofwidgets/.lake/build
+            .lake/packages/subverso/.lake/build
+            .lake/packages/verso/.lake/build
+            .lake/packages/verso-slides/.lake/build
+          key: fabl-blueprint-deps-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('blueprint-verso/lean-toolchain', 'blueprint-verso/lake-manifest.json') }}
+      - name: Restore Blueprint project build cache
+        uses: actions/cache@v4
+        with:
+          path: blueprint-verso/.lake/build
+          key: fabl-blueprint-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('blueprint-verso/lean-toolchain', 'blueprint-verso/lake-manifest.json', 'lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: |
+            fabl-blueprint-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('blueprint-verso/lean-toolchain', 'blueprint-verso/lake-manifest.json', 'lake-manifest.json') }}-
       - name: Require precompiled ProbabilityApproximation release for Blueprint
         working-directory: blueprint-verso
         run: |

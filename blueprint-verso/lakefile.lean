@@ -11,6 +11,7 @@ require VersoBlueprint from git "https://github.com/leanprover/verso-blueprint" 
 require FABL from ".."
 
 package FABLBlueprint where
+  packagesDir := "../.lake/packages"
   precompileModules := false
   leanOptions := #[⟨`experimental.module, true⟩]
 

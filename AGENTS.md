@@ -339,9 +339,14 @@ when parallel tasks cannot respect this checkpoint discipline.
 During Blueprint development, build the affected section before rendering the complete site:
 
 ```bash
+lake build FABL
 cd blueprint-verso
 lake build +FABLBlueprint.Chapter01.Section04
 ```
+
+The Blueprint package shares the root `.lake/packages` directory. Its site driver first checks
+`@FABL/FABL` with `lake --no-build`; stale or missing production artifacts are an error and are
+never repaired by silently recompiling FABL inside the documentation step.
 
 Before a chapter handoff, run from the repository root:
 
@@ -368,6 +373,17 @@ rendered; its generated preview cache is not an incremental build cache.
 
 The root `FABL.lean` must import every production module. A file unreachable from that root is not
 part of the verified library.
+
+## Release and dependency maintenance
+
+- FABL follows pre-1.0 semantic versioning. The current public release is `v0.5.6`.
+- Release tags and their GitHub assets are immutable. Downstream repositories pin an exact release
+  tag and may automate upgrades only through their complete checked build.
+- `.github/workflows/release.yml` validates the tag against `lakefile.toml`, builds and audits FABL
+  as a dependency, publishes Lake archives for Linux x86-64 and macOS arm64, and then verifies both
+  assets from fresh downstream consumers.
+- A Lean, Mathlib, or public-API change requires a new FABL version; never replace an existing
+  archive or move an existing release tag.
 
 ## Version-control boundaries
 
