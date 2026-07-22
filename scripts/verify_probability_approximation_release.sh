@@ -29,9 +29,15 @@ archive_path="$package/.lake/$archive"
 trace_path="$archive_path.trace"
 release_url="https://github.com/Polarnova/ProbabilityApproximation/releases/download/$release_tag/$archive"
 
-test "$(curl -fsSL https://api.github.com/repos/Polarnova/ProbabilityApproximation/releases/latest |
+curl_args=(-fsSL -H "Accept: application/vnd.github+json")
+if [[ -n "${GH_TOKEN:-}" ]]; then
+  curl_args+=(-H "Authorization: Bearer $GH_TOKEN")
+fi
+
+test "$(curl "${curl_args[@]}" \
+  https://api.github.com/repos/Polarnova/ProbabilityApproximation/releases/latest |
   jq -r '.tag_name')" = "$release_tag"
-test "$(curl -fsSL \
+test "$(curl "${curl_args[@]}" \
   "https://api.github.com/repos/Polarnova/ProbabilityApproximation/releases/tags/$release_tag" |
   jq -r --arg archive "$archive" '.assets[] | select(.name == $archive) | .digest')" = \
   "sha256:$expected_sha256"
