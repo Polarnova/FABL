@@ -25,7 +25,7 @@ jobs:
       tag: ${{ steps.version.outputs.tag }}
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           ref: ${{ inputs.tag || github.ref_name }}
 
@@ -52,7 +52,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           ref: ${{ needs.prepare.outputs.tag }}
 
@@ -65,6 +65,8 @@ jobs:
           use-github-cache: false
 
       - name: Build release library as a dependency
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           consumer_dir="$RUNNER_TEMP/fabl-release-builder"
@@ -104,7 +106,7 @@ jobs:
           cp "${archives[0]}" release-dist/
 
       - name: Preserve the platform archive until publication
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: fabl-release-${{ matrix.runner }}
           path: release-dist/*.tar.gz
@@ -119,7 +121,7 @@ jobs:
 
     steps:
       - name: Collect both platform archives
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: fabl-release-*
           path: release-dist
@@ -160,7 +162,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           ref: ${{ needs.prepare.outputs.tag }}
 
