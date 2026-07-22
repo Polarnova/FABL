@@ -41,8 +41,17 @@ git = "https://github.com/Polarnova/FABL.git"
 rev = "v0.5.6"
 ```
 
-On Linux x86-64 and macOS arm64, Lake downloads the matching precompiled FABL archive. If no asset
-matches the current platform, Lake falls back to the same tagged source.
+On Linux x86-64 and macOS arm64, require the matching precompiled dependency archives explicitly:
+
+```bash
+lake update
+lake exe cache get
+lake build @ProbabilityApproximation:release
+lake build @FABL:release
+```
+
+These explicit release targets fail if a verified platform asset is unavailable; they do not
+silently replace the download with a local source build.
 
 The repository pins its Lean and Mathlib versions. On the published release commit, obtain and
 cryptographically verify all precompiled artifacts without compiling source:
