@@ -7,13 +7,25 @@ manifest="$workspace/lake-manifest.json"
 
 test -f "$manifest"
 
-release_tag="$(jq -er '.packages[] | select(.name == "FABL") | .inputRev' "$manifest")"
-release_commit="$(jq -er '.packages[] | select(.name == "FABL") | .rev' "$manifest")"
-packages_dir="$(jq -r '.packagesDir // ".lake/packages"' "$manifest")"
-package="$(cd "$workspace" && cd "$packages_dir/FABL" && pwd)"
+fabl_entry="$(jq -c 'first(.packages[] | select(.name == "FABL")) // empty' "$manifest")"
+if [[ -n "$fabl_entry" ]]; then
+  release_tag="$(jq -er '.inputRev' <<<"$fabl_entry")"
+  release_commit="$(jq -er '.rev' <<<"$fabl_entry")"
+  packages_dir="$(jq -r '.packagesDir // ".lake/packages"' "$manifest")"
+  package="$(cd "$workspace" && cd "$packages_dir/FABL" && pwd)"
+else
+  package="$workspace"
+  package_version="$(sed -n 's/^version = "\(.*\)"/\1/p' "$package/lakefile.toml")"
+  test -n "$package_version"
+  release_tag="v$package_version"
+  release_commit="$(git -C "$package" rev-parse HEAD)"
+  test "$(git -C "$package" rev-list -n 1 "$release_tag")" = "$release_commit"
+fi
 
 [[ "$release_tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
-test -d "$package/.git"
+package_version="${package_version:-$(sed -n 's/^version = "\(.*\)"/\1/p' "$package/lakefile.toml")}"
+test "$release_tag" = "v$package_version"
+test "$(git -C "$package" rev-parse --is-inside-work-tree)" = true
 test "$(git -C "$package" rev-parse HEAD)" = "$release_commit"
 
 release_url="https://github.com/Polarnova/FABL/releases/download/$release_tag"

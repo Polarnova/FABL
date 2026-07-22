@@ -44,17 +44,20 @@ rev = "v0.5.6"
 On Linux x86-64 and macOS arm64, Lake downloads the matching precompiled FABL archive. If no asset
 matches the current platform, Lake falls back to the same tagged source.
 
-The repository pins its Lean and Mathlib versions. After cloning, obtain the precompiled Mathlib
-cache, fetch and verify the pinned precompiled probability release, and build the library:
+The repository pins its Lean and Mathlib versions. On the published release commit, obtain and
+cryptographically verify all precompiled artifacts without compiling source:
 
 ```bash
 lake exe cache get
 lake build @ProbabilityApproximation:release
 ./scripts/verify_probability_approximation_release.sh
-lake build
+lake build :release
+./scripts/verify_release.sh
 ```
 
-The `release` facet supplies the matching precompiled Bentkus and Berry--Esseen artifacts.
+The release facets supply the matching FABL, Bentkus, and Berry--Esseen artifacts. Source work may
+then compile only the narrow module affected by an edit; GitHub Actions owns the full library,
+Blueprint, and PDF validation.
 
 The root module imports every verified library module:
 
@@ -65,10 +68,10 @@ import FABL
 ## Book and dependency graph
 
 The Verso Blueprint presents the book-facing statements beside their Lean declarations and records
-the reviewed dependency graph. Build FABL once, then build and serve the Blueprint:
+the reviewed dependency graph. For an optional local preview after the release artifacts are
+current:
 
 ```bash
-lake build
 cd blueprint-verso
 lake exe cache get
 ./scripts/site.sh serve dev
